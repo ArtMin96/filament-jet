@@ -1,25 +1,28 @@
 {
-    "name": ":vendor_slug/:package_slug",
-    "description": ":package_description",
+    "name": "artmin96/filament-jet",
+    "description": "This is my package filament-jet",
     "keywords": [
-        ":vendor_name",
+        "ArtMin96",
         "laravel",
-        ":package_slug"
+        "filament-jet"
     ],
-    "homepage": "https://github.com/:vendor_slug/:package_slug",
+    "homepage": "https://github.com/artmin96/filament-jet",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": "author@domain.com",
+            "name": "Arthur Minasyan",
+            "email": "artminasyanartwork@gmail.com",
             "role": "Developer"
         }
     ],
     "require": {
         "php": "^8.0",
+        "bacon/bacon-qr-code": "^2.0",
         "filament/filament": "^2.0",
+        "illuminate/contracts": "^9.0",
+        "pragmarx/google2fa": "^8.0",
         "spatie/laravel-package-tools": "^1.13.5",
-        "illuminate/contracts": "^9.0"
+        "suleymanozev/filament-radio-button-field": "^1.0"
     },
     "require-dev": {
         "laravel/pint": "^1.0",
@@ -38,13 +41,13 @@
     },
     "autoload": {
         "psr-4": {
-            "VendorName\\Skeleton\\": "src",
-            "VendorName\\Skeleton\\Database\\Factories\\": "database/factories"
+            "ArtMin96\\FilamentJet\\": "src",
+            "ArtMin96\\FilamentJet\\Database\\Factories\\": "database/factories"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "VendorName\\Skeleton\\Tests\\": "tests"
+            "ArtMin96\\FilamentJet\\Tests\\": "tests"
         }
     },
     "scripts": {
@@ -67,10 +70,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "VendorName\\Skeleton\\SkeletonServiceProvider"
+                "ArtMin96\\FilamentJet\\FilamentJetServiceProvider"
             ],
             "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\Facades\\Skeleton"
+                "FilamentJet": "ArtMin96\\FilamentJet\\Facades\\FilamentJet"
             }
         }
     },
