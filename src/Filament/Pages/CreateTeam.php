@@ -43,7 +43,7 @@ class CreateTeam extends Page
                             ->required()
                             ->maxLength(255),
                     ])
-                    ->statePath('createTeamState')
+                    ->statePath('createTeamState'),
             ]
         );
     }
@@ -52,7 +52,6 @@ class CreateTeam extends Page
      * Create a new team.
      *
      * @param  \ArtMin96\FilamentJet\Contracts\CreatesTeams  $creator
-     *
      * @return \Illuminate\Http\Response
      */
     public function createTeam(CreatesTeams $creator)

@@ -5,7 +5,6 @@ namespace App\Models;
 use ArtMin96\FilamentJet\Traits\HasProfilePhoto;
 use ArtMin96\FilamentJet\Traits\HasTeams;
 use ArtMin96\FilamentJet\Traits\TwoFactorAuthenticatable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;

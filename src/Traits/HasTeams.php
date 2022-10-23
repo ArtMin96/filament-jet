@@ -126,8 +126,8 @@ trait HasTeams
         }
 
         return $this->ownsTeam($team) || $this->teams->contains(function ($t) use ($team) {
-                return $t->id === $team->id;
-            });
+            return $t->id === $team->id;
+        });
     }
 
     /**
@@ -169,8 +169,8 @@ trait HasTeams
         }
 
         return $this->belongsToTeam($team) && optional(FilamentJet::findRole($team->users->where(
-                'id', $this->id
-            )->first()->membership->role))->key === $role;
+            'id', $this->id
+        )->first()->membership->role))->key === $role;
     }
 
     /**

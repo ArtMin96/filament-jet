@@ -7,8 +7,7 @@ interface DeletesUsers
     /**
      * Delete the given user.
      *
-     * @param mixed $account
-     *
+     * @param  mixed  $account
      * @return void
      */
     public function delete($account): void;

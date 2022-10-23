@@ -2,11 +2,11 @@
 
 namespace ArtMin96\FilamentJet\Tests;
 
+use ArtMin96\FilamentJet\FilamentJetServiceProvider;
 use Filament\FilamentServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Livewire\LivewireServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
-use ArtMin96\FilamentJet\FilamentJetServiceProvider;
 
 class TestCase extends Orchestra
 {
