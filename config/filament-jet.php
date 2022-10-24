@@ -27,7 +27,7 @@ return [
         'login' => null,
         'logout' => null,
         'password-confirmation' => null,
-        'register' => null,
+        'register' => config('filament.home_url', '/'),
         'email-verification' => null,
         'password-reset' => null,
     ],
@@ -89,7 +89,12 @@ return [
     */
 
     'features' => [
-        Features::registration(),
+        Features::registration([
+            'component' => \ArtMin96\FilamentJet\Http\Livewire\Auth\Register::class,
+            'terms_of_service' => \ArtMin96\FilamentJet\Http\Livewire\TermsOfService::class,
+            'privacy_policy' => \ArtMin96\FilamentJet\Http\Livewire\PrivacyPolicy::class,
+            'auth_card_max_w' => null
+        ]),
         Features::resetPasswords(),
         Features::emailVerification(),
         Features::updateProfileInformation(),

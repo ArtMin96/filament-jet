@@ -3,12 +3,15 @@
 namespace ArtMin96\FilamentJet;
 
 use ArtMin96\FilamentJet\Contracts\AddsTeamMembers;
+use ArtMin96\FilamentJet\Contracts\CreatesNewUsers;
 use ArtMin96\FilamentJet\Contracts\CreatesTeams;
 use ArtMin96\FilamentJet\Contracts\DeletesTeams;
 use ArtMin96\FilamentJet\Contracts\DeletesUsers;
 use ArtMin96\FilamentJet\Contracts\InvitesTeamMembers;
 use ArtMin96\FilamentJet\Contracts\RemovesTeamMembers;
 use ArtMin96\FilamentJet\Contracts\UpdatesTeamNames;
+use ArtMin96\FilamentJet\Traits\HasTeams;
+use Illuminate\Support\Arr;
 
 class FilamentJet
 {
@@ -234,6 +237,36 @@ class FilamentJet
     }
 
     /**
+     * Determine registration component.
+     *
+     * @return bool
+     */
+    public static function registrationComponent()
+    {
+        return Features::registrationComponent();
+    }
+
+    /**
+     * Determine terms of service component.
+     *
+     * @return bool
+     */
+    public static function termsOfServiceComponent()
+    {
+        return Features::termsOfServiceComponent();
+    }
+
+    /**
+     * Determine privacy policy component.
+     *
+     * @return bool
+     */
+    public static function privacyPolicyComponent()
+    {
+        return Features::privacyPolicyComponent();
+    }
+
+    /**
      * Find a user instance by the given ID.
      *
      * @param  int  $id
@@ -372,6 +405,17 @@ class FilamentJet
     }
 
     /**
+     * Register a class / callback that should be used to create users.
+     *
+     * @param  string  $class
+     * @return void
+     */
+    public static function createUsersUsing(string $class)
+    {
+        return app()->singleton(CreatesNewUsers::class, $class);
+    }
+
+    /**
      * Register a class / callback that should be used to create teams.
      *
      * @param  string  $class
@@ -446,5 +490,23 @@ class FilamentJet
     public static function deleteUsersUsing(string $class)
     {
         return app()->singleton(DeletesUsers::class, $class);
+    }
+
+    /**
+     * Find the path to a localized Markdown resource.
+     *
+     * @param  string  $name
+     * @return string|null
+     */
+    public static function localizedMarkdownPath($name)
+    {
+        $localName = preg_replace('#(\.md)$#i', '.'.app()->getLocale().'$1', $name);
+
+        return Arr::first([
+            resource_path('markdown/'.$localName),
+            resource_path('markdown/'.$name),
+        ], function ($path) {
+            return file_exists($path);
+        });
     }
 }

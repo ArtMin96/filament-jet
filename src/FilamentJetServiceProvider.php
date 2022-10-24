@@ -5,11 +5,15 @@ namespace ArtMin96\FilamentJet;
 use ArtMin96\FilamentJet\Console\InstallCommand;
 use ArtMin96\FilamentJet\Filament\Pages\Account;
 use ArtMin96\FilamentJet\Filament\Pages\ApiTokens;
+use ArtMin96\FilamentJet\Http\Livewire\Auth\Register;
+use ArtMin96\FilamentJet\Http\Livewire\PrivacyPolicy;
+use ArtMin96\FilamentJet\Http\Livewire\TermsOfService;
 use Filament\Facades\Filament;
 use Filament\Navigation\UserMenuItem;
 use Filament\PluginServiceProvider;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\View\Compilers\BladeCompiler;
+use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 
 class FilamentJetServiceProvider extends PluginServiceProvider
@@ -57,6 +61,15 @@ class FilamentJetServiceProvider extends PluginServiceProvider
         }
 
         $this->configureComponents();
+
+        if (Features::enabled(Features::registration()) && FilamentJet::registrationComponent()) {
+            Livewire::component(Register::getName(), Register::class);
+
+            if (Features::hasTermsAndPrivacyPolicyFeature()) {
+                Livewire::component(TermsOfService::getName(), TermsOfService::class);
+                Livewire::component(PrivacyPolicy::getName(), PrivacyPolicy::class);
+            }
+        }
     }
 
     /**
@@ -67,6 +80,7 @@ class FilamentJetServiceProvider extends PluginServiceProvider
     protected function configureComponents()
     {
         $this->callAfterResolving(BladeCompiler::class, function () {
+            $this->registerComponent('auth-card');
             $this->registerComponent('action-section');
             $this->registerComponent('form-section');
             $this->registerComponent('section-title');

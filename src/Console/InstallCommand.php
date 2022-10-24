@@ -207,18 +207,23 @@ class InstallCommand extends Command
     protected function routeDefinition()
     {
         return <<<'EOF'
-Route::domain(config("filament.domain"))
+    Route::domain(config("filament.domain"))
     ->middleware(
         array_merge(config("filament.middleware.base"), [
-            'auth:sanctum',
-            'verified'
+//            'auth:sanctum',
+//            'verified'
         ])
     )
     ->name(config('filament-jet.route_group_prefix'))
     ->prefix(config("filament.path"))
     ->group(function () {
-        if (\ArtMin96\FilamentJet\Features::enabled(\ArtMin96\FilamentJet\Features::registration())) {
-            Route::get("/register", config('filament-jet.registration.component'))->name("register");
+        if (\ArtMin96\FilamentJet\Features::enabled(\ArtMin96\FilamentJet\Features::registration()) && \ArtMin96\FilamentJet\FilamentJet::registrationComponent()) {
+            Route::get("/register", \ArtMin96\FilamentJet\FilamentJet::registrationComponent())->name("register");
+
+            if (\ArtMin96\FilamentJet\FilamentJet::hasTermsAndPrivacyPolicyFeature()) {
+                Route::get('/terms-of-service', \ArtMin96\FilamentJet\FilamentJet::termsOfServiceComponent())->name('terms');
+                Route::get('/privacy-policy', \ArtMin96\FilamentJet\FilamentJet::privacyPolicyComponent())->name('policy');
+            }
         }
 
         // Teams...

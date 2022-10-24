@@ -29,6 +29,21 @@ class Features
     }
 
     /**
+     * Determine if the feature is enabled and has a given option.
+     *
+     * @param string $feature
+     * @param string $option
+     *
+     * @return mixed
+     */
+    public static function getOption(string $feature, string $option)
+    {
+        return static::enabled($feature) && config("filament-jet-options.{$feature}.{$option}")
+            ? config("filament-jet-options.{$feature}.{$option}")
+            : null;
+    }
+
+    /**
      * Determine if the application is using any features that require "profile" management.
      *
      * @return bool
@@ -143,13 +158,64 @@ class Features
     }
 
     /**
+     * Determine registration component.
+     *
+     * @return bool
+     */
+    public static function registrationComponent()
+    {
+        return static::getOption(static::registration(), 'component');
+    }
+
+    /**
+     * Determine terms of service component.
+     *
+     * @return bool
+     */
+    public static function termsOfServiceComponent()
+    {
+        return static::getOption(static::registration(), 'terms_of_service');
+    }
+
+    /**
+     * Determine privacy policy component.
+     *
+     * @return bool
+     */
+    public static function privacyPolicyComponent()
+    {
+        return static::getOption(static::registration(), 'privacy_policy');
+    }
+
+    /**
      * Enable the registration feature.
+     *
+     * @param array $options
      *
      * @return string
      */
-    public static function registration()
+    public static function registration(array $options = [])
     {
+        if (! empty($options)) {
+            config(['filament-jet-options.registration' => $options]);
+        }
+
         return 'registration';
+    }
+
+    /**
+     * Enable the two factor authentication feature.
+     *
+     * @param  array  $options
+     * @return string
+     */
+    public static function twoFactorAuthentication(array $options = [])
+    {
+        if (! empty($options)) {
+            config(['filament-jet-options.two-factor-authentication' => $options]);
+        }
+
+        return 'two-factor-authentication';
     }
 
     /**
@@ -190,21 +256,6 @@ class Features
     public static function updatePasswords()
     {
         return 'update-passwords';
-    }
-
-    /**
-     * Enable the two factor authentication feature.
-     *
-     * @param  array  $options
-     * @return string
-     */
-    public static function twoFactorAuthentication(array $options = [])
-    {
-        if (! empty($options)) {
-            config(['filament-jet-options.two-factor-authentication' => $options]);
-        }
-
-        return 'two-factor-authentication';
     }
 
     /**
