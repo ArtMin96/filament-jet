@@ -8,10 +8,10 @@ return [
         'columns' => [
             'photo' => 'Photo',
             'name' => 'Name',
-            'email' => 'Email'
+            'email' => 'Email',
         ],
 
         'submit' => 'Save',
-        'updated' => 'Updated'
+        'updated' => 'Updated',
     ],
 ];

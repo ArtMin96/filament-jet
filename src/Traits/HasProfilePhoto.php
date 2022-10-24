@@ -2,8 +2,6 @@
 
 namespace ArtMin96\FilamentJet\Traits;
 
-use ArtMin96\FilamentJet\Features;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
 trait HasProfilePhoto

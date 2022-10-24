@@ -38,8 +38,8 @@ return [
         'login_field' => [
             'hint_action' => [
                 'icon' => 'heroicon-o-question-mark-circle',
-                'tooltip' => 'After changing the email address, confirmation is mandatory.'
-            ]
+                'tooltip' => 'After changing the email address, confirmation is mandatory.',
+            ],
         ],
 
         'require_current_password_on_change_password' => true,

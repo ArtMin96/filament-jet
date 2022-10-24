@@ -52,12 +52,13 @@ class Account extends Page
             'updateProfileInformationForm' => $this->makeForm()
                 ->model(FilamentJet::userModel())
                 ->schema($this->updateProfileFormSchema())
-                ->statePath('updateProfileInformationState')
+                ->statePath('updateProfileInformationState'),
         ];
     }
 
     /**
      * @return array
+     *
      * @throws \Exception
      */
     protected function updateProfileFormSchema(): array
@@ -84,7 +85,7 @@ class Account extends Page
                 TextInput::make($this->loginColumn)
                     ->label(__('filament-jet::account.profile_information.columns.email'))
                     ->hintAction(
-                        !empty(config('filament-jet.profile.login_field.hint_action'))
+                        ! empty(config('filament-jet.profile.login_field.hint_action'))
                             ? Action::make('newEmailVerifyNote')
                                 ->tooltip(config('filament-jet.profile.login_field.hint_action.tooltip'))
                                 ->icon(config('filament-jet.profile.login_field.hint_action.icon'))
