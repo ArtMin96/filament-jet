@@ -100,7 +100,7 @@ return [
             'component' => \ArtMin96\FilamentJet\Http\Livewire\Auth\Register::class,
             'terms_of_service' => \ArtMin96\FilamentJet\Http\Livewire\TermsOfService::class,
             'privacy_policy' => \ArtMin96\FilamentJet\Http\Livewire\PrivacyPolicy::class,
-            'auth_card_max_w' => null
+            'auth_card_max_w' => null,
         ]),
         Features::resetPasswords(),
         Features::emailVerification(),

@@ -20,6 +20,6 @@ return [
     ],
 
     'submit' => [
-        'label' => 'Register'
+        'label' => 'Register',
     ],
 ];

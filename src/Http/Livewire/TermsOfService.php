@@ -18,7 +18,7 @@ class TermsOfService extends Component
         $termsFile = FilamentJet::localizedMarkdownPath('terms.md');
 
         $view = view('filament-jet::livewire.terms-of-service', [
-            'terms' =>  Str::markdown(file_get_contents($termsFile))
+            'terms' => Str::markdown(file_get_contents($termsFile)),
         ]);
 
         $view->layout('filament::components.layouts.base', [
