@@ -51,22 +51,22 @@ return [
         'api_tokens' => [
             'show' => true,
             'icon' => 'heroicon-o-key',
-            'sort' => 1
+            'sort' => 1,
         ],
         'team_settings' => [
             'show' => true,
             'icon' => 'heroicon-o-cog',
-            'sort' => 2
+            'sort' => 2,
         ],
         'create_team' => [
             'show' => true,
             'icon' => 'heroicon-o-users',
-            'sort' => 3
+            'sort' => 3,
         ],
 
         'switchable_team' => [
             'show' => true,
-            'icon' => ''
+            'icon' => '',
         ],
     ],
 

@@ -14,12 +14,12 @@ class UpdateTeamMemberRole
     /**
      * Update the role for the given team member.
      *
-     * @param mixed  $user
-     * @param mixed  $team
-     * @param int    $teamMemberId
-     * @param string $role
-     *
+     * @param  mixed  $user
+     * @param  mixed  $team
+     * @param  int  $teamMemberId
+     * @param  string  $role
      * @return void
+     *
      * @throws AuthorizationException
      */
     public function update($user, $team, $teamMemberId, string $role)

@@ -3,6 +3,7 @@
 namespace ArtMin96\FilamentJet\Traits;
 
 use ArtMin96\FilamentJet\Contracts\TwoFactorAuthenticationProvider;
+use ArtMin96\FilamentJet\Features;
 use ArtMin96\FilamentJet\FilamentJet;
 use ArtMin96\FilamentJet\RecoveryCode;
 use BaconQrCode\Renderer\Color\Rgb;
@@ -11,7 +12,6 @@ use BaconQrCode\Renderer\ImageRenderer;
 use BaconQrCode\Renderer\RendererStyle\Fill;
 use BaconQrCode\Renderer\RendererStyle\RendererStyle;
 use BaconQrCode\Writer;
-use ArtMin96\FilamentJet\Features;
 
 trait TwoFactorAuthenticatable
 {

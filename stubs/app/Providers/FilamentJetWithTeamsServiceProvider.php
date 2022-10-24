@@ -2,9 +2,6 @@
 
 namespace App\Providers;
 
-use App\Filament\Pages\Account;
-use App\Filament\Pages\ApiTokens;
-use App\Filament\Pages\CreateTeam as BaseCreateTeamPage;
 use App\Actions\FilamentJet\AddTeamMember;
 use App\Actions\FilamentJet\CreateTeam;
 use App\Actions\FilamentJet\DeleteTeam;
@@ -12,6 +9,9 @@ use App\Actions\FilamentJet\DeleteUser;
 use App\Actions\FilamentJet\InviteTeamMember;
 use App\Actions\FilamentJet\RemoveTeamMember;
 use App\Actions\FilamentJet\UpdateTeamName;
+use App\Filament\Pages\Account;
+use App\Filament\Pages\ApiTokens;
+use App\Filament\Pages\CreateTeam as BaseCreateTeamPage;
 use App\Filament\Pages\TeamSettings;
 use ArtMin96\FilamentJet\Features;
 use ArtMin96\FilamentJet\FilamentJet;
@@ -54,9 +54,8 @@ class FilamentJetServiceProvider extends ServiceProvider
                 );
             }
 
-            if (config('filament-jet.user_menu.team_settings.show')||
+            if (config('filament-jet.user_menu.team_settings.show') ||
                 config('filament-jet.user_menu.create_team.show')) {
-
                 Filament::serving(function () {
                     $userMenuItems = [];
 

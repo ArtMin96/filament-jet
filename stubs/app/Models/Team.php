@@ -5,8 +5,8 @@ namespace App\Models;
 use ArtMin96\FilamentJet\Events\TeamCreated;
 use ArtMin96\FilamentJet\Events\TeamDeleted;
 use ArtMin96\FilamentJet\Events\TeamUpdated;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use ArtMin96\FilamentJet\Models\Team as FilamentJetTeam;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Team extends FilamentJetTeam
 {

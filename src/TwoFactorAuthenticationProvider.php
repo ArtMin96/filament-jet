@@ -39,6 +39,7 @@ class TwoFactorAuthenticationProvider implements TwoFactorAuthenticationProvider
      * Generate a new secret key.
      *
      * @return string
+     *
      * @throws \PragmaRX\Google2FA\Exceptions\IncompatibleWithGoogleAuthenticatorException
      * @throws \PragmaRX\Google2FA\Exceptions\InvalidCharactersException
      * @throws \PragmaRX\Google2FA\Exceptions\SecretKeyTooShortException
@@ -66,8 +67,8 @@ class TwoFactorAuthenticationProvider implements TwoFactorAuthenticationProvider
      *
      * @param $secret
      * @param $code
-     *
      * @return bool
+     *
      * @throws \PragmaRX\Google2FA\Exceptions\IncompatibleWithGoogleAuthenticatorException
      * @throws \PragmaRX\Google2FA\Exceptions\InvalidCharactersException
      * @throws \PragmaRX\Google2FA\Exceptions\SecretKeyTooShortException

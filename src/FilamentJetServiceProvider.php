@@ -91,8 +91,7 @@ class FilamentJetServiceProvider extends PluginServiceProvider
     /**
      * Register the given component.
      *
-     * @param string $component
-     *
+     * @param  string  $component
      * @return void
      */
     protected function registerComponent(string $component)
@@ -107,7 +106,7 @@ class FilamentJetServiceProvider extends PluginServiceProvider
      */
     protected function configurePublishing()
     {
-        if (!$this->app->runningInConsole()) {
+        if (! $this->app->runningInConsole()) {
             return;
         }
 

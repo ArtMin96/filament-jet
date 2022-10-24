@@ -1,9 +1,9 @@
 <?php
 
+use ArtMin96\FilamentJet\Features;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use ArtMin96\FilamentJet\Features;
 
 return new class extends Migration
 {

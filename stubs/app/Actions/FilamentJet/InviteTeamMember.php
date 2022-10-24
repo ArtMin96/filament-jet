@@ -19,12 +19,12 @@ class InviteTeamMember implements InvitesTeamMembers
     /**
      * Invite a new team member to the given team.
      *
-     * @param mixed       $user
-     * @param mixed       $team
-     * @param string      $email
-     * @param string|null $role
-     *
+     * @param  mixed  $user
+     * @param  mixed  $team
+     * @param  string  $email
+     * @param  string|null  $role
      * @return void
+     *
      * @throws AuthorizationException
      */
     public function invite($user, $team, string $email, string $role = null)
@@ -46,11 +46,11 @@ class InviteTeamMember implements InvitesTeamMembers
     /**
      * Validate the invite member operation.
      *
-     * @param mixed       $team
-     * @param string      $email
-     * @param string|null $role
-     *
+     * @param  mixed  $team
+     * @param  string  $email
+     * @param  string|null  $role
      * @return void
+     *
      * @throws ValidationException
      */
     protected function validate($team, string $email, ?string $role)

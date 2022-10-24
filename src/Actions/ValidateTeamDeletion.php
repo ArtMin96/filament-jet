@@ -12,8 +12,8 @@ class ValidateTeamDeletion
      *
      * @param $user
      * @param $team
-     *
      * @return void
+     *
      * @throws ValidationException
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */

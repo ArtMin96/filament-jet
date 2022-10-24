@@ -94,7 +94,7 @@ class TeamSettings extends Page
                         TextInput::make('name')
                             ->label(__('filament-jet::teams.team_settings.update_name.fields.team_name'))
                             ->required()
-                            ->maxLength(255)
+                            ->maxLength(255),
                     ])
                     ->statePath('teamState'),
                 'addTeamMemberForm' => $this->makeForm()
@@ -107,31 +107,31 @@ class TeamSettings extends Page
                             ->rule('email')
                             ->exists(table: User::class, column: 'email')
                             ->rules([
-                                function() {
+                                function () {
                                     return function (string $attribute, $value, \Closure $fail) {
                                         if ($this->team->hasUserWithEmail($value)) {
                                             $fail(__('filament-jet::validation.teams.user_belongs_to_team'));
                                         }
                                     };
-                                }
+                                },
                             ]),
                         RadioButton::make('role')
                             ->label(__('filament-jet::teams.team_settings.add_team_member.fields.role'))
                             ->options(
-                                collect($this->roles)->mapWithKeys(fn($role): array => [
-                                    $role->key => $role->name
+                                collect($this->roles)->mapWithKeys(fn ($role): array => [
+                                    $role->key => $role->name,
                                 ])->toArray()
                             )
                             ->descriptions(
-                                collect($this->roles)->mapWithKeys(fn($role): array => [
-                                    $role->key => $role->description
+                                collect($this->roles)->mapWithKeys(fn ($role): array => [
+                                    $role->key => $role->description,
                                 ])->toArray()
                             )
                             ->columns(1)
                             ->rules(FilamentJet::hasRoles()
                                 ? ['required', 'string', new \ArtMin96\FilamentJet\Rules\Role]
                                 : []
-                            )
+                            ),
                     ])
                     ->statePath('addTeamMemberState'),
             ]
@@ -145,7 +145,7 @@ class TeamSettings extends Page
                 ->label(__('filament-jet::teams.team_settings.delete_team.actions.delete'))
                 ->icon('heroicon-o-trash')
                 ->color('danger')
-                ->action('deleteTeam')
+                ->action('deleteTeam'),
         ];
     }
 
@@ -153,7 +153,7 @@ class TeamSettings extends Page
     {
         $updater->update($this->user, $this->team, $this->teamState);
 
-        $this->notify("success", __('filament-jet::teams.team_settings.update_name.updated'));
+        $this->notify('success', __('filament-jet::teams.team_settings.update_name.updated'));
     }
 
     /**
@@ -187,12 +187,12 @@ class TeamSettings extends Page
 
         $this->addTeamMemberState = [
             'email' => '',
-            'role' => null
+            'role' => null,
         ];
 
         $this->team = $this->team->fresh();
 
-        $this->notify("success", $message);
+        $this->notify('success', $message);
     }
 
     /**
@@ -217,10 +217,10 @@ class TeamSettings extends Page
     /**
      * Delete the team.
      *
-     * @param ValidateTeamDeletion $validator
-     * @param DeletesTeams         $deleter
-     *
+     * @param  ValidateTeamDeletion  $validator
+     * @param  DeletesTeams  $deleter
      * @return \Illuminate\Http\Response
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      * @throws \Illuminate\Validation\ValidationException
      */
@@ -238,9 +238,8 @@ class TeamSettings extends Page
     /**
      * Remove a team member from the team.
      *
-     * @param                    $userId
-     * @param RemovesTeamMembers $remover
-     *
+     * @param    $userId
+     * @param  RemovesTeamMembers  $remover
      * @return void
      */
     public function removeTeamMember($userId, RemovesTeamMembers $remover)

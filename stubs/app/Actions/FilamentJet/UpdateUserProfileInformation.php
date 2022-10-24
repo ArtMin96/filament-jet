@@ -2,10 +2,10 @@
 
 namespace App\Actions\FilamentJet;
 
+use ArtMin96\FilamentJet\Contracts\UpdatesUserProfileInformation;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use ArtMin96\FilamentJet\Contracts\UpdatesUserProfileInformation;
 use Illuminate\Validation\ValidationException;
 
 class UpdateUserProfileInformation implements UpdatesUserProfileInformation
@@ -13,10 +13,10 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
     /**
      * Validate and update the given user's profile information.
      *
-     * @param mixed $user
-     * @param array $input
-     *
+     * @param  mixed  $user
+     * @param  array  $input
      * @return void
+     *
      * @throws ValidationException
      */
     public function update($user, array $input)

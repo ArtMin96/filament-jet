@@ -16,12 +16,12 @@ class AddTeamMember implements AddsTeamMembers
     /**
      * Add a new team member to the given team.
      *
-     * @param             $user
-     * @param             $team
-     * @param string      $email
-     * @param string|null $role
-     *
+     * @param    $user
+     * @param    $team
+     * @param  string  $email
+     * @param  string|null  $role
      * @return void
+     *
      * @throws ValidationException
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
@@ -45,11 +45,11 @@ class AddTeamMember implements AddsTeamMembers
     /**
      * Validate the add member operation.
      *
-     * @param             $team
-     * @param string      $email
-     * @param string|null $role
-     *
+     * @param    $team
+     * @param  string  $email
+     * @param  string|null  $role
      * @return void
+     *
      * @throws ValidationException
      */
     protected function validate($team, string $email, ?string $role)
