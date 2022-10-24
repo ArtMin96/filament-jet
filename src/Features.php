@@ -31,9 +31,8 @@ class Features
     /**
      * Determine if the feature is enabled and has a given option.
      *
-     * @param string $feature
-     * @param string $option
-     *
+     * @param  string  $feature
+     * @param  string  $option
      * @return mixed
      */
     public static function getOption(string $feature, string $option)
@@ -190,8 +189,7 @@ class Features
     /**
      * Enable the registration feature.
      *
-     * @param array $options
-     *
+     * @param  array  $options
      * @return string
      */
     public static function registration(array $options = [])

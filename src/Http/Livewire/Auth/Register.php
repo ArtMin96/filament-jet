@@ -20,15 +20,19 @@ class Register extends Component implements HasForms
     use PasswordValidationRules;
 
     public $name;
+
     public $email;
+
     public $password;
+
     public $password_confirmation;
+
     public $terms;
 
     public function mount()
     {
         if (Filament::auth()->check()) {
-            return redirect(config("filament.home_url"));
+            return redirect(config('filament.home_url'));
         }
     }
 
@@ -71,7 +75,7 @@ class Register extends Component implements HasForms
                         : []
                 )
                 ->validationAttribute('terms')
-                ->visible(FilamentJet::hasTermsAndPrivacyPolicyFeature())
+                ->visible(FilamentJet::hasTermsAndPrivacyPolicyFeature()),
         ];
     }
 

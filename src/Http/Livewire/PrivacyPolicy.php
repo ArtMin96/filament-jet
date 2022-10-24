@@ -18,7 +18,7 @@ class PrivacyPolicy extends Component
         $policyFile = FilamentJet::localizedMarkdownPath('policy.md');
 
         $view = view('filament-jet::livewire.privacy-policy', [
-            'terms' =>  Str::markdown(file_get_contents($policyFile))
+            'terms' => Str::markdown(file_get_contents($policyFile)),
         ]);
 
         $view->layout('filament::components.layouts.base', [
