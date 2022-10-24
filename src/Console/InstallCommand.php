@@ -217,15 +217,6 @@ class InstallCommand extends Command
     ->name(config('filament-jet.route_group_prefix'))
     ->prefix(config("filament.path"))
     ->group(function () {
-        if (\ArtMin96\FilamentJet\Features::enabled(\ArtMin96\FilamentJet\Features::registration()) && \ArtMin96\FilamentJet\FilamentJet::registrationComponent()) {
-            Route::get("/register", \ArtMin96\FilamentJet\FilamentJet::registrationComponent())->name("register");
-
-            if (\ArtMin96\FilamentJet\FilamentJet::hasTermsAndPrivacyPolicyFeature()) {
-                Route::get('/terms-of-service', \ArtMin96\FilamentJet\FilamentJet::termsOfServiceComponent())->name('terms');
-                Route::get('/privacy-policy', \ArtMin96\FilamentJet\FilamentJet::privacyPolicyComponent())->name('policy');
-            }
-        }
-
         // Teams...
         if (\ArtMin96\FilamentJet\Features::hasTeamFeatures()) {
             Route::put('/current-team', [\ArtMin96\FilamentJet\Http\Controllers\CurrentTeamController::class, 'update'])->name('current-team.update');

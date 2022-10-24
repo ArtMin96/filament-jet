@@ -7,12 +7,7 @@ use ArtMin96\FilamentJet\Http\Controllers\TeamInvitationController;
 use Illuminate\Support\Facades\Route;
 
 Route::domain(config("filament.domain"))
-    ->middleware(
-        array_merge(config("filament.middleware.base"), [
-//            'auth:sanctum',
-//            'verified'
-        ])
-    )
+    ->middleware(config("filament.middleware.base"))
     ->name(config('filament-jet.route_group_prefix'))
     ->prefix(config("filament.path"))
     ->group(function () {

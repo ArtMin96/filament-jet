@@ -5,14 +5,11 @@ namespace ArtMin96\FilamentJet\Http\Livewire\Auth;
 use App\Actions\FilamentJet\CreateNewUser;
 use ArtMin96\FilamentJet\FilamentJet;
 use ArtMin96\FilamentJet\Traits\PasswordValidationRules;
-use ArtMin96\FilamentJet\Traits\RedirectsActions;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\HtmlString;
 use Livewire\Component;
 use Phpsa\FilamentPasswordReveal\Password;
@@ -78,21 +75,15 @@ class Register extends Component implements HasForms
         ];
     }
 
-//    public function register(CreateNewUser $creator)
-    public function register()
+    public function register(CreateNewUser $creator)
     {
-        $this->form->getState();
-        dd($this->form->getState());
-//        $formState = $this->form->getState();
-//
-//        $cs = $creator->create($formState);
-//        dd($cs);
+        $formState = $this->form->getState();
 
-//        Filament::auth()->login($user, true);
+        $user = $creator->create($formState);
 
-//        return $this->redirectPath($creator);
+        Filament::auth()->login($user, true);
 
-//        return redirect()->to(config('filament-jet.redirects.register'));
+        return redirect()->to(config('filament-jet.redirects.register'));
     }
 
     public function render()
