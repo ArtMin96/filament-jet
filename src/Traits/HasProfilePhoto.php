@@ -19,41 +19,17 @@ trait HasProfilePhoto
      * @param  \Illuminate\Http\UploadedFile  $photo
      * @return void
      */
-    public function updateProfilePhoto(UploadedFile $photo): void
+    public function updateProfilePhoto(null|string $photo): void
     {
         tap($this->profile_photo_path, function ($previous) use ($photo) {
             $this->forceFill([
-                'profile_photo_path' => $photo->storePublicly(
-                    'profile-photos', ['disk' => $this->profilePhotoDisk()]
-                ),
+                'profile_photo_path' => $photo,
             ])->save();
 
             if ($previous) {
                 Storage::disk($this->profilePhotoDisk())->delete($previous);
             }
         });
-    }
-
-    /**
-     * Delete the user's profile photo.
-     *
-     * @return void
-     */
-    public function deleteProfilePhoto(): void
-    {
-        if (! Features::managesProfilePhotos()) {
-            return;
-        }
-
-        if (is_null($this->profile_photo_path)) {
-            return;
-        }
-
-        Storage::disk($this->profilePhotoDisk())->delete($this->profile_photo_path);
-
-        $this->forceFill([
-            'profile_photo_path' => null,
-        ]);
     }
 
     /**
@@ -87,8 +63,18 @@ trait HasProfilePhoto
      *
      * @return string
      */
-    protected function profilePhotoDisk(): string
+    public function profilePhotoDisk(): string
     {
         return isset($_ENV['VAPOR_ARTIFACT_NAME']) ? 's3' : config('filament-jet.profile_photo_disk', 'public');
+    }
+
+    /**
+     * Get the directory that profile photos should be stored on.
+     *
+     * @return string
+     */
+    public function profilePhotoDirectory(): string
+    {
+        return config('filament-jet.profile_photo_directory', 'profile-photos');
     }
 }

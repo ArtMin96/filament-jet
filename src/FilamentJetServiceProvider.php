@@ -2,6 +2,7 @@
 
 namespace ArtMin96\FilamentJet;
 
+use App\Actions\FilamentJet\UpdateUserProfileInformation;
 use ArtMin96\FilamentJet\Console\InstallCommand;
 use ArtMin96\FilamentJet\Filament\Pages\Account;
 use ArtMin96\FilamentJet\Filament\Pages\ApiTokens;
@@ -70,6 +71,8 @@ class FilamentJetServiceProvider extends PluginServiceProvider
                 Livewire::component(PrivacyPolicy::getName(), PrivacyPolicy::class);
             }
         }
+
+        FilamentJet::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
     }
 
     /**

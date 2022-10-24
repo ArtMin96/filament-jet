@@ -27,8 +27,7 @@ return [
         'login' => null,
         'logout' => null,
         'password-confirmation' => null,
-        'register' => '/testtt',
-//        'register' => config('filament.home_url', '/'),
+        'register' => config('filament.home_url', '/'),
         'email-verification' => null,
         'password-reset' => null,
     ],
@@ -36,6 +35,13 @@ return [
     'route_group_prefix' => '',
 
     'profile' => [
+        'login_field' => [
+            'hint_action' => [
+                'icon' => 'heroicon-o-question-mark-circle',
+                'tooltip' => 'After changing the email address, confirmation is mandatory.'
+            ]
+        ],
+
         'require_current_password_on_change_password' => true,
     ],
 
@@ -125,4 +131,6 @@ return [
     */
 
     'profile_photo_disk' => 'public',
+
+    'profile_photo_directory' => 'profile-photos',
 ];

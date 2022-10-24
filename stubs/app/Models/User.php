@@ -4,12 +4,14 @@ namespace App\Models;
 
 use ArtMin96\FilamentJet\Traits\HasProfilePhoto;
 use ArtMin96\FilamentJet\Traits\TwoFactorAuthenticatable;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasAvatar;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser, HasAvatar
 {
     use HasApiTokens;
     use HasFactory;
@@ -57,4 +59,9 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function canAccessFilament(): bool
+    {
+        return true;
+    }
 }
