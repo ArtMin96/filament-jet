@@ -2,6 +2,7 @@
 
 namespace ArtMin96\FilamentJet;
 
+use App\Actions\FilamentJet\UpdateUserPassword;
 use App\Actions\FilamentJet\UpdateUserProfileInformation;
 use ArtMin96\FilamentJet\Console\InstallCommand;
 use ArtMin96\FilamentJet\Filament\Pages\Account;
@@ -73,6 +74,7 @@ class FilamentJetServiceProvider extends PluginServiceProvider
         }
 
         FilamentJet::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
+        FilamentJet::updateUserPasswordsUsing(UpdateUserPassword::class);
     }
 
     /**

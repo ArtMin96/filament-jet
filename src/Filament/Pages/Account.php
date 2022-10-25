@@ -2,22 +2,32 @@
 
 namespace ArtMin96\FilamentJet\Filament\Pages;
 
+use ArtMin96\FilamentJet\Contracts\UpdatesUserPasswords;
 use ArtMin96\FilamentJet\Contracts\UpdatesUserProfileInformation;
 use ArtMin96\FilamentJet\Features;
 use ArtMin96\FilamentJet\FilamentJet;
+use ArtMin96\FilamentJet\Traits\PasswordValidationRules;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\Page;
+use Illuminate\Support\Facades\Hash;
+use Phpsa\FilamentPasswordReveal\Password;
 
 class Account extends Page
 {
+    use PasswordValidationRules;
+
     protected string $loginColumn;
 
-    public string $photo = '';
-
     public array $updateProfileInformationState = [];
+
+    public $current_password;
+
+    public $password;
+
+    public $password_confirmation;
 
     protected static string $view = 'filament-jet::filament.pages.account';
 
@@ -52,7 +62,9 @@ class Account extends Page
             'updateProfileInformationForm' => $this->makeForm()
                 ->model(FilamentJet::userModel())
                 ->schema($this->updateProfileFormSchema())
-                ->statePath('updateProfileInformationState')
+                ->statePath('updateProfileInformationState'),
+            'updatePasswordForm' => $this->makeForm()
+                ->schema($this->updatePasswordFormSchema()),
         ];
     }
 
@@ -101,6 +113,40 @@ class Account extends Page
         );
     }
 
+    protected function updatePasswordFormSchema(): array
+    {
+        $currentPasswordField = [];
+
+        $requireCurrentPasswordOnUpdate = config('filament-jet.profile.require_current_password_on_change_password');
+
+        if ($requireCurrentPasswordOnUpdate) {
+            $currentPasswordField[] = Password::make('current_password')
+                ->label(__('filament-jet::account.update_password.columns.current_password'))
+                ->autocomplete('current_password')
+                ->revealable()
+                ->required()
+                ->rule('current_password');
+        }
+
+
+        return array_merge(
+            $currentPasswordField,
+            [
+                Password::make('password')
+                    ->label(__('filament-jet::account.update_password.columns.new_password'))
+                    ->autocomplete('new_password')
+                    ->copyable()
+                    ->revealable()
+                    ->generatable()
+                    ->rules($this->passwordRules()),
+                Password::make('password_confirmation')
+                    ->label(__('filament-jet::account.update_password.columns.confirm_password'))
+                    ->autocomplete('password_confirmation')
+                    ->revealable(),
+            ]
+        );
+    }
+
     /**
      * Update the user's profile information.
      *
@@ -120,5 +166,25 @@ class Account extends Page
         );
 
         return redirect()->route('filament.pages.account');
+    }
+
+    /**
+     * Update the user's password.
+     *
+     * @return void
+     */
+    public function updatePassword(UpdatesUserPasswords $updater)
+    {
+        $state = $this->updatePasswordForm->getState();
+
+        $updater->update($this->user, $state);
+
+        $this->notify("success", __('filament-jet::account.update_password.changed'));
+
+        session()->forget('password_hash_'.config('filament.auth.guard'));
+
+        Filament::auth()->login($this->user);
+
+        $this->reset(['current_password', 'password', 'password_confirmation']);
     }
 }

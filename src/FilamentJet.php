@@ -10,6 +10,7 @@ use ArtMin96\FilamentJet\Contracts\DeletesUsers;
 use ArtMin96\FilamentJet\Contracts\InvitesTeamMembers;
 use ArtMin96\FilamentJet\Contracts\RemovesTeamMembers;
 use ArtMin96\FilamentJet\Contracts\UpdatesTeamNames;
+use ArtMin96\FilamentJet\Contracts\UpdatesUserPasswords;
 use ArtMin96\FilamentJet\Contracts\UpdatesUserProfileInformation;
 use ArtMin96\FilamentJet\Traits\HasTeams;
 use Illuminate\Support\Arr;
@@ -414,6 +415,17 @@ class FilamentJet
     public static function updateUserProfileInformationUsing(string $class)
     {
         app()->singleton(UpdatesUserProfileInformation::class, $class);
+    }
+
+    /**
+     * Register a class / callback that should be used to update user passwords.
+     *
+     * @param  string  $class
+     * @return void
+     */
+    public static function updateUserPasswordsUsing(string $class)
+    {
+        app()->singleton(UpdatesUserPasswords::class, $class);
     }
 
     /**

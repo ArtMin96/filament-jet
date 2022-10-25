@@ -122,6 +122,7 @@ class InstallCommand extends Command
         // Actions...
         copy(__DIR__.'/../../stubs/app/Actions/FilamentJet/CreateNewUser.php', app_path('Actions/FilamentJet/CreateNewUser.php'));
         copy(__DIR__.'/../../stubs/app/Actions/FilamentJet/UpdateUserProfileInformation.php', app_path('Actions/FilamentJet/UpdateUserProfileInformation.php'));
+        copy(__DIR__.'/../../stubs/app/Actions/FilamentJet/UpdateUserPassword.php', app_path('Actions/FilamentJet/UpdateUserPassword.php'));
         copy(__DIR__.'/../../stubs/app/Actions/FilamentJet/DeleteUser.php', app_path('Actions/FilamentJet/DeleteUser.php'));
 
         // Other Views...
