@@ -12,7 +12,6 @@ use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\Page;
-use Illuminate\Support\Facades\Hash;
 use Phpsa\FilamentPasswordReveal\Password;
 
 class Account extends Page
@@ -70,6 +69,7 @@ class Account extends Page
 
     /**
      * @return array
+     *
      * @throws \Exception
      */
     protected function updateProfileFormSchema(): array
@@ -128,7 +128,6 @@ class Account extends Page
                 ->rule('current_password');
         }
 
-
         return array_merge(
             $currentPasswordField,
             [
@@ -179,7 +178,7 @@ class Account extends Page
 
         $updater->update($this->user, $state);
 
-        $this->notify("success", __('filament-jet::account.update_password.changed'));
+        $this->notify('success', __('filament-jet::account.update_password.changed'));
 
         session()->forget('password_hash_'.config('filament.auth.guard'));
 
