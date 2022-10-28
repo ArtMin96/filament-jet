@@ -34,6 +34,8 @@ return [
 
     'route_group_prefix' => '',
 
+    'password_reset_component' => \ArtMin96\FilamentJet\Http\Livewire\Auth\ResetPassword::class,
+
     'profile' => [
         'login_field' => [
             'hint_action' => [
@@ -77,9 +79,8 @@ return [
     ],
 
     'password_confirmation' => [
-        'update_profile_information' => true,
-        'change_password' => true,
         'enable_two_factor_authentication' => true,
+        'disable_two_factor_authentication' => true,
         'delete_account' => true,
         'download_personal_data' => true,
     ],
@@ -133,4 +134,6 @@ return [
     'profile_photo_disk' => 'public',
 
     'profile_photo_directory' => 'profile-photos',
+
+    'password_confirmation_seconds' => config('auth.password_timeout'),
 ];

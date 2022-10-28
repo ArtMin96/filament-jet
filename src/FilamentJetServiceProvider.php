@@ -7,16 +7,21 @@ use App\Actions\FilamentJet\UpdateUserProfileInformation;
 use ArtMin96\FilamentJet\Console\InstallCommand;
 use ArtMin96\FilamentJet\Filament\Pages\Account;
 use ArtMin96\FilamentJet\Filament\Pages\ApiTokens;
+use ArtMin96\FilamentJet\Http\Livewire\Auth\Login;
 use ArtMin96\FilamentJet\Http\Livewire\Auth\Register;
+use ArtMin96\FilamentJet\Http\Livewire\Auth\ResetPassword;
 use ArtMin96\FilamentJet\Http\Livewire\PrivacyPolicy;
 use ArtMin96\FilamentJet\Http\Livewire\TermsOfService;
 use Filament\Facades\Filament;
 use Filament\Navigation\UserMenuItem;
 use Filament\PluginServiceProvider;
+use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\View\Compilers\BladeCompiler;
 use Livewire\Livewire;
+use PragmaRX\Google2FA\Google2FA;
 use Spatie\LaravelPackageTools\Package;
+use ArtMin96\FilamentJet\Contracts\TwoFactorAuthenticationProvider as TwoFactorAuthenticationProviderContract;
 
 class FilamentJetServiceProvider extends PluginServiceProvider
 {
@@ -64,6 +69,9 @@ class FilamentJetServiceProvider extends PluginServiceProvider
 
         $this->configureComponents();
 
+        Livewire::component(Login::getName(), Login::class);
+        Livewire::component(ResetPassword::getName(), ResetPassword::class);
+
         if (Features::enabled(Features::registration()) && FilamentJet::registrationComponent()) {
             Livewire::component(Register::getName(), Register::class);
 
@@ -75,6 +83,18 @@ class FilamentJetServiceProvider extends PluginServiceProvider
 
         FilamentJet::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         FilamentJet::updateUserPasswordsUsing(UpdateUserPassword::class);
+    }
+
+    public function register()
+    {
+        parent::register();
+
+        $this->app->singleton(TwoFactorAuthenticationProviderContract::class, function ($app) {
+            return new TwoFactorAuthenticationProvider(
+                $app->make(Google2FA::class),
+                $app->make(Repository::class)
+            );
+        });
     }
 
     /**

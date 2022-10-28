@@ -146,17 +146,6 @@ class Features
     }
 
     /**
-     * Determine if FilamentJet is confirming two factor authentication configurations.
-     *
-     * @return bool
-     */
-    public static function confirmsTwoFactorAuthentication()
-    {
-        return Features::enabled(Features::twoFactorAuthentication()) &&
-            Features::optionEnabled(Features::twoFactorAuthentication(), 'confirm');
-    }
-
-    /**
      * Determine registration component.
      *
      * @return bool

@@ -17,6 +17,7 @@
     ],
     "require": {
         "php": "^8.0",
+        "abanoubnassem/filament-grecaptcha-field": "^0.0.2",
         "bacon/bacon-qr-code": "^2.0",
         "filament/filament": "^2.0",
         "illuminate/contracts": "^9.0",

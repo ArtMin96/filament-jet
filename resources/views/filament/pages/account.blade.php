@@ -44,4 +44,117 @@
             </x-slot>
         </x-filament-jet-form-section>
     @endif
+
+    @if(\ArtMin96\FilamentJet\Features::canManageTwoFactorAuthentication())
+        @php
+            $user = $this->user;
+            $hasEnabledTwoFactorAuthentication = $user->hasEnabledTwoFactorAuthentication();
+            $hasConfirmedTwoFactorAuthentication = $user->hasConfirmedTwoFactorAuthentication();
+            $showingQrCode = $this->showingQrCode;
+        @endphp
+
+        <x-filament::hr />
+
+        <x-filament-jet-action-section>
+            <x-slot name="title">
+                {{ __('filament-jet::account.2fa.title') }}
+            </x-slot>
+
+            <x-slot name="description">
+                {{ __('filament-jet::account.2fa.description') }}
+            </x-slot>
+
+            <x-slot name="content">
+                <h3 class="text-lg font-medium text-gray-900 dark:text-white">
+                    @if ($this->enabled)
+                        @if ($showingConfirmation)
+                            {{ __('filament-jet::account.2fa.finish_enabling.title') }}
+                        @else
+                            {{ __('filament-jet::account.2fa.enabled.title') }}
+                        @endif
+                    @else
+                        {{ __('filament-jet::account.2fa.disabled.title') }}
+                    @endif
+                </h3>
+
+                <div class="mt-3 max-w-xl text-sm text-gray-600 dark:text-gray-300">
+                    <p>
+                        {{ __('filament-jet::account.2fa.card_description') }}
+                    </p>
+                </div>
+
+                @if($this->enabled)
+                    @if ($showingQrCode)
+                        <div class="mt-3 max-w-xl text-sm text-gray-600 dark:text-gray-300">
+                            <p class="font-semibold">
+                                @if($showingConfirmation)
+                                    {{ __('filament-jet::account.2fa.finish_enabling.description') }}
+                                @else
+                                    {{ __('filament-jet::account.2fa.enabled.description') }}
+                                @endif
+                            </p>
+                        </div>
+
+                        <div class="mt-2">
+                            {!! $this->user->twoFactorQrCodeSvg() !!}
+
+                            <div class="mt-4 max-w-xl text-sm text-gray-600 dark:text-gray-300">
+                                <p class="font-semibold">
+                                    {{ __('filament-jet::account.2fa.setup_key') }}: {{ decrypt($this->user->two_factor_secret) }}
+                                </p>
+                            </div>
+                        </div>
+                    @endif
+
+                    @if($showingRecoveryCodes)
+                        <hr class="my-3"/>
+                        <p class="mt-3 max-w-xl text-sm text-gray-600 dark:text-gray-300">{{ __('filament-jet::account.2fa.enabled.store_codes') }}</p>
+
+                        <div class="space-y-2">
+                            @foreach (json_decode(decrypt($user->two_factor_recovery_codes), true) as $code)
+                                <span class="inline-flex items-center p-2 rounded-full text-xs font-medium bg-gray-100 text-gray-800">{{ $code }}</span>
+                            @endforeach
+                        </div>
+
+                        {{ $this->getCachedAction('regenerate_recovery_codes') }}
+                    @endif
+                @endif
+
+                <x-slot name="actions">
+                    @if($hasConfirmedTwoFactorAuthentication)
+                        <div class="flex items-center justify-between">
+                            @if(! $showingRecoveryCodes)
+                                {{ $this->getCachedAction('showing_recovery_codes') }}
+                            @else
+                                {{ $this->getCachedAction('hide_recovery_codes') }}
+                            @endif
+
+                            {{ $this->getCachedAction('disable2fa') }}
+                        </div>
+                    @elseif($showingConfirmation)
+                        <form wire:submit.prevent="confirmTwoFactorAuthentication">
+                            <div class="flex items-center justify-between">
+
+                                <div>{{ $this->confirmTwoFactorForm }}</div>
+
+                                <div class="mt-5">
+                                    <x-filament::button type="submit">
+                                        {{ __('filament-jet::account.2fa.actions.confirm_finish') }}
+                                    </x-filament::button>
+
+                                    <x-filament::button color="secondary" wire:click="disableTwoFactorAuthentication">
+                                        {{ __('filament-jet::account.2fa.actions.cancel_setup') }}
+                                    </x-filament::button>
+                                </div>
+                            </div>
+                        </form>
+                    @else
+                        <div class="text-right">
+                            {{ $this->getCachedAction('enable2fa') }}
+                        </div>
+                    @endif
+                </x-slot>
+            </x-slot>
+        </x-filament-jet-action-section>
+    @endif
 </x-filament::page>

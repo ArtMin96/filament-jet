@@ -22,12 +22,21 @@ trait TwoFactorAuthenticatable
      */
     public function hasEnabledTwoFactorAuthentication()
     {
-        if (Features::confirmsTwoFactorAuthentication()) {
+        if (FilamentJet::confirmsTwoFactorAuthentication()) {
             return ! is_null($this->two_factor_secret) &&
                 ! is_null($this->two_factor_confirmed_at);
         }
 
         return ! is_null($this->two_factor_secret);
+    }
+
+    public function hasConfirmedTwoFactorAuthentication()
+    {
+        if (FilamentJet::confirmsTwoFactorAuthentication()) {
+            return ! is_null($this->two_factor_confirmed_at);
+        }
+
+        return false;
     }
 
     /**

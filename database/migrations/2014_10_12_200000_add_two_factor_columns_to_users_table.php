@@ -1,6 +1,7 @@
 <?php
 
 use ArtMin96\FilamentJet\Features;
+use ArtMin96\FilamentJet\FilamentJet;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -23,7 +24,7 @@ return new class extends Migration
                 ->after('two_factor_secret')
                 ->nullable();
 
-            if (Features::confirmsTwoFactorAuthentication()) {
+            if (FilamentJet::confirmsTwoFactorAuthentication()) {
                 $table->timestamp('two_factor_confirmed_at')
                     ->after('two_factor_recovery_codes')
                     ->nullable();
@@ -42,7 +43,7 @@ return new class extends Migration
             $table->dropColumn(array_merge([
                 'two_factor_secret',
                 'two_factor_recovery_codes',
-            ], Features::confirmsTwoFactorAuthentication() ? [
+            ], FilamentJet::confirmsTwoFactorAuthentication() ? [
                 'two_factor_confirmed_at',
             ] : []));
         });

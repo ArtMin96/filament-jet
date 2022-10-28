@@ -517,6 +517,17 @@ class FilamentJet
     }
 
     /**
+     * Determine if FilamentJet is confirming two factor authentication configurations.
+     *
+     * @return bool
+     */
+    public static function confirmsTwoFactorAuthentication()
+    {
+        return Features::enabled(Features::twoFactorAuthentication()) &&
+            Features::optionEnabled(Features::twoFactorAuthentication(), 'confirm');
+    }
+
+    /**
      * Find the path to a localized Markdown resource.
      *
      * @param  string  $name

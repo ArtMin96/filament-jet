@@ -2,9 +2,12 @@
 
 namespace ArtMin96\FilamentJet\Filament\Pages;
 
+use ArtMin96\FilamentJet\Actions\DisableTwoFactorAuthentication;
 use ArtMin96\FilamentJet\Contracts\UpdatesUserPasswords;
 use ArtMin96\FilamentJet\Contracts\UpdatesUserProfileInformation;
 use ArtMin96\FilamentJet\Features;
+use ArtMin96\FilamentJet\Filament\Traits\HasCachedAction;
+use ArtMin96\FilamentJet\Filament\Traits\HasTwoFactorAuthentication;
 use ArtMin96\FilamentJet\FilamentJet;
 use ArtMin96\FilamentJet\Traits\PasswordValidationRules;
 use Filament\Facades\Filament;
@@ -12,12 +15,13 @@ use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\Page;
-use Illuminate\Support\Facades\Hash;
 use Phpsa\FilamentPasswordReveal\Password;
 
 class Account extends Page
 {
     use PasswordValidationRules;
+    use HasTwoFactorAuthentication;
+    use HasCachedAction;
 
     protected string $loginColumn;
 
@@ -39,6 +43,11 @@ class Account extends Page
     public function mount()
     {
         $this->updateProfileInformationForm->fill($this->user->withoutRelations()->toArray());
+
+        if (Features::optionEnabled(Features::twoFactorAuthentication(), 'confirm') &&
+            is_null($this->user->two_factor_confirmed_at)) {
+            app(DisableTwoFactorAuthentication::class)($this->user);
+        }
     }
 
     /**
@@ -65,6 +74,8 @@ class Account extends Page
                 ->statePath('updateProfileInformationState'),
             'updatePasswordForm' => $this->makeForm()
                 ->schema($this->updatePasswordFormSchema()),
+            'confirmTwoFactorForm' => $this->makeForm()
+                ->schema($this->twoFactorFormSchema()),
         ];
     }
 
@@ -102,6 +113,7 @@ class Account extends Page
                                 ->icon(config('filament-jet.profile.login_field.hint_action.icon'))
                             : null
                     )
+                    ->email(fn (): bool => $this->loginColumn === 'email')
                     ->unique(
                         table: FilamentJet::userModel(),
                         column: $this->loginColumn,

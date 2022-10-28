@@ -25,6 +25,8 @@ Route::domain(config('filament.domain'))
             }
         }
 
+        Route::get('/password/reset', config('filament-jet.password_reset_component'))->name('password.request');
+
         // Teams...
         if (Features::hasTeamFeatures()) {
             Route::put('/current-team', [CurrentTeamController::class, 'update'])->name('current-team.update');
