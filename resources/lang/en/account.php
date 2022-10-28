@@ -22,11 +22,11 @@ return [
         'columns' => [
             'current_password' => 'Current Password',
             'new_password' => 'New Password',
-            'confirm_password' => 'Confirm Password'
+            'confirm_password' => 'Confirm Password',
         ],
 
         'submit' => 'Save',
-        'changed' => 'Password changed.'
+        'changed' => 'Password changed.',
     ],
 
     '2fa' => [
