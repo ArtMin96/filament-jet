@@ -10,7 +10,6 @@ use ArtMin96\FilamentJet\Features;
 use ArtMin96\FilamentJet\Filament\Actions\PasswordButtonAction;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\Actions\Action;
-use Filament\Pages\Actions\ButtonAction;
 
 trait HasTwoFactorAuthentication
 {
@@ -128,8 +127,7 @@ trait HasTwoFactorAuthentication
     /**
      * Enable two factor authentication for the user.
      *
-     * @param EnableTwoFactorAuthentication $enable
-     *
+     * @param  EnableTwoFactorAuthentication  $enable
      * @return void
      */
     public function enableTwoFactorAuthentication(EnableTwoFactorAuthentication $enable)
@@ -148,9 +146,9 @@ trait HasTwoFactorAuthentication
     /**
      * Confirm two factor authentication for the user.
      *
-     * @param ConfirmTwoFactorAuthentication $confirm
-     *
+     * @param  ConfirmTwoFactorAuthentication  $confirm
      * @return void
+     *
      * @throws \Illuminate\Validation\ValidationException
      */
     public function confirmTwoFactorAuthentication(ConfirmTwoFactorAuthentication $confirm)

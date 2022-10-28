@@ -5,6 +5,7 @@ namespace ArtMin96\FilamentJet;
 use App\Actions\FilamentJet\UpdateUserPassword;
 use App\Actions\FilamentJet\UpdateUserProfileInformation;
 use ArtMin96\FilamentJet\Console\InstallCommand;
+use ArtMin96\FilamentJet\Contracts\TwoFactorAuthenticationProvider as TwoFactorAuthenticationProviderContract;
 use ArtMin96\FilamentJet\Filament\Pages\Account;
 use ArtMin96\FilamentJet\Filament\Pages\ApiTokens;
 use ArtMin96\FilamentJet\Http\Livewire\Auth\Login;
@@ -21,7 +22,6 @@ use Illuminate\View\Compilers\BladeCompiler;
 use Livewire\Livewire;
 use PragmaRX\Google2FA\Google2FA;
 use Spatie\LaravelPackageTools\Package;
-use ArtMin96\FilamentJet\Contracts\TwoFactorAuthenticationProvider as TwoFactorAuthenticationProviderContract;
 
 class FilamentJetServiceProvider extends PluginServiceProvider
 {

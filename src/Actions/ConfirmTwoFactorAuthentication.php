@@ -29,10 +29,10 @@ class ConfirmTwoFactorAuthentication
     /**
      * Confirm the two factor authentication configuration for the user.
      *
-     * @param mixed  $user
-     * @param string $code
-     *
+     * @param  mixed  $user
+     * @param  string  $code
      * @return void
+     *
      * @throws ValidationException
      */
     public function __invoke($user, $code)
@@ -40,7 +40,6 @@ class ConfirmTwoFactorAuthentication
         if (empty($user->two_factor_secret) ||
             empty($code) ||
             ! $this->provider->verify(decrypt($user->two_factor_secret), $code)) {
-
             throw ValidationException::withMessages([
                 'two_factor_code' => [__('The provided two factor authentication code was invalid.')],
             ])->errorBag('confirmTwoFactorAuthentication');

@@ -42,7 +42,7 @@ return [
             'description' => 'Two factor authentication is now enabled. Scan the following QR code using your phone\'s authenticator application.',
             'store_codes' => 'Store these recovery codes in a secure password manager. They can be used to recover access to your account if your two factor authentication device is lost.',
             'show_codes' => 'Show Recovery Codes',
-            'hide_codes' => 'Hide Recovery Codes'
+            'hide_codes' => 'Hide Recovery Codes',
         ],
 
         'disabled' => [
@@ -77,7 +77,7 @@ return [
             'regenerate_codes' => 'Regenerate Codes',
             'disable' => 'Disable',
             'confirm_finish' => 'Confirm & finish',
-            'cancel_setup' => 'Cancel setup'
-        ]
+            'cancel_setup' => 'Cancel setup',
+        ],
     ],
 ];

@@ -6,5 +6,4 @@ use Livewire\Component;
 
 class ResetPassword extends Component
 {
-
 }

@@ -34,11 +34,11 @@ class Login extends FilamentLogin
     {
         parent::mount();
 
-        if ($login = request()->query($this->loginColumn, "")) {
+        if ($login = request()->query($this->loginColumn, '')) {
             $this->form->fill([$this->loginColumn => $login]);
         }
-        if (request()->query("reset")) {
-            Notification::make()->title(__("passwords.reset"))->success()->send();
+        if (request()->query('reset')) {
+            Notification::make()->title(__('passwords.reset'))->success()->send();
         }
     }
 
@@ -53,8 +53,8 @@ class Login extends FilamentLogin
     {
         if ($this->usingRecoveryCode) {
             return $this->code && collect($this->user->recoveryCodes())->first(function ($code) {
-                    return hash_equals($this->code, $code) ? $code : false;
-                });
+                return hash_equals($this->code, $code) ? $code : false;
+            });
         } else {
             return $this->code && app(FilamentBreezy::class)->verify(decrypt($this->user->two_factor_secret), $this->code);
         }
@@ -139,7 +139,7 @@ class Login extends FilamentLogin
     protected function getForms(): array
     {
         return array_merge(parent::getForms(), [
-            "twoFactorForm" => $this->makeForm()->schema(
+            'twoFactorForm' => $this->makeForm()->schema(
                 $this->getTwoFactorFormSchema()
             ),
         ]);
@@ -174,10 +174,10 @@ class Login extends FilamentLogin
 
     public function render(): View
     {
-        $view = view($this->showCodeForm ? "filament-jet::livewire.auth.two-factor" : "filament-jet::livewire.auth.login");
+        $view = view($this->showCodeForm ? 'filament-jet::livewire.auth.two-factor' : 'filament-jet::livewire.auth.login');
 
-        $view->layout("filament::components.layouts.base", [
-            "title" => __("filament::login.title"),
+        $view->layout('filament::components.layouts.base', [
+            'title' => __('filament::login.title'),
         ]);
 
         return $view;
