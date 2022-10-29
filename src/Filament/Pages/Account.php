@@ -6,6 +6,7 @@ use ArtMin96\FilamentJet\Actions\DisableTwoFactorAuthentication;
 use ArtMin96\FilamentJet\Contracts\UpdatesUserPasswords;
 use ArtMin96\FilamentJet\Contracts\UpdatesUserProfileInformation;
 use ArtMin96\FilamentJet\Features;
+use ArtMin96\FilamentJet\Filament\Traits\CanDeleteAccount;
 use ArtMin96\FilamentJet\Filament\Traits\CanLogoutOtherBrowserSessions;
 use ArtMin96\FilamentJet\Filament\Traits\HasCachedAction;
 use ArtMin96\FilamentJet\Filament\Traits\HasTwoFactorAuthentication;
@@ -23,6 +24,7 @@ class Account extends Page
     use PasswordValidationRules;
     use HasTwoFactorAuthentication;
     use CanLogoutOtherBrowserSessions;
+    use CanDeleteAccount;
     use HasCachedAction;
 
     protected string $loginColumn;
@@ -110,7 +112,7 @@ class Account extends Page
                 TextInput::make($this->loginColumn)
                     ->label(__('filament-jet::account.profile_information.columns.email'))
                     ->hintAction(
-                        ! empty(config('filament-jet.profile.login_field.hint_action'))
+                        ! empty(config('filament-jet.profile.login_field.hint_action')) && Features::enabled(Features::emailVerification())
                             ? Action::make('newEmailVerifyNote')
                                 ->tooltip(config('filament-jet.profile.login_field.hint_action.tooltip'))
                                 ->icon(config('filament-jet.profile.login_field.hint_action.icon'))

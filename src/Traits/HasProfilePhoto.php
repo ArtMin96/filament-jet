@@ -2,6 +2,7 @@
 
 namespace ArtMin96\FilamentJet\Traits;
 
+use ArtMin96\FilamentJet\Features;
 use Illuminate\Support\Facades\Storage;
 
 trait HasProfilePhoto
@@ -28,6 +29,28 @@ trait HasProfilePhoto
                 Storage::disk($this->profilePhotoDisk())->delete($previous);
             }
         });
+    }
+
+    /**
+     * Delete the user's profile photo.
+     *
+     * @return void
+     */
+    public function deleteProfilePhoto()
+    {
+        if (! Features::managesProfilePhotos()) {
+            return;
+        }
+
+        if (is_null($this->profile_photo_path)) {
+            return;
+        }
+
+        Storage::disk($this->profilePhotoDisk())->delete($this->profile_photo_path);
+
+        $this->forceFill([
+            'profile_photo_path' => null,
+        ])->save();
     }
 
     /**

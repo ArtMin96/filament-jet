@@ -185,4 +185,30 @@
             </x-slot>
         </x-filament-jet-action-section>
     @endif
+
+    @if(\ArtMin96\FilamentJet\Features::hasAccountDeletionFeatures())
+        <x-filament::hr />
+
+        <x-filament-jet-action-section>
+            <x-slot name="title">
+                {{ __('filament-jet::account.delete_account.title') }}
+            </x-slot>
+
+            <x-slot name="description">
+                {{ __('filament-jet::account.delete_account.description') }}
+            </x-slot>
+
+            <x-slot name="content">
+                <div class="max-w-xl text-sm text-gray-600">
+                    {{ __('filament-jet::account.delete_account.warning') }}
+                </div>
+
+                <x-slot name="actions">
+                    <div class="text-right">
+                        {{ $this->getCachedAction('delete_account') }}
+                    </div>
+                </x-slot>
+            </x-slot>
+        </x-filament-jet-action-section>
+    @endif
 </x-filament::page>

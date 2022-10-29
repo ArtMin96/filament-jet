@@ -7,6 +7,7 @@ use ArtMin96\FilamentJet\Actions\DisableTwoFactorAuthentication;
 use ArtMin96\FilamentJet\Actions\EnableTwoFactorAuthentication;
 use ArtMin96\FilamentJet\Actions\GenerateNewRecoveryCodes;
 use ArtMin96\FilamentJet\Features;
+use ArtMin96\FilamentJet\Filament\Actions\AlwaysAskPasswordButtonAction;
 use ArtMin96\FilamentJet\Filament\Actions\PasswordButtonAction;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\Actions\Action;
@@ -116,6 +117,16 @@ trait HasTwoFactorAuthentication
                     ->label(__('filament-jet::account.other_browser_sessions.actions.confirm'))
                     ->icon('heroicon-o-globe-alt')
                     ->action('logoutOtherBrowserSessions')
+            ]);
+        }
+
+        if (Features::hasAccountDeletionFeatures()) {
+            $actions = array_merge($actions, [
+                AlwaysAskPasswordButtonAction::make('delete_account')
+                    ->label(__('filament-jet::account.delete_account.actions.confirm'))
+                    ->icon('heroicon-o-trash')
+                    ->color('danger')
+                    ->action('deleteAccount')
             ]);
         }
 
