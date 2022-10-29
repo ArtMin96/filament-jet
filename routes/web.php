@@ -26,6 +26,7 @@ Route::domain(config('filament.domain'))
         }
 
         Route::get('/password/reset', config('filament-jet.password_reset_component'))->name('password.request');
+        Route::get('/password/reset/{token}', config('filament-jet.password_reset_component'))->name('password.reset');
 
         // Teams...
         if (Features::hasTeamFeatures()) {

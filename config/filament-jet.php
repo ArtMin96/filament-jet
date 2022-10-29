@@ -136,4 +136,11 @@ return [
     'profile_photo_directory' => 'profile-photos',
 
     'password_confirmation_seconds' => config('auth.password_timeout'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | The reset broker to be used in your reset password requests
+    */
+
+    "reset_broker" => config("auth.defaults.passwords"),
 ];
