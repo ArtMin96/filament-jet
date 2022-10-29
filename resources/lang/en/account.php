@@ -96,7 +96,7 @@ return [
         ],
 
         'actions' => [
-            'confirm' => 'Logout Other Browser Sessions'
+            'confirm' => 'Logout Other Browser Sessions',
         ],
     ],
 ];

@@ -15,13 +15,13 @@ class LogoutOtherBrowserSessions extends Component
     protected function getListeners(): array
     {
         return [
-            'loggedOut' => '$refresh'
+            'loggedOut' => '$refresh',
         ];
     }
 
     public function render(): View
     {
-        return view("filament-jet::livewire.logout-other-browser-sessions");
+        return view('filament-jet::livewire.logout-other-browser-sessions');
     }
 
     /**
