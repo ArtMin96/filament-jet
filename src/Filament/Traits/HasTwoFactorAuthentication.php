@@ -126,7 +126,7 @@ trait HasTwoFactorAuthentication
                     ->label(__('filament-jet::account.delete_account.actions.confirm'))
                     ->icon('heroicon-o-trash')
                     ->color('danger')
-                    ->action('deleteAccount')
+                    ->action('deleteAccount'),
             ]);
         }
 
