@@ -7,6 +7,7 @@ use ArtMin96\FilamentJet\Traits\PasswordValidationRules;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
+use Filament\Notifications\Actions\Action as NotificationAction;
 use Filament\Notifications\Notification;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Hash;
@@ -15,7 +16,6 @@ use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Livewire\Component;
 use Phpsa\FilamentPasswordReveal\Password as PasswordInput;
-use Filament\Notifications\Actions\Action as NotificationAction;
 
 class ResetPassword extends Component implements HasForms
 {
@@ -48,23 +48,23 @@ class ResetPassword extends Component implements HasForms
     {
         if ($this->isResetting) {
             return [
-                PasswordInput::make("password")
-                    ->label(__("filament-jet::jet.fields.password"))
+                PasswordInput::make('password')
+                    ->label(__('filament-jet::jet.fields.password'))
                     ->revealable()
                     ->generatable()
                     ->copyable()
                     ->required()
                     ->rules($this->passwordRules()),
-                PasswordInput::make("password_confirmation")
-                    ->label(__("filament-jet::jet.fields.password_confirm"))
+                PasswordInput::make('password_confirmation')
+                    ->label(__('filament-jet::jet.fields.password_confirm'))
                     ->revealable()
                     ->required()
-                    ->same("password"),
+                    ->same('password'),
             ];
         } else {
             return [
-                TextInput::make("email")
-                    ->label(__("filament-jet::jet.fields.email"))
+                TextInput::make('email')
+                    ->label(__('filament-jet::jet.fields.email'))
                     ->required()
                     ->email()
                     ->exists(table: FilamentJet::userModel()),
@@ -90,15 +90,15 @@ class ResetPassword extends Component implements HasForms
             });
 
             if ($response == Password::PASSWORD_RESET) {
-                return redirect(route('filament.auth.login', ['email' => $this->email,'reset' => true]));
+                return redirect(route('filament.auth.login', ['email' => $this->email, 'reset' => true]));
             } else {
                 Notification::make()
-                    ->title(__("filament-jet::reset-password.notification_error"))
+                    ->title(__('filament-jet::reset-password.notification_error'))
                     ->persistent()
                     ->actions([
                         NotificationAction::make('resetAgain')
-                            ->label(__("filament-jet::reset-password.notification_error_link_text"))
-                            ->url(route(config('filament-jet.route_group_prefix').'password.request'))
+                            ->label(__('filament-jet::reset-password.notification_error_link_text'))
+                            ->url(route(config('filament-jet.route_group_prefix').'password.request')),
                     ])
                     ->danger()
                     ->send();
@@ -109,7 +109,7 @@ class ResetPassword extends Component implements HasForms
 
             if ($response == Password::RESET_LINK_SENT) {
                 Notification::make()
-                    ->title(__("filament-jet::reset-password.notification_success"))
+                    ->title(__('filament-jet::reset-password.notification_success'))
                     ->success()
                     ->send();
 
@@ -117,8 +117,8 @@ class ResetPassword extends Component implements HasForms
             } else {
                 Notification::make()
                     ->title(match ($response) {
-                        "passwords.throttled" => __("passwords.throttled"),
-                        "passwords.user" => __("passwords.user")
+                        'passwords.throttled' => __('passwords.throttled'),
+                        'passwords.user' => __('passwords.user')
                     })
                     ->danger()
                     ->send();
@@ -133,10 +133,10 @@ class ResetPassword extends Component implements HasForms
 
     public function render(): View
     {
-        $view = view("filament-jet::livewire.auth.reset-password");
+        $view = view('filament-jet::livewire.auth.reset-password');
 
-        $view->layout("filament::components.layouts.base", [
-            "title" => __("filament-jet::reset_password.title"),
+        $view->layout('filament::components.layouts.base', [
+            'title' => __('filament-jet::reset_password.title'),
         ]);
 
         return $view;
