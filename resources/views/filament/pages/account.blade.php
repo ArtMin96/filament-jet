@@ -157,4 +157,32 @@
             </x-slot>
         </x-filament-jet-action-section>
     @endif
+
+    @if(\ArtMin96\FilamentJet\Features::canLogoutOtherBrowserSessions())
+        <x-filament::hr />
+
+        <x-filament-jet-action-section>
+            <x-slot name="title">
+                {{ __('filament-jet::account.other_browser_sessions.title') }}
+            </x-slot>
+
+            <x-slot name="description">
+                {{ __('filament-jet::account.other_browser_sessions.description') }}
+            </x-slot>
+
+            <x-slot name="content">
+                <div class="max-w-xl text-sm text-gray-600">
+                    {{ __('filament-jet::account.other_browser_sessions.heading') }}
+                </div>
+
+                @livewire(\ArtMin96\FilamentJet\Http\Livewire\LogoutOtherBrowserSessions::class)
+
+                <x-slot name="actions">
+                    <div class="text-right">
+                        {{ $this->getCachedAction('logout_other_browser_sessions') }}
+                    </div>
+                </x-slot>
+            </x-slot>
+        </x-filament-jet-action-section>
+    @endif
 </x-filament::page>

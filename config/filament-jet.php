@@ -117,6 +117,7 @@ return [
         Features::profilePhotos(),
         Features::api(),
         Features::teams(['invitations' => false]),
+        Features::logoutOtherBrowserSessions(),
         Features::accountDeletion(),
     ],
 

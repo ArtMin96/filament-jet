@@ -206,6 +206,16 @@ class Features
     }
 
     /**
+     * Determine if the application can logout other browser sessions.
+     *
+     * @return bool
+     */
+    public static function canLogoutOtherBrowserSessions(): bool
+    {
+        return static::enabled(static::logoutOtherBrowserSessions());
+    }
+
+    /**
      * Enable the password reset feature.
      *
      * @return string
@@ -288,6 +298,16 @@ class Features
     public static function termsAndPrivacyPolicy()
     {
         return 'terms';
+    }
+
+    /**
+     * Enable the logout other browser sessions feature.
+     *
+     * @return string
+     */
+    public static function logoutOtherBrowserSessions(): string
+    {
+        return 'logout-other-browser-sessions';
     }
 
     /**

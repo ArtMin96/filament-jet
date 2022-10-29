@@ -110,6 +110,15 @@ trait HasTwoFactorAuthentication
             ]);
         }
 
+        if (Features::canLogoutOtherBrowserSessions()) {
+            $actions = array_merge($actions, [
+                PasswordButtonAction::make('logout_other_browser_sessions')
+                    ->label(__('filament-jet::account.other_browser_sessions.actions.confirm'))
+                    ->icon('heroicon-o-globe-alt')
+                    ->action('logoutOtherBrowserSessions')
+            ]);
+        }
+
         return $actions;
     }
 

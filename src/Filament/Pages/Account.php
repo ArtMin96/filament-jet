@@ -6,6 +6,7 @@ use ArtMin96\FilamentJet\Actions\DisableTwoFactorAuthentication;
 use ArtMin96\FilamentJet\Contracts\UpdatesUserPasswords;
 use ArtMin96\FilamentJet\Contracts\UpdatesUserProfileInformation;
 use ArtMin96\FilamentJet\Features;
+use ArtMin96\FilamentJet\Filament\Traits\CanLogoutOtherBrowserSessions;
 use ArtMin96\FilamentJet\Filament\Traits\HasCachedAction;
 use ArtMin96\FilamentJet\Filament\Traits\HasTwoFactorAuthentication;
 use ArtMin96\FilamentJet\FilamentJet;
@@ -21,6 +22,7 @@ class Account extends Page
 {
     use PasswordValidationRules;
     use HasTwoFactorAuthentication;
+    use CanLogoutOtherBrowserSessions;
     use HasCachedAction;
 
     protected string $loginColumn;

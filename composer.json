@@ -21,6 +21,7 @@
         "bacon/bacon-qr-code": "^2.0",
         "filament/filament": "^2.0",
         "illuminate/contracts": "^9.0",
+        "jenssegers/agent": "^2.6",
         "phpsa/filament-password-reveal": "^1.1",
         "pragmarx/google2fa": "^8.0",
         "spatie/laravel-package-tools": "^1.13.5",

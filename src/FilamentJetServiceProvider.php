@@ -11,6 +11,7 @@ use ArtMin96\FilamentJet\Filament\Pages\ApiTokens;
 use ArtMin96\FilamentJet\Http\Livewire\Auth\Login;
 use ArtMin96\FilamentJet\Http\Livewire\Auth\Register;
 use ArtMin96\FilamentJet\Http\Livewire\Auth\ResetPassword;
+use ArtMin96\FilamentJet\Http\Livewire\LogoutOtherBrowserSessions;
 use ArtMin96\FilamentJet\Http\Livewire\PrivacyPolicy;
 use ArtMin96\FilamentJet\Http\Livewire\TermsOfService;
 use Filament\Facades\Filament;
@@ -71,6 +72,7 @@ class FilamentJetServiceProvider extends PluginServiceProvider
 
         Livewire::component(Login::getName(), Login::class);
         Livewire::component(ResetPassword::getName(), ResetPassword::class);
+        Livewire::component(LogoutOtherBrowserSessions::getName(), LogoutOtherBrowserSessions::class);
 
         if (Features::enabled(Features::registration()) && FilamentJet::registrationComponent()) {
             Livewire::component(Register::getName(), Register::class);
