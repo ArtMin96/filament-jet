@@ -2,6 +2,7 @@
 
 return [
     'forgot_password_link' => 'Forgot password?',
+    'cancel' => 'Cancel',
 
     "two_factor" => [
         "heading" => "Two Factor Challenge",

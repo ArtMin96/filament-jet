@@ -2,6 +2,8 @@
 
 namespace ArtMin96\FilamentJet\Http\Livewire\Auth;
 
+use ArtMin96\FilamentJet\Contracts\TwoFactorAuthenticationProvider;
+use ArtMin96\FilamentJet\Features;
 use ArtMin96\FilamentJet\FilamentJet;
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use Filament\Facades\Filament;
@@ -56,7 +58,7 @@ class Login extends FilamentLogin
                     return hash_equals($this->code, $code) ? $code : false;
                 });
         } else {
-            return $this->code && app(FilamentBreezy::class)->verify(decrypt($this->user->two_factor_secret), $this->code);
+            return $this->code && app(TwoFactorAuthenticationProvider::class)->verify(decrypt($this->user->two_factor_secret), $this->code);
         }
     }
 
@@ -94,7 +96,7 @@ class Login extends FilamentLogin
         // Form data
         $data = $this->showCodeForm ? $this->twoFactorForm->getState() : $this->form->getState();
 
-        if (config('filament-breezy.enable_2fa')) {
+        if (Features::canManageTwoFactorAuthentication()) {
             if ($this->showCodeForm) {
                 // Verify the code, then attempt to log them in now.
                 if (! $this->hasValidCode()) {
@@ -113,7 +115,7 @@ class Login extends FilamentLogin
                 $this->user = $model::where($this->loginColumn, $data[$this->loginColumn])->first();
 
                 // If the user hasn't setup 2FA, authenticate and exit early.
-                if ($this->user && ! $this->user->has_confirmed_two_factor) {
+                if ($this->user && ! $this->user->hasConfirmedTwoFactorAuthentication()) {
                     // THIS is where we can force 2fa...
                     return $this->attemptAuth($data);
                 }
@@ -170,6 +172,12 @@ class Login extends FilamentLogin
         }
 
         return $parentSchema;
+    }
+
+    public function backToLoginForm()
+    {
+        $this->showCodeForm = false;
+        $this->code = null;
     }
 
     public function render(): View
