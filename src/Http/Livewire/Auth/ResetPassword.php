@@ -136,7 +136,7 @@ class ResetPassword extends Component implements HasForms
         $view = view("filament-jet::livewire.auth.reset-password");
 
         $view->layout("filament::components.layouts.base", [
-            "title" => __("filament-jet::reset_password.title"),
+            "title" => __("filament-jet::reset-password.title"),
         ]);
 
         return $view;
