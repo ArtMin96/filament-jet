@@ -142,5 +142,5 @@ return [
     | The reset broker to be used in your reset password requests
     */
 
-    "reset_broker" => config("auth.defaults.passwords"),
+    'reset_broker' => config('auth.defaults.passwords'),
 ];
