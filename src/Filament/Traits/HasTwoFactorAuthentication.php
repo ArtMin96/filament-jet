@@ -136,7 +136,7 @@ trait HasTwoFactorAuthentication
                 Action::make('export_personal_data')
                     ->label(__('filament-jet::account.export_personal_data.actions.confirm'))
                     ->icon('heroicon-o-download')
-                    ->action('exportPersonalData')
+                    ->action('exportPersonalData'),
             ]);
         }
 

@@ -116,7 +116,7 @@ return [
         'warning' => 'You can download a copy of your information from your profile. Once your files are available, you can download them to your device.',
 
         'actions' => [
-            'confirm' => 'Download your information'
+            'confirm' => 'Download your information',
         ],
     ],
 ];
