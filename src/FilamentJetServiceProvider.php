@@ -12,6 +12,7 @@ use ArtMin96\FilamentJet\Http\Livewire\Auth\Login;
 use ArtMin96\FilamentJet\Http\Livewire\Auth\Register;
 use ArtMin96\FilamentJet\Http\Livewire\Auth\ResetPassword;
 use ArtMin96\FilamentJet\Http\Livewire\LogoutOtherBrowserSessions;
+use ArtMin96\FilamentJet\Http\Livewire\PersonalDataExport;
 use ArtMin96\FilamentJet\Http\Livewire\PrivacyPolicy;
 use ArtMin96\FilamentJet\Http\Livewire\TermsOfService;
 use Filament\Facades\Filament;
@@ -38,7 +39,7 @@ class FilamentJetServiceProvider extends PluginServiceProvider
                 '2014_10_12_000000_create_users_table',
                 '2014_10_12_200000_add_two_factor_columns_to_users_table',
             ])
-            ->runsMigrations()
+//            ->runsMigrations()
             ->hasTranslations()
             ->hasCommand(InstallCommand::class);
     }
@@ -73,6 +74,7 @@ class FilamentJetServiceProvider extends PluginServiceProvider
         Livewire::component(Login::getName(), Login::class);
         Livewire::component(ResetPassword::getName(), ResetPassword::class);
         Livewire::component(LogoutOtherBrowserSessions::getName(), LogoutOtherBrowserSessions::class);
+        Livewire::component(PersonalDataExport::getName(), PersonalDataExport::class);
 
         if (Features::enabled(Features::registration()) && FilamentJet::registrationComponent()) {
             Livewire::component(Register::getName(), Register::class);
@@ -112,6 +114,7 @@ class FilamentJetServiceProvider extends PluginServiceProvider
             $this->registerComponent('form-section');
             $this->registerComponent('section-title');
             $this->registerComponent('section-border');
+            $this->registerComponent('progress-bar');
         });
     }
 

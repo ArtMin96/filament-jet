@@ -211,4 +211,34 @@
             </x-slot>
         </x-filament-jet-action-section>
     @endif
+
+    @if(\ArtMin96\FilamentJet\Features::canExportPersonalData())
+        <x-filament::hr />
+
+        <x-filament-jet-action-section>
+            <x-slot name="title">
+                {{ __('filament-jet::account.export_personal_data.title') }}
+            </x-slot>
+
+            <x-slot name="description">
+                {{ __('filament-jet::account.export_personal_data.description') }}
+            </x-slot>
+
+            <x-slot name="content">
+                <div class="max-w-xl text-sm text-gray-600">
+                    {{ __('filament-jet::account.export_personal_data.warning') }}
+                </div>
+
+                <x-slot name="actions">
+                    <div class="text-right">
+                        @if($this->exportBatch)
+                            <x-filament-jet-progress-bar wire:poll="updateExportProgress" :percentage="$this->exportProgress" />
+                        @else
+                            {{ $this->getCachedAction('export_personal_data') }}
+                        @endif
+                    </div>
+                </x-slot>
+            </x-slot>
+        </x-filament-jet-action-section>
+    @endif
 </x-filament::page>

@@ -216,6 +216,16 @@ class Features
     }
 
     /**
+     * Determine if the application can export personal data.
+     *
+     * @return bool
+     */
+    public static function canExportPersonalData(): bool
+    {
+        return static::enabled(static::personalDataExport());
+    }
+
+    /**
      * Enable the password reset feature.
      *
      * @return string
@@ -318,5 +328,15 @@ class Features
     public static function accountDeletion()
     {
         return 'account-deletion';
+    }
+
+    /**
+     * Enable the account personal data export feature.
+     *
+     * @return string
+     */
+    public static function personalDataExport()
+    {
+        return 'personal-data-export';
     }
 }

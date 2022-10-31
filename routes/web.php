@@ -36,4 +36,8 @@ Route::domain(config('filament.domain'))
                 ->middleware(['signed'])
                 ->name('team-invitations.accept');
         }
+
+//        if (Features::canExportPersonalData()) {
+//            Route::personalDataExports('personal-data-exports');
+//        }
     });

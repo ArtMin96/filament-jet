@@ -12,6 +12,7 @@ use ArtMin96\FilamentJet\Filament\Traits\HasCachedAction;
 use ArtMin96\FilamentJet\Filament\Traits\HasTwoFactorAuthentication;
 use ArtMin96\FilamentJet\FilamentJet;
 use ArtMin96\FilamentJet\Traits\PasswordValidationRules;
+use ArtMin96\FilamentJet\Traits\ProcessesExport;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\FileUpload;
@@ -26,6 +27,7 @@ class Account extends Page
     use CanLogoutOtherBrowserSessions;
     use CanDeleteAccount;
     use HasCachedAction;
+    use ProcessesExport;
 
     protected string $loginColumn;
 

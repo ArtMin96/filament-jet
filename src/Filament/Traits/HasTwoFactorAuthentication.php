@@ -11,6 +11,7 @@ use ArtMin96\FilamentJet\Filament\Actions\AlwaysAskPasswordButtonAction;
 use ArtMin96\FilamentJet\Filament\Actions\PasswordButtonAction;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\Actions\Action;
+use Spatie\PersonalDataExport\Jobs\CreatePersonalDataExportJob;
 
 trait HasTwoFactorAuthentication
 {
@@ -130,6 +131,15 @@ trait HasTwoFactorAuthentication
             ]);
         }
 
+        if (Features::canExportPersonalData()) {
+            $actions = array_merge($actions, [
+                Action::make('export_personal_data')
+                    ->label(__('filament-jet::account.export_personal_data.actions.confirm'))
+                    ->icon('heroicon-o-download')
+                    ->action('exportPersonalData')
+            ]);
+        }
+
         return $actions;
     }
 
@@ -212,6 +222,12 @@ trait HasTwoFactorAuthentication
         $this->showingRecoveryCodes = false;
 
         $this->notify('warning', __('filament-jet::account.2fa.notify.disabled'));
+    }
+
+    public function exportPersonalData()
+    {
+        $this->export();
+//        dispatch(new CreatePersonalDataExportJob($this->user));
     }
 
     /**

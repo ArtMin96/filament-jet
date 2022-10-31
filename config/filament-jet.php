@@ -116,9 +116,10 @@ return [
         Features::termsAndPrivacyPolicy(),
         Features::profilePhotos(),
         Features::api(),
-        Features::teams(['invitations' => false]),
+        Features::teams(['invitations' => true]),
         Features::logoutOtherBrowserSessions(),
         Features::accountDeletion(),
+        Features::personalDataExport()
     ],
 
     /*

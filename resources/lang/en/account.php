@@ -109,4 +109,14 @@ return [
             'confirm' => 'Delete Account'
         ],
     ],
+
+    'export_personal_data' => [
+        'title' => 'Download Your Information',
+        'description' => 'Request a copy of your information and save it to your device.',
+        'warning' => 'You can download a copy of your information from your profile. Once your files are available, you can download them to your device.',
+
+        'actions' => [
+            'confirm' => 'Download your information'
+        ],
+    ],
 ];
