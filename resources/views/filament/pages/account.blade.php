@@ -232,7 +232,15 @@
                 <x-slot name="actions">
                     <div class="text-right">
                         @if($this->exportBatch)
-                            <x-filament-jet-progress-bar wire:poll="updateExportProgress" :percentage="$this->exportProgress" />
+                            <div wire:poll="updateExportProgress">
+                                <x-filament-jet-progress-bar :percentage="$this->exportProgress" />
+
+                                @if($this->exportProgress == 100)
+                                    <div class="mt-4">
+                                        {{ $this->getCachedAction('download_personal_data') }}
+                                    </div>
+                                @endif
+                            </div>
                         @else
                             {{ $this->getCachedAction('export_personal_data') }}
                         @endif

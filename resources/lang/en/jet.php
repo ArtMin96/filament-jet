@@ -26,4 +26,15 @@ return [
         '2fa_code' => 'Code',
         '2fa_recovery_code' => 'Recovery Code',
     ],
+
+    'permissions' => [
+        'admin' => [
+            'label' => 'Administrator',
+            'description' => 'Administrator users can perform any action.'
+        ],
+        'editor' => [
+            'label' => 'Editor',
+            'description' => 'Editor users have the ability to read, create, and update.'
+        ],
+    ],
 ];

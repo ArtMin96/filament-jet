@@ -119,7 +119,35 @@ return [
         Features::teams(['invitations' => true]),
         Features::logoutOtherBrowserSessions(),
         Features::accountDeletion(),
-        Features::personalDataExport(),
+
+        /**
+         * @see https://github.com/spatie/laravel-personal-data-export
+         */
+        Features::personalDataExport([
+            /**
+             * The name of the export itself can be set using the personalDataExportName on the user.
+             * This will only affect the name of the download that will be sent as a response to the user,
+             * not the name of the zip stored on disk.
+             */
+            'export-name' => 'personal-data',
+
+            /**
+             * The first parameter is the name of the file in the inside the zip file.
+             * The second parameter is the content that should go in that file.
+             * If you pass an array here, we will encode it to JSON.
+             */
+            'add' => [
+//                ['nameInDownload' => '', 'content' => []]
+            ],
+
+            /**
+             * The first parameter is a path to a file which will be copied to the zip.
+             * You can also add a disk name as the second parameter and directory as the third parameter.
+             */
+            'add-files' => [
+//                ['pathToFile' => '', 'diskName' => '', 'directory' => '']
+            ]
+        ]),
     ],
 
     /*

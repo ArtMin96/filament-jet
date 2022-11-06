@@ -333,10 +333,15 @@ class Features
     /**
      * Enable the account personal data export feature.
      *
+     * @param  array  $options
      * @return string
      */
-    public static function personalDataExport()
+    public static function personalDataExport(array $options = [])
     {
+        if (! empty($options)) {
+            config(['filament-jet-options.personal-data-export' => $options]);
+        }
+
         return 'personal-data-export';
     }
 }

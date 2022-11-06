@@ -117,6 +117,7 @@ return [
 
         'actions' => [
             'confirm' => 'Download your information',
+            'download' => 'Download your information',
         ],
     ],
 ];

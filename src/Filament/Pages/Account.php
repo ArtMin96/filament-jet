@@ -19,6 +19,7 @@ use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\Page;
+use Illuminate\Support\Facades\Storage;
 use Phpsa\FilamentPasswordReveal\Password;
 
 class Account extends Page
@@ -196,5 +197,15 @@ class Account extends Page
         Filament::auth()->login($this->user);
 
         $this->reset(['current_password', 'password', 'password_confirmation']);
+    }
+
+    public function downloadPersonalData()
+    {
+        $path = glob(Storage::disk(config('personal-data-export.disk'))->path('') . "{$this->user->id}_*.zip");
+
+        $this->exportProgress = 0;
+        $this->exportBatch = null;
+
+        return response()->download(end($path))->deleteFileAfterSend();
     }
 }

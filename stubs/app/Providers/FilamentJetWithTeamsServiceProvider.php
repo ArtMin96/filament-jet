@@ -92,18 +92,18 @@ class FilamentJetServiceProvider extends ServiceProvider
      */
     protected function configurePermissions()
     {
-        FilamentJet::role('admin', 'Administrator', [
+        FilamentJet::role('admin', __('filament-jet::jet.permissions.admin.label'), [
             'create',
             'read',
             'update',
             'delete',
-        ])->description('Administrator users can perform any action.');
+        ])->description(__('filament-jet::jet.permissions.admin.description'));
 
-        FilamentJet::role('editor', 'Editor', [
+        FilamentJet::role('editor', __('filament-jet::jet.permissions.editor.label'), [
             'read',
             'create',
             'update',
-        ])->description('Editor users have the ability to read, create, and update.');
+        ])->description(__('filament-jet::jet.permissions.editor.description'));
     }
 
     /**
