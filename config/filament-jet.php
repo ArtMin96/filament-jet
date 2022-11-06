@@ -137,7 +137,7 @@ return [
              * If you pass an array here, we will encode it to JSON.
              */
             'add' => [
-//                ['nameInDownload' => '', 'content' => []]
+                //                ['nameInDownload' => '', 'content' => []]
             ],
 
             /**
@@ -145,8 +145,8 @@ return [
              * You can also add a disk name as the second parameter and directory as the third parameter.
              */
             'add-files' => [
-//                ['pathToFile' => '', 'diskName' => '', 'directory' => '']
-            ]
+                //                ['pathToFile' => '', 'diskName' => '', 'directory' => '']
+            ],
         ]),
     ],
 

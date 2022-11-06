@@ -11,7 +11,6 @@ use ArtMin96\FilamentJet\Filament\Actions\AlwaysAskPasswordButtonAction;
 use ArtMin96\FilamentJet\Filament\Actions\PasswordButtonAction;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\Actions\Action;
-use Spatie\PersonalDataExport\Jobs\CreatePersonalDataExportJob;
 
 trait HasTwoFactorAuthentication
 {
