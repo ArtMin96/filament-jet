@@ -25,6 +25,10 @@ return [
         ],
     ],
 
+    'table' => [
+        'never' => 'Never',
+    ],
+
     'fields' => [
         'token_name' => 'Token Name',
         'permissions' => 'Permissions',
