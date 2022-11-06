@@ -5,7 +5,6 @@ namespace ArtMin96\FilamentJet\Filament\Pages;
 use ArtMin96\FilamentJet\Contracts\CreatesTeams;
 use ArtMin96\FilamentJet\Http\Livewire\Traits\Properties\HasUserProperty;
 use ArtMin96\FilamentJet\Traits\RedirectsActions;
-use Filament\Facades\Filament;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\Page;
 
