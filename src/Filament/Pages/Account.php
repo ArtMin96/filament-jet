@@ -203,7 +203,7 @@ class Account extends Page
 
     public function downloadPersonalData()
     {
-        $path = glob(Storage::disk(config('personal-data-export.disk'))->path('') . "{$this->user->id}_*.zip");
+        $path = glob(Storage::disk(config('personal-data-export.disk'))->path('')."{$this->user->id}_*.zip");
 
         $this->exportProgress = 0;
         $this->exportBatch = null;
