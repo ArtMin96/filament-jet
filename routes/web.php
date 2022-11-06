@@ -7,12 +7,7 @@ use ArtMin96\FilamentJet\Http\Controllers\TeamInvitationController;
 use Illuminate\Support\Facades\Route;
 
 Route::domain(config('filament.domain'))
-    ->middleware(
-        array_merge(config('filament.middleware.base'), [
-            //            'auth:sanctum',
-            //            'verified'
-        ])
-    )
+    ->middleware(config("filament.middleware.base"))
     ->name(config('filament-jet.route_group_prefix'))
     ->prefix(config('filament.path'))
     ->group(function () {
@@ -25,8 +20,11 @@ Route::domain(config('filament.domain'))
             }
         }
 
-        Route::get('/password/reset', config('filament-jet.password_reset_component'))->name('password.request');
-        Route::get('/password/reset/{token}', config('filament-jet.password_reset_component'))->name('password.reset');
+        // Password Reset...
+        if (Features::enabled(Features::resetPasswords())) {
+            Route::get('/password/reset', FilamentJet::resetPasswordsComponent())->name('password.request');
+            Route::get('/password/reset/{token}', FilamentJet::resetPasswordsComponent())->name('password.reset');
+        }
 
         // Teams...
         if (Features::hasTeamFeatures()) {
@@ -36,8 +34,4 @@ Route::domain(config('filament.domain'))
                 ->middleware(['signed'])
                 ->name('team-invitations.accept');
         }
-
-//        if (Features::canExportPersonalData()) {
-//            Route::personalDataExports('personal-data-exports');
-//        }
     });

@@ -146,36 +146,6 @@ class Features
     }
 
     /**
-     * Determine registration component.
-     *
-     * @return bool
-     */
-    public static function registrationComponent()
-    {
-        return static::getOption(static::registration(), 'component');
-    }
-
-    /**
-     * Determine terms of service component.
-     *
-     * @return bool
-     */
-    public static function termsOfServiceComponent()
-    {
-        return static::getOption(static::registration(), 'terms_of_service');
-    }
-
-    /**
-     * Determine privacy policy component.
-     *
-     * @return bool
-     */
-    public static function privacyPolicyComponent()
-    {
-        return static::getOption(static::registration(), 'privacy_policy');
-    }
-
-    /**
      * Enable the registration feature.
      *
      * @param  array  $options
@@ -228,10 +198,15 @@ class Features
     /**
      * Enable the password reset feature.
      *
+     * @param  array  $options
      * @return string
      */
-    public static function resetPasswords()
+    public static function resetPasswords(array $options = [])
     {
+        if (! empty($options)) {
+            config(['filament-jet-options.reset-passwords' => $options]);
+        }
+
         return 'reset-passwords';
     }
 

@@ -14,7 +14,7 @@
         </x-slot>
         <x-filament::dropdown.list>
             @foreach ($teams as $team)
-                <form method="POST" action="{{ route(config('filament-jet.route_group_prefix').'.current-team.update') }}" x-data>
+                <form method="POST" action="{{ route(config('filament-jet.route_group_prefix').'current-team.update') }}" x-data>
                     @method('PUT')
                     @csrf
 

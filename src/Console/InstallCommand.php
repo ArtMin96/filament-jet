@@ -208,11 +208,9 @@ class InstallCommand extends Command
     protected function routeDefinition()
     {
         return <<<'EOF'
-$routePrefix = config('filament-jet.route_group_prefix') ? config('filament-jet.route_group_prefix').'.' : null;
-
 Route::domain(config("filament.domain"))
     ->middleware(config("filament.middleware.base"))
-    ->name($routePrefix)
+    ->name(config('filament-jet.route_group_prefix'))
     ->prefix(config("filament.path"))
     ->group(function () {
         // Teams...

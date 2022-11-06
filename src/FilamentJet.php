@@ -245,7 +245,7 @@ class FilamentJet
      */
     public static function registrationComponent()
     {
-        return Features::registrationComponent();
+        return Features::getOption(Features::registration(), 'component');
     }
 
     /**
@@ -255,7 +255,7 @@ class FilamentJet
      */
     public static function termsOfServiceComponent()
     {
-        return Features::termsOfServiceComponent();
+        return Features::getOption(Features::registration(), 'terms_of_service');
     }
 
     /**
@@ -265,7 +265,17 @@ class FilamentJet
      */
     public static function privacyPolicyComponent()
     {
-        return Features::privacyPolicyComponent();
+        return Features::getOption(Features::registration(), 'privacy_policy');
+    }
+
+    /**
+     * Determine password reset component.
+     *
+     * @return bool
+     */
+    public static function resetPasswordsComponent()
+    {
+        return Features::getOption(Features::resetPasswords(), 'component');
     }
 
     /**

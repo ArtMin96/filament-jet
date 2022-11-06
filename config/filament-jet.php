@@ -34,8 +34,6 @@ return [
 
     'route_group_prefix' => '',
 
-    'password_reset_component' => \ArtMin96\FilamentJet\Http\Livewire\Auth\ResetPassword::class,
-
     'profile' => [
         'login_field' => [
             'hint_action' => [
@@ -103,7 +101,9 @@ return [
             'privacy_policy' => \ArtMin96\FilamentJet\Http\Livewire\PrivacyPolicy::class,
             'auth_card_max_w' => null,
         ]),
-        Features::resetPasswords(),
+        Features::resetPasswords([
+            'component' => \ArtMin96\FilamentJet\Http\Livewire\Auth\ResetPassword::class,
+        ]),
         Features::emailVerification(),
         Features::updateProfileInformation(),
         Features::updatePasswords(),
@@ -137,7 +137,7 @@ return [
              * If you pass an array here, we will encode it to JSON.
              */
             'add' => [
-                //                ['nameInDownload' => '', 'content' => []]
+                // ['nameInDownload' => '', 'content' => []]
             ],
 
             /**
@@ -145,7 +145,7 @@ return [
              * You can also add a disk name as the second parameter and directory as the third parameter.
              */
             'add-files' => [
-                //                ['pathToFile' => '', 'diskName' => '', 'directory' => '']
+                // ['pathToFile' => '', 'diskName' => '', 'directory' => '']
             ],
         ]),
     ],
