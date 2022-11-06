@@ -32,7 +32,7 @@
 
         <x-slot name="actions">
             <x-filament::modal.actions alignment="right" fullWidth="false">
-                <x-filament::button @click.prevent="$dispatch('close-modal', {id: 'showing-token-modal'})" color="secondary">
+                <x-filament::button x-on:click.prevent="$dispatch('close-modal', {id: 'showing-token-modal'})" color="secondary">
                     {{ __('filament-jet::api.modal.actions.close') }}
                 </x-filament::button>
             </x-filament::modal.actions>

@@ -208,23 +208,27 @@ class InstallCommand extends Command
     protected function routeDefinition()
     {
         return <<<'EOF'
-    Route::domain(config("filament.domain"))
-    ->middleware(
-        array_merge(config("filament.middleware.base"), [
-//            'auth:sanctum',
-//            'verified'
-        ])
-    )
-    ->name(config('filament-jet.route_group_prefix'))
+$routePrefix = config('filament-jet.route_group_prefix') ? config('filament-jet.route_group_prefix').'.' : null;
+
+Route::domain(config("filament.domain"))
+    ->middleware(config("filament.middleware.base"))
+    ->name($routePrefix)
     ->prefix(config("filament.path"))
     ->group(function () {
         // Teams...
         if (\ArtMin96\FilamentJet\Features::hasTeamFeatures()) {
-            Route::put('/current-team', [\ArtMin96\FilamentJet\Http\Controllers\CurrentTeamController::class, 'update'])->name('current-team.update');
+            Route::group(['middleware' => 'verified'], function () {
+                Route::put('/current-team', [\ArtMin96\FilamentJet\Http\Controllers\CurrentTeamController::class, 'update'])->name('current-team.update');
 
-            Route::get('/team-invitations/{invitation}', [\ArtMin96\FilamentJet\Http\Controllers\TeamInvitationController::class, 'accept'])
-                ->middleware(['signed'])
-                ->name('team-invitations.accept');
+                Route::get('/team-invitations/{invitation}', [\ArtMin96\FilamentJet\Http\Controllers\TeamInvitationController::class, 'accept'])
+                    ->middleware(['signed'])
+                    ->name('team-invitations.accept');
+            });
+        }
+
+        // Personal data export...
+        if (\ArtMin96\FilamentJet\Features::canExportPersonalData()) {
+            Route::personalDataExports('personal-data-exports');
         }
     });
 EOF;
