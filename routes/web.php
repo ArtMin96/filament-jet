@@ -7,7 +7,7 @@ use ArtMin96\FilamentJet\Http\Controllers\TeamInvitationController;
 use Illuminate\Support\Facades\Route;
 
 Route::domain(config('filament.domain'))
-    ->middleware(config("filament.middleware.base"))
+    ->middleware(config('filament.middleware.base'))
     ->name(config('filament-jet.route_group_prefix'))
     ->prefix(config('filament.path'))
     ->group(function () {
