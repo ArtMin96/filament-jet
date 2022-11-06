@@ -22,19 +22,19 @@ class ApiTokensTable extends Component implements HasTable
     use HasSanctumPermissionsProperty;
 
     protected $listeners = [
-        'tokenCreated' => '$refresh'
+        'tokenCreated' => '$refresh',
     ];
 
     public function render()
     {
-        return view("filament-jet::livewire.api-tokens-table");
+        return view('filament-jet::livewire.api-tokens-table');
     }
 
     protected function getTableQuery(): Builder|Relation
     {
         return app(Sanctum::$personalAccessTokenModel)->where([
-            ["tokenable_id", '=', Filament::auth()->id()],
-            ["tokenable_type", '=', FilamentJet::userModel()],
+            ['tokenable_id', '=', Filament::auth()->id()],
+            ['tokenable_type', '=', FilamentJet::userModel()],
         ])->orderBy('created_at', 'desc');
     }
 
@@ -58,14 +58,14 @@ class ApiTokensTable extends Component implements HasTable
         return [
             Action::make('permissions')
                 ->action('edit')
-                ->icon("heroicon-o-pencil-alt")
+                ->icon('heroicon-o-pencil-alt')
                 ->modalWidth('sm')
                 ->mountUsing(
                     fn ($form, $record) => $form->fill($record->toArray())
                 )
                 ->form([
                     CheckboxList::make('abilities')
-                        ->label( __('filament-jet::api.fields.permissions'))
+                        ->label(__('filament-jet::api.fields.permissions'))
                         ->options($this->sanctumPermissions)
                         ->columns(2)
                         ->required()
@@ -80,12 +80,12 @@ class ApiTokensTable extends Component implements HasTable
                                 ->toArray();
 
                             $component->state($tokenPermissions);
-                        })
+                        }),
                 ]),
             Action::make('delete')
                 ->action('delete')
                 ->color('danger')
-                ->icon("heroicon-o-trash")
+                ->icon('heroicon-o-trash')
                 ->requiresConfirmation(),
         ];
     }
@@ -93,7 +93,7 @@ class ApiTokensTable extends Component implements HasTable
     public function edit($record, $data)
     {
         $record->forceFill([
-            'abilities' => FilamentJet::validPermissions($data['abilities'])
+            'abilities' => FilamentJet::validPermissions($data['abilities']),
         ])->save();
 
         Filament::notify('success', __('filament-jet::api.update.notify'));

@@ -60,16 +60,16 @@ class ApiTokens extends Page
             'createApiTokenForm' => $this->makeForm()
                 ->schema([
                     TextInput::make('name')
-                        ->label( __('filament-jet::api.fields.token_name'))
+                        ->label(__('filament-jet::api.fields.token_name'))
                         ->required()
                         ->maxLength(255),
                     CheckboxList::make('permissions')
-                        ->label( __('filament-jet::api.fields.permissions'))
+                        ->label(__('filament-jet::api.fields.permissions'))
                         ->options($this->sanctumPermissions)
                         ->visible(FilamentJet::hasPermissions())
                         ->columns(2)
-                        ->required()
-                ])
+                        ->required(),
+                ]),
         ];
     }
 
