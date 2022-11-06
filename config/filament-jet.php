@@ -32,6 +32,21 @@ return [
         'password-reset' => null,
     ],
 
+     /*
+     |--------------------------------------------------------------------------
+     | Route Group Prefix
+     |--------------------------------------------------------------------------
+     |
+     | Set a route name prefix for all of FilamentJet's auth routes.
+     | Ex. set filament. to prefix all route names, filament.register.
+     | WARNING: if you use a custom route prefix, you'll need to override the
+     | default auth routes used throughout your application.
+     | This is outside of FilamentJet's scope and will be up to the dev to maintain.
+     | Use at your own risk.
+     | See example: https://laravel.com/docs/9.x/passwords#password-customization
+     |
+     */
+
     'route_group_prefix' => '',
 
     'profile' => [
