@@ -27,7 +27,9 @@ trait ProcessesExport
 
     public function getExportBatchProperty(): ?Batch
     {
-        if (! $this->exportBatchId) return null;
+        if (! $this->exportBatchId) {
+            return null;
+        }
 
         return Bus::findBatch($this->exportBatchId);
     }

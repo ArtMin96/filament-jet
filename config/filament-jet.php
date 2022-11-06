@@ -119,7 +119,7 @@ return [
         Features::teams(['invitations' => true]),
         Features::logoutOtherBrowserSessions(),
         Features::accountDeletion(),
-        Features::personalDataExport()
+        Features::personalDataExport(),
     ],
 
     /*
