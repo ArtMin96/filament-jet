@@ -79,6 +79,10 @@ class FilamentJetServiceProvider extends ServiceProvider
                 });
             }
         }
+
+        if (Features::hasApiFeatures()) {
+            $this->configureApiPermissions();
+        }
     }
 
     /**
@@ -88,8 +92,6 @@ class FilamentJetServiceProvider extends ServiceProvider
      */
     protected function configurePermissions()
     {
-        FilamentJet::defaultApiTokenPermissions(['read']);
-
         FilamentJet::role('admin', 'Administrator', [
             'create',
             'read',
@@ -102,5 +104,15 @@ class FilamentJetServiceProvider extends ServiceProvider
             'create',
             'update',
         ])->description('Editor users have the ability to read, create, and update.');
+    }
+
+    /**
+     * Configure the sanctum permissions that are available within the application.
+     *
+     * @return void
+     */
+    protected function configureApiPermissions()
+    {
+        FilamentJet::defaultApiTokenPermissions(['read']);
     }
 }

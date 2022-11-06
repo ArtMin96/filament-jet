@@ -8,6 +8,7 @@ use ArtMin96\FilamentJet\Console\InstallCommand;
 use ArtMin96\FilamentJet\Contracts\TwoFactorAuthenticationProvider as TwoFactorAuthenticationProviderContract;
 use ArtMin96\FilamentJet\Filament\Pages\Account;
 use ArtMin96\FilamentJet\Filament\Pages\ApiTokens;
+use ArtMin96\FilamentJet\Http\Livewire\ApiTokensTable;
 use ArtMin96\FilamentJet\Http\Livewire\Auth\Login;
 use ArtMin96\FilamentJet\Http\Livewire\Auth\Register;
 use ArtMin96\FilamentJet\Http\Livewire\Auth\ResetPassword;
@@ -57,7 +58,7 @@ class FilamentJetServiceProvider extends PluginServiceProvider
                         ->url(Account::getUrl());
                 }
 
-                if (config('filament-jet.user_menu.api_tokens.show')) {
+                if (Features::hasApiFeatures() && config('filament-jet.user_menu.api_tokens.show')) {
                     $userMenuItems['api-tokens'] = UserMenuItem::make()
                         ->label(__('filament-jet::jet.user_menu.api_tokens'))
                         ->icon(config('filament-jet.user_menu.api_tokens.icon', 'heroicon-o-key'))
@@ -75,6 +76,7 @@ class FilamentJetServiceProvider extends PluginServiceProvider
         Livewire::component(ResetPassword::getName(), ResetPassword::class);
         Livewire::component(LogoutOtherBrowserSessions::getName(), LogoutOtherBrowserSessions::class);
         Livewire::component(PersonalDataExport::getName(), PersonalDataExport::class);
+        Livewire::component(ApiTokensTable::getName(), ApiTokensTable::class);
 
         if (Features::enabled(Features::registration()) && FilamentJet::registrationComponent()) {
             Livewire::component(Register::getName(), Register::class);
@@ -114,6 +116,7 @@ class FilamentJetServiceProvider extends PluginServiceProvider
             $this->registerComponent('form-section');
             $this->registerComponent('section-title');
             $this->registerComponent('section-border');
+            $this->registerComponent('token-field');
             $this->registerComponent('progress-bar');
         });
     }

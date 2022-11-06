@@ -13,6 +13,7 @@ use ArtMin96\FilamentJet\Features;
 use ArtMin96\FilamentJet\Filament\Actions\AlwaysAskPasswordButtonAction;
 use ArtMin96\FilamentJet\Filament\Traits\HasCachedAction;
 use ArtMin96\FilamentJet\FilamentJet;
+use ArtMin96\FilamentJet\Http\Livewire\Traits\Properties\HasUserProperty;
 use ArtMin96\FilamentJet\Role;
 use ArtMin96\FilamentJet\Traits\RedirectsActions;
 use Filament\Facades\Filament;
@@ -24,6 +25,7 @@ class TeamSettings extends Page
 {
     use HasCachedAction;
     use RedirectsActions;
+    use HasUserProperty;
 
     protected static string $view = 'filament-jet::filament.pages.team-settings';
 
@@ -53,16 +55,6 @@ class TeamSettings extends Page
     protected static function shouldRegisterNavigation(): bool
     {
         return config('filament-jet.should_register_navigation.team_settings');
-    }
-
-    /**
-     * Get the current user of the application.
-     *
-     * @return mixed
-     */
-    public function getUserProperty()
-    {
-        return Filament::auth()->user();
     }
 
     /**

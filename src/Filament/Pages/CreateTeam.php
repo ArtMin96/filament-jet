@@ -3,6 +3,7 @@
 namespace ArtMin96\FilamentJet\Filament\Pages;
 
 use ArtMin96\FilamentJet\Contracts\CreatesTeams;
+use ArtMin96\FilamentJet\Http\Livewire\Traits\Properties\HasUserProperty;
 use ArtMin96\FilamentJet\Traits\RedirectsActions;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\TextInput;
@@ -11,6 +12,7 @@ use Filament\Pages\Page;
 class CreateTeam extends Page
 {
     use RedirectsActions;
+    use HasUserProperty;
 
     protected static string $view = 'filament-jet::filament.pages.create-team';
 
@@ -19,16 +21,6 @@ class CreateTeam extends Page
     protected static function shouldRegisterNavigation(): bool
     {
         return config('filament-jet.should_register_navigation.create_team');
-    }
-
-    /**
-     * Get the current user of the application.
-     *
-     * @return mixed
-     */
-    public function getUserProperty()
-    {
-        return Filament::auth()->user();
     }
 
     protected function getForms(): array

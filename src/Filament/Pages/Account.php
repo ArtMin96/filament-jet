@@ -11,6 +11,7 @@ use ArtMin96\FilamentJet\Filament\Traits\CanLogoutOtherBrowserSessions;
 use ArtMin96\FilamentJet\Filament\Traits\HasCachedAction;
 use ArtMin96\FilamentJet\Filament\Traits\HasTwoFactorAuthentication;
 use ArtMin96\FilamentJet\FilamentJet;
+use ArtMin96\FilamentJet\Http\Livewire\Traits\Properties\HasUserProperty;
 use ArtMin96\FilamentJet\Traits\PasswordValidationRules;
 use ArtMin96\FilamentJet\Traits\ProcessesExport;
 use Filament\Facades\Filament;
@@ -27,6 +28,7 @@ class Account extends Page
     use CanLogoutOtherBrowserSessions;
     use CanDeleteAccount;
     use HasCachedAction;
+    use HasUserProperty;
     use ProcessesExport;
 
     protected string $loginColumn;
@@ -54,16 +56,6 @@ class Account extends Page
             is_null($this->user->two_factor_confirmed_at)) {
             app(DisableTwoFactorAuthentication::class)($this->user);
         }
-    }
-
-    /**
-     * Get the current user of the application.
-     *
-     * @return mixed
-     */
-    public function getUserProperty()
-    {
-        return Filament::auth()->user();
     }
 
     protected static function shouldRegisterNavigation(): bool
