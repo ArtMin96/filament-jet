@@ -2,9 +2,9 @@
 
 namespace ArtMin96\FilamentJet\Traits;
 
+use ArtMin96\FilamentJet\Jobs\CreatePersonalDataExportJob;
 use Illuminate\Bus\Batch;
 use Illuminate\Support\Facades\Bus;
-use Spatie\PersonalDataExport\Jobs\CreatePersonalDataExportJob;
 
 trait ProcessesExport
 {
@@ -36,6 +36,6 @@ trait ProcessesExport
 
     public function updateExportProgress()
     {
-        $this->exportProgress = $this->exportBatchId->progress();
+        $this->exportProgress = $this->exportBatch->progress();
     }
 }
