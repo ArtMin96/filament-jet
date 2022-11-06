@@ -9,6 +9,7 @@ use ArtMin96\FilamentJet\Features;
 use ArtMin96\FilamentJet\Filament\Traits\CanDeleteAccount;
 use ArtMin96\FilamentJet\Filament\Traits\CanLogoutOtherBrowserSessions;
 use ArtMin96\FilamentJet\Filament\Traits\HasCachedAction;
+use ArtMin96\FilamentJet\Filament\Traits\HasHiddenAction;
 use ArtMin96\FilamentJet\Filament\Traits\HasTwoFactorAuthentication;
 use ArtMin96\FilamentJet\FilamentJet;
 use ArtMin96\FilamentJet\Http\Livewire\Traits\Properties\HasUserProperty;
@@ -25,11 +26,12 @@ use Phpsa\FilamentPasswordReveal\Password;
 class Account extends Page
 {
     use PasswordValidationRules;
+    use HasHiddenAction;
+    use HasCachedAction;
+    use HasUserProperty;
     use HasTwoFactorAuthentication;
     use CanLogoutOtherBrowserSessions;
     use CanDeleteAccount;
-    use HasCachedAction;
-    use HasUserProperty;
     use ProcessesExport;
 
     protected string $loginColumn;
