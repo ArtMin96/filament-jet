@@ -176,14 +176,14 @@ class TeamSettings extends Page
                             ])->toArray()
                         )
                         ->afterStateUpdated(
-                            fn($state) => $this->currentRole = $state
+                            fn ($state) => $this->currentRole = $state
                         )
                         ->columns(1)
                         ->rules(FilamentJet::hasRoles()
                             ? ['required', 'string', new \ArtMin96\FilamentJet\Rules\Role]
                             : []
-                        )
-                ])
+                        ),
+                ]),
         ];
     }
 
