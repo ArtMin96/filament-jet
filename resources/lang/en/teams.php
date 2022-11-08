@@ -84,7 +84,7 @@ return [
                 'modal_submit' => 'Save',
 
                 'notify' => [
-                    'success' => 'Team member role updated.'
+                    'success' => 'Team member role updated.',
                 ],
             ],
         ],
