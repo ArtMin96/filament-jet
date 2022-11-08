@@ -154,6 +154,36 @@ class TeamSettings extends Page
                 ->icon('heroicon-o-trash')
                 ->color('danger')
                 ->action('deleteTeam'),
+            Action::make('manage_role')
+                ->action(function (array $data): void {
+                    $this->updateRole(app(UpdateTeamMemberRole::class));
+                })
+                ->modalWidth('lg')
+                ->modalHeading(__('filament-jet::teams.team_settings.team_members.manage.modal_heading'))
+                ->modalSubheading(__('filament-jet::teams.team_settings.team_members.manage.modal_subheading'))
+                ->modalButton(__('filament-jet::teams.team_settings.team_members.manage.modal_submit'))
+                ->form([
+                    RadioButton::make('role')
+                        ->label(__('filament-jet::teams.team_settings.add_team_member.fields.role'))
+                        ->options(
+                            collect($this->roles)->mapWithKeys(fn ($role): array => [
+                                $role->key => $role->name,
+                            ])->toArray()
+                        )
+                        ->descriptions(
+                            collect($this->roles)->mapWithKeys(fn ($role): array => [
+                                $role->key => $role->description,
+                            ])->toArray()
+                        )
+                        ->afterStateUpdated(
+                            fn($state) => $this->currentRole = $state
+                        )
+                        ->columns(1)
+                        ->rules(FilamentJet::hasRoles()
+                            ? ['required', 'string', new \ArtMin96\FilamentJet\Rules\Role]
+                            : []
+                        )
+                ])
         ];
     }
 
@@ -284,42 +314,6 @@ class TeamSettings extends Page
         $this->notify('success', __('filament-jet::teams.team_settings.team_members.notify.leave'), true);
 
         return redirect(config('filament.path'));
-    }
-
-    protected function getActions(): array
-    {
-        return [
-            Action::make('manage_role')
-                ->action(function (array $data): void {
-                    $this->updateRole(app(UpdateTeamMemberRole::class));
-                })
-                ->modalWidth('lg')
-                ->modalHeading(__('filament-jet::teams.team_settings.team_members.manage.modal_heading'))
-                ->modalSubheading(__('filament-jet::teams.team_settings.team_members.manage.modal_subheading'))
-                ->modalButton(__('filament-jet::teams.team_settings.team_members.manage.modal_submit'))
-                ->form([
-                    RadioButton::make('role')
-                        ->label(__('filament-jet::teams.team_settings.add_team_member.fields.role'))
-                        ->options(
-                            collect($this->roles)->mapWithKeys(fn ($role): array => [
-                                $role->key => $role->name,
-                            ])->toArray()
-                        )
-                        ->descriptions(
-                            collect($this->roles)->mapWithKeys(fn ($role): array => [
-                                $role->key => $role->description,
-                            ])->toArray()
-                        )
-                        ->afterStateUpdated(
-                            fn($state) => $this->currentRole = $state
-                        )
-                        ->columns(1)
-                        ->rules(FilamentJet::hasRoles()
-                            ? ['required', 'string', new \ArtMin96\FilamentJet\Rules\Role]
-                            : []
-                        )
-                ])
-        ];
     }
 
     /**
