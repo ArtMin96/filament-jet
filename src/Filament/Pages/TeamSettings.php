@@ -311,22 +311,21 @@ class TeamSettings extends Page
                             ])->toArray()
                         )
                         ->afterStateUpdated(
-                            fn($state) => $this->currentRole = $state
+                            fn ($state) => $this->currentRole = $state
                         )
                         ->columns(1)
                         ->rules(FilamentJet::hasRoles()
                             ? ['required', 'string', new \ArtMin96\FilamentJet\Rules\Role]
                             : []
-                        )
-                ])
+                        ),
+                ]),
         ];
     }
 
     /**
      * Allow the given user's role to be managed.
      *
-     * @param int $userId
-     *
+     * @param  int  $userId
      * @return void
      */
     public function manageRole($userId)
@@ -341,9 +340,9 @@ class TeamSettings extends Page
     /**
      * Save the role for the user being managed.
      *
-     * @param UpdateTeamMemberRole $updater
-     *
+     * @param  UpdateTeamMemberRole  $updater
      * @return void
+     *
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function updateRole(UpdateTeamMemberRole $updater)
