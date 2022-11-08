@@ -3,6 +3,7 @@
 namespace ArtMin96\FilamentJet\Filament\Pages;
 
 use App\Models\User;
+use ArtMin96\FilamentJet\Actions\UpdateTeamMemberRole;
 use ArtMin96\FilamentJet\Actions\ValidateTeamDeletion;
 use ArtMin96\FilamentJet\Contracts\AddsTeamMembers;
 use ArtMin96\FilamentJet\Contracts\DeletesTeams;
@@ -18,6 +19,7 @@ use ArtMin96\FilamentJet\Role;
 use ArtMin96\FilamentJet\Traits\RedirectsActions;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\TextInput;
+use Filament\Pages\Actions\Action;
 use Filament\Pages\Page;
 use Suleymanozev\FilamentRadioButtonField\Forms\Components\RadioButton;
 
@@ -38,6 +40,20 @@ class TeamSettings extends Page
     public $email;
 
     public $role;
+
+    /**
+     * The user that is having their role managed.
+     *
+     * @var mixed
+     */
+    public $managingRoleFor;
+
+    /**
+     * The current role for the user that is having their role managed.
+     *
+     * @var string
+     */
+    public $currentRole;
 
     public function mount()
     {
@@ -268,5 +284,79 @@ class TeamSettings extends Page
         $this->notify('success', __('filament-jet::teams.team_settings.team_members.notify.leave'), true);
 
         return redirect(config('filament.path'));
+    }
+
+    protected function getActions(): array
+    {
+        return [
+            Action::make('manage_role')
+                ->action(function (array $data): void {
+                    $this->updateRole(app(UpdateTeamMemberRole::class));
+                })
+                ->modalWidth('lg')
+                ->modalHeading(__('filament-jet::teams.team_settings.team_members.manage.modal_heading'))
+                ->modalSubheading(__('filament-jet::teams.team_settings.team_members.manage.modal_subheading'))
+                ->modalButton(__('filament-jet::teams.team_settings.team_members.manage.modal_submit'))
+                ->form([
+                    RadioButton::make('role')
+                        ->label(__('filament-jet::teams.team_settings.add_team_member.fields.role'))
+                        ->options(
+                            collect($this->roles)->mapWithKeys(fn ($role): array => [
+                                $role->key => $role->name,
+                            ])->toArray()
+                        )
+                        ->descriptions(
+                            collect($this->roles)->mapWithKeys(fn ($role): array => [
+                                $role->key => $role->description,
+                            ])->toArray()
+                        )
+                        ->afterStateUpdated(
+                            fn($state) => $this->currentRole = $state
+                        )
+                        ->columns(1)
+                        ->rules(FilamentJet::hasRoles()
+                            ? ['required', 'string', new \ArtMin96\FilamentJet\Rules\Role]
+                            : []
+                        )
+                ])
+        ];
+    }
+
+    /**
+     * Allow the given user's role to be managed.
+     *
+     * @param int $userId
+     *
+     * @return void
+     */
+    public function manageRole($userId)
+    {
+        $this->managingRoleFor = FilamentJet::findUserByIdOrFail($userId);
+        $this->currentRole = $this->managingRoleFor->teamRole($this->team)->key;
+
+        $this->mountAction('manage_role');
+        $this->getMountedActionForm()->fill(['role' => $this->currentRole]);
+    }
+
+    /**
+     * Save the role for the user being managed.
+     *
+     * @param UpdateTeamMemberRole $updater
+     *
+     * @return void
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function updateRole(UpdateTeamMemberRole $updater)
+    {
+        $updater->update(
+            $this->user,
+            $this->team,
+            $this->managingRoleFor->id,
+            $this->currentRole
+        );
+
+        $this->team = $this->team->fresh();
+
+        $this->notify('success', __('filament-jet::teams.team_settings.team_members.manage.notify.success'));
     }
 }

@@ -49,7 +49,10 @@ class ApiTokensTable extends Component implements HasTable
                 ->label(__('filament-jet::api.fields.last_used_at'))
                 ->searchable()
                 ->sortable()
-                ->formatStateUsing(fn (string|null $state): string|null => $state ? Carbon::parse($state)->diffForHumans() : __('filament-jet::api.table.never')),
+                ->formatStateUsing(
+                    fn (string|null $state): string|null =>
+                    $state ? Carbon::parse($state)->diffForHumans() : __('filament-jet::api.table.never')
+                ),
         ];
     }
 

@@ -77,6 +77,16 @@ return [
                 'removed' => 'Removed',
                 'leave' => 'You leave the team',
             ],
+
+            'manage' => [
+                'modal_heading' => 'Manage role',
+                'modal_subheading' => '',
+                'modal_submit' => 'Save',
+
+                'notify' => [
+                    'success' => 'Team member role updated.'
+                ],
+            ],
         ],
 
         'delete_team' => [
