@@ -27,6 +27,10 @@ return [
 
     'table' => [
         'never' => 'Never',
+
+        'bulk_actions' => [
+            'delete' => 'Delete',
+        ],
     ],
 
     'fields' => [

@@ -7,12 +7,14 @@ use ArtMin96\FilamentJet\Http\Livewire\Traits\Properties\HasSanctumPermissionsPr
 use Filament\Facades\Filament;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Laravel\Sanctum\Sanctum;
 use Livewire\Component;
 
@@ -52,6 +54,17 @@ class ApiTokensTable extends Component implements HasTable
                 ->formatStateUsing(
                     fn (string|null $state): string|null => $state ? Carbon::parse($state)->diffForHumans() : __('filament-jet::api.table.never')
                 ),
+        ];
+    }
+
+    protected function getTableBulkActions(): array
+    {
+        return [
+            BulkAction::make('delete')
+                ->label(__('filament-jet::api.table.bulk_actions.delete'))
+                ->action(fn (Collection $records) => $records->each->delete())
+                ->requiresConfirmation()
+                ->deselectRecordsAfterCompletion(),
         ];
     }
 
