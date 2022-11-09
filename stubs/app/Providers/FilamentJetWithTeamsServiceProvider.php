@@ -15,10 +15,13 @@ use App\Filament\Pages\CreateTeam as BaseCreateTeamPage;
 use App\Filament\Pages\TeamSettings;
 use ArtMin96\FilamentJet\Features;
 use ArtMin96\FilamentJet\FilamentJet;
+use ArtMin96\FilamentJet\Http\Livewire\SwitchableTeam;
 use Filament\Facades\Filament;
 use Filament\Navigation\UserMenuItem;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\View;
+use Livewire\Livewire;
 
 class FilamentJetServiceProvider extends ServiceProvider
 {
@@ -48,9 +51,11 @@ class FilamentJetServiceProvider extends ServiceProvider
             FilamentJet::deleteUsersUsing(DeleteUser::class);
 
             if (config('filament-jet.user_menu.switchable_team', true)) {
+                Livewire::component('switchable-team', SwitchableTeam::class);
+
                 Filament::registerRenderHook(
-                    'global-search.end',
-                    fn (): View => view('filament-jet::components.switchable-team'),
+                    'user-menu.start',
+                    fn (): string => Blade::render('@livewire(\'switchable-team\')'),
                 );
             }
 

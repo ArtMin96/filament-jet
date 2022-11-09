@@ -216,8 +216,6 @@ Route::domain(config("filament.domain"))
         // Teams...
         if (\ArtMin96\FilamentJet\Features::hasTeamFeatures()) {
             Route::group(['middleware' => 'verified'], function () {
-                Route::put('/current-team', [\ArtMin96\FilamentJet\Http\Controllers\CurrentTeamController::class, 'update'])->name('current-team.update');
-
                 Route::get('/team-invitations/{invitation}', [\ArtMin96\FilamentJet\Http\Controllers\TeamInvitationController::class, 'accept'])
                     ->middleware(['signed'])
                     ->name('team-invitations.accept');

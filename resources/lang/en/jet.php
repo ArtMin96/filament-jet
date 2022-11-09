@@ -28,6 +28,7 @@ return [
     ],
 
     'permissions' => [
+        'owner' => 'Owner',
         'admin' => [
             'label' => 'Administrator',
             'description' => 'Administrator users can perform any action.',

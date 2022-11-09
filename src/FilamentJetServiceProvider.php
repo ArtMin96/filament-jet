@@ -80,13 +80,13 @@ class FilamentJetServiceProvider extends PluginServiceProvider
         Livewire::component(PersonalDataExport::getName(), PersonalDataExport::class);
         Livewire::component(ApiTokensTable::getName(), ApiTokensTable::class);
 
-        if (Features::enabled(Features::registration()) && FilamentJet::registrationComponent()) {
+        if (Features::enabled(Features::registration())) {
             Livewire::component(Register::getName(), Register::class);
+        }
 
-            if (Features::hasTermsAndPrivacyPolicyFeature()) {
-                Livewire::component(TermsOfService::getName(), TermsOfService::class);
-                Livewire::component(PrivacyPolicy::getName(), PrivacyPolicy::class);
-            }
+        if (Features::hasTermsAndPrivacyPolicyFeature()) {
+            Livewire::component(TermsOfService::getName(), TermsOfService::class);
+            Livewire::component(PrivacyPolicy::getName(), PrivacyPolicy::class);
         }
 
         FilamentJet::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
