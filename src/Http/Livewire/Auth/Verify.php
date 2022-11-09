@@ -18,7 +18,7 @@ class Verify extends Component implements HasForms
     public function mount()
     {
         if (Filament::auth()->check() && Filament::auth()->user()?->hasVerifiedEmail()) {
-            return redirect(config("filament.home_url"));
+            return redirect(config('filament.home_url'));
         } elseif (! Filament::auth()->check()) {
             // User is not logged in...
             return redirect(route('filament.auth.login'));
@@ -41,17 +41,17 @@ class Verify extends Component implements HasForms
             ->user()
             ->sendEmailVerificationNotification();
 
-        Notification::make()->title(__("filament-jet::email-verify.notification_resend"))->success()->send();
+        Notification::make()->title(__('filament-jet::email-verify.notification_resend'))->success()->send();
 
         $this->hasBeenSent = true;
     }
 
     public function render(): View
     {
-        $view = view("filament-jet::livewire.auth.verify");
+        $view = view('filament-jet::livewire.auth.verify');
 
-        $view->layout("filament::components.layouts.base", [
-            "title" => __("filament-jet::email-verify.title"),
+        $view->layout('filament::components.layouts.base', [
+            'title' => __('filament-jet::email-verify.title'),
         ]);
 
         return $view;

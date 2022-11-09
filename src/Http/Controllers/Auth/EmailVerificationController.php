@@ -32,13 +32,13 @@ class EmailVerificationController extends Controller
         }
 
         if (Filament::auth()->user()->hasVerifiedEmail()) {
-            return redirect(config("filament.home_url"));
+            return redirect(config('filament.home_url'));
         }
 
         if (Filament::auth()->user()->markEmailAsVerified()) {
             event(new Verified(auth()->user()));
         }
 
-        return redirect(config("filament.home_url"));
+        return redirect(config('filament.home_url'));
     }
 }

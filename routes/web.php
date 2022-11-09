@@ -2,9 +2,9 @@
 
 use ArtMin96\FilamentJet\Features;
 use ArtMin96\FilamentJet\FilamentJet;
+use ArtMin96\FilamentJet\Http\Controllers\Auth\EmailVerificationController;
 use ArtMin96\FilamentJet\Http\Controllers\CurrentTeamController;
 use ArtMin96\FilamentJet\Http\Controllers\TeamInvitationController;
-use ArtMin96\FilamentJet\Http\Controllers\Auth\EmailVerificationController;
 use Illuminate\Support\Facades\Route;
 
 Route::domain(config('filament.domain'))
@@ -12,7 +12,6 @@ Route::domain(config('filament.domain'))
     ->name(config('filament-jet.route_group_prefix'))
     ->prefix(config('filament.path'))
     ->group(function () {
-
         $guard = config('filament.auth.guard');
         $authMiddleware = config('filament-jet.auth_middleware', 'auth');
 
@@ -39,7 +38,7 @@ Route::domain(config('filament.domain'))
         if (Features::hasTeamFeatures()) {
             Route::middleware([
                 ...[$authMiddleware.':'.$guard],
-                ...Features::getOption(Features::teams(), 'middleware') ?? []
+                ...Features::getOption(Features::teams(), 'middleware') ?? [],
             ])->group(function () {
                 Route::put('/current-team', [CurrentTeamController::class, 'update'])->name('current-team.update');
 
