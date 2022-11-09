@@ -21,6 +21,7 @@ use Filament\Facades\Filament;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\Actions\Action;
 use Filament\Pages\Page;
+use Illuminate\Support\Facades\Gate;
 use Suleymanozev\FilamentRadioButtonField\Forms\Components\RadioButton;
 
 class TeamSettings extends Page
@@ -102,7 +103,8 @@ class TeamSettings extends Page
                         TextInput::make('name')
                             ->label(__('filament-jet::teams.team_settings.update_name.fields.team_name'))
                             ->required()
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->disabled(! Gate::check('update', $this->team)),
                     ])
                     ->statePath('teamState'),
                 'addTeamMemberForm' => $this->makeForm()

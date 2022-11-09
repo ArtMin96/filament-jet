@@ -36,10 +36,9 @@ Route::domain(config('filament.domain'))
 
         // Teams...
         if (Features::hasTeamFeatures()) {
-            Route::middleware([
-                ...[$authMiddleware.':'.$guard],
-                ...Features::getOption(Features::teams(), 'middleware') ?? [],
-            ])->group(function () {
+            Route::middleware(
+                Features::getOption(Features::teams(), 'middleware') ?? []
+            )->group(function () {
                 Route::get('/team-invitations/{invitation}', [TeamInvitationController::class, 'accept'])
                     ->middleware(['signed'])
                     ->name('team-invitations.accept');

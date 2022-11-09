@@ -28,11 +28,13 @@
             {{ $this->updateTeamNameForm }}
         </x-slot>
 
-        <x-slot name="actions">
-            <x-filament::button type="submit">
-                {{ __('filament-jet::teams.team_settings.update_name.actions.save') }}
-            </x-filament::button>
-        </x-slot>
+        @if(\Illuminate\Support\Facades\Gate::check('update', $team))
+            <x-slot name="actions">
+                <x-filament::button type="submit">
+                    {{ __('filament-jet::teams.team_settings.update_name.actions.save') }}
+                </x-filament::button>
+            </x-slot>
+        @endif
     </x-filament-jet-form-section>
 
     @if (Gate::check('addTeamMember', $team))
@@ -174,25 +176,27 @@
         </x-tables::modal>
     @endif
 
-    <x-filament-jet-section-border />
+    @if(\Illuminate\Support\Facades\Gate::check('delete', $team) && ! $team->personal_team)
+        <x-filament-jet-section-border />
 
-    <x-filament-jet-action-section>
-        <x-slot name="title">
-            {{ __('filament-jet::teams.team_settings.delete_team.title') }}
-        </x-slot>
+        <x-filament-jet-action-section>
+            <x-slot name="title">
+                {{ __('filament-jet::teams.team_settings.delete_team.title') }}
+            </x-slot>
 
-        <x-slot name="description">
-            {{ __('filament-jet::teams.team_settings.delete_team.description') }}
-        </x-slot>
+            <x-slot name="description">
+                {{ __('filament-jet::teams.team_settings.delete_team.description') }}
+            </x-slot>
 
-        <x-slot name="content">
-            <div class="max-w-xl text-sm text-gray-600">
-                {{ __('filament-jet::teams.team_settings.delete_team.note') }}
-            </div>
+            <x-slot name="content">
+                <div class="max-w-xl text-sm text-gray-600">
+                    {{ __('filament-jet::teams.team_settings.delete_team.note') }}
+                </div>
 
-            <div class="mt-5 text-right">
-                {{ $this->getCachedAction('delete_team') }}
-            </div>
-        </x-slot>
-    </x-filament-jet-action-section>
+                <div class="mt-5 text-right">
+                    {{ $this->getCachedAction('delete_team') }}
+                </div>
+            </x-slot>
+        </x-filament-jet-action-section>
+    @endif
 </x-filament::page>

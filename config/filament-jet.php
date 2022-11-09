@@ -152,7 +152,7 @@ return [
         Features::api(),
         Features::teams([
             'invitations' => true,
-            'middleware' => [],
+            'middleware' => ['verified'],
         ]),
         Features::logoutOtherBrowserSessions(),
         Features::accountDeletion(),
