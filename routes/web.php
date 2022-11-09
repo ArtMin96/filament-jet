@@ -3,7 +3,6 @@
 use ArtMin96\FilamentJet\Features;
 use ArtMin96\FilamentJet\FilamentJet;
 use ArtMin96\FilamentJet\Http\Controllers\Auth\EmailVerificationController;
-use ArtMin96\FilamentJet\Http\Controllers\CurrentTeamController;
 use ArtMin96\FilamentJet\Http\Controllers\TeamInvitationController;
 use Illuminate\Support\Facades\Route;
 
