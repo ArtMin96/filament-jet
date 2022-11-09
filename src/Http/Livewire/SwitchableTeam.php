@@ -24,7 +24,6 @@ class SwitchableTeam extends Component
      * Update the authenticated user's current team.
      *
      * @param $teamId
-     *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function switchTeam($teamId)

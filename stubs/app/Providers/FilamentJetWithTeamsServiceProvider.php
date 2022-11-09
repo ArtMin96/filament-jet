@@ -20,7 +20,6 @@ use Filament\Facades\Filament;
 use Filament\Navigation\UserMenuItem;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\View\View;
 use Livewire\Livewire;
 
 class FilamentJetServiceProvider extends ServiceProvider
