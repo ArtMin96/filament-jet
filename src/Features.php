@@ -213,10 +213,15 @@ class Features
     /**
      * Enable the email verification feature.
      *
+     * @param  array  $options
      * @return string
      */
-    public static function emailVerification()
+    public static function emailVerification(array $options = [])
     {
+        if (! empty($options)) {
+            config(['filament-jet-options.email-verification' => $options]);
+        }
+
         return 'email-verification';
     }
 

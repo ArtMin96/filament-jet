@@ -39,6 +39,6 @@ class TeamInvitation extends Mailable
     {
         return $this->markdown('filament-jet::mail.team-invitation', ['acceptUrl' => URL::signedRoute('team-invitations.accept', [
             'invitation' => $this->invitation,
-        ])])->subject(__('Team Invitation'));
+        ])])->subject(__('filament-jet::teams.team_settings.invitations.mail.subject'));
     }
 }

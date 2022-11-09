@@ -249,6 +249,26 @@ class FilamentJet
     }
 
     /**
+     * Determine email verification component.
+     *
+     * @return bool
+     */
+    public static function emailVerificationComponent()
+    {
+        return Features::getOption(Features::emailVerification(), 'component');
+    }
+
+    /**
+     * Determine email verification controller.
+     *
+     * @return bool
+     */
+    public static function emailVerificationController()
+    {
+        return Features::getOption(Features::emailVerification(), 'controller');
+    }
+
+    /**
      * Determine terms of service component.
      *
      * @return bool

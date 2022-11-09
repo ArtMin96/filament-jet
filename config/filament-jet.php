@@ -4,6 +4,8 @@ use ArtMin96\FilamentJet\Features;
 
 return [
 
+    'auth_middleware' => 'auth',
+
     /*
     |--------------------------------------------------------------------------
     | Username / Email
@@ -100,6 +102,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Rate Limiting
+    |--------------------------------------------------------------------------
+    |
+    | If you would like to specify a custom rate limiter to call
+    | then you may specify it here.
+    |
+    */
+
+    'limiters' => [
+        'verification' => '6,1',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Features
     |--------------------------------------------------------------------------
     |
@@ -119,7 +135,10 @@ return [
         Features::resetPasswords([
             'component' => \ArtMin96\FilamentJet\Http\Livewire\Auth\ResetPassword::class,
         ]),
-        Features::emailVerification(),
+        Features::emailVerification([
+            'component' => \ArtMin96\FilamentJet\Http\Livewire\Auth\Verify::class,
+            'controller' => \ArtMin96\FilamentJet\Http\Controllers\Auth\EmailVerificationController::class,
+        ]),
         Features::updateProfileInformation(),
         Features::updatePasswords(),
         Features::twoFactorAuthentication([
@@ -131,7 +150,10 @@ return [
         Features::termsAndPrivacyPolicy(),
         Features::profilePhotos(),
         Features::api(),
-        Features::teams(['invitations' => true]),
+        Features::teams([
+            'invitations' => true,
+            'middleware' => []
+        ]),
         Features::logoutOtherBrowserSessions(),
         Features::accountDeletion(),
 
@@ -139,26 +161,30 @@ return [
          * @see https://github.com/spatie/laravel-personal-data-export
          */
         Features::personalDataExport([
-            /**
-             * The name of the export itself can be set using the personalDataExportName on the user.
-             * This will only affect the name of the download that will be sent as a response to the user,
-             * not the name of the zip stored on disk.
-             */
+
+            /*
+            | The name of the export itself can be set using the personalDataExportName on the user.
+            | This will only affect the name of the download that will be sent as a response to the user,
+            | not the name of the zip stored on disk.
+            */
+
             'export-name' => 'personal-data',
 
-            /**
-             * The first parameter is the name of the file in the inside the zip file.
-             * The second parameter is the content that should go in that file.
-             * If you pass an array here, we will encode it to JSON.
-             */
+            /*
+            | The first parameter is the name of the file in the inside the zip file.
+            | The second parameter is the content that should go in that file.
+            | If you pass an array here, we will encode it to JSON.
+            */
+
             'add' => [
                 // ['nameInDownload' => '', 'content' => []]
             ],
 
-            /**
-             * The first parameter is a path to a file which will be copied to the zip.
-             * You can also add a disk name as the second parameter and directory as the third parameter.
-             */
+            /*
+            | The first parameter is a path to a file which will be copied to the zip.
+            | You can also add a disk name as the second parameter and directory as the third parameter.
+            */
+
             'add-files' => [
                 // ['pathToFile' => '', 'diskName' => '', 'directory' => '']
             ],
@@ -180,11 +206,25 @@ return [
 
     'profile_photo_directory' => 'profile-photos',
 
+    /*
+    |--------------------------------------------------------------------------
+    | Password Confirmation Seconds
+    |--------------------------------------------------------------------------
+    |
+    | Number of seconds before asking the user to confirm their password in
+    | PasswordButtonAction again. 300 = 5 minutes.
+    |
+    */
+
     'password_confirmation_seconds' => config('auth.password_timeout'),
 
     /*
     |--------------------------------------------------------------------------
-    | The reset broker to be used in your reset password requests
+    | Reset Broker
+    |--------------------------------------------------------------------------
+    |
+    | The reset broker to be used in your reset password requests.
+    |
     */
 
     'reset_broker' => config('auth.defaults.passwords'),
