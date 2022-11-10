@@ -187,6 +187,8 @@ use ArtMin96\FilamentJet\Features;
 - `add`: the first parameter is the name of the file in the inside the zip file. The second parameter is the content that should go in that file. If you pass an array here, we will encode it to JSON.
 - `add-file`: the first parameter is a path to a file which will be copied to the zip. You can also add a disk name as the second parameter.
 
+The `export-name` will only affect the name of the download that will be sent as a response to the user, not the name of the zip stored on disk.
+
 This uses the [spatie/laravel-personal-data-export](https://github.com/spatie/laravel-personal-data-export) package. Follow the link for other information.
 
 ## Teams
