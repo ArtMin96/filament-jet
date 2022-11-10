@@ -2,6 +2,8 @@
 
 namespace App\Actions\FilamentJet;
 
+use App\Models\Team;
+use App\Models\User;
 use ArtMin96\FilamentJet\Contracts\DeletesTeams;
 use ArtMin96\FilamentJet\Contracts\DeletesUsers;
 use Illuminate\Support\Facades\DB;
@@ -17,9 +19,6 @@ class DeleteUser implements DeletesUsers
 
     /**
      * Create a new action instance.
-     *
-     * @param  \ArtMin96\FilamentJet\Contracts\DeletesTeams  $deletesTeams
-     * @return void
      */
     public function __construct(DeletesTeams $deletesTeams)
     {
@@ -28,11 +27,8 @@ class DeleteUser implements DeletesUsers
 
     /**
      * Delete the given user.
-     *
-     * @param  mixed  $user
-     * @return void
      */
-    public function delete($user): void
+    public function delete(User $user): void
     {
         DB::transaction(function () use ($user) {
             $this->deleteTeams($user);
@@ -44,15 +40,12 @@ class DeleteUser implements DeletesUsers
 
     /**
      * Delete the teams and team associations attached to the user.
-     *
-     * @param  mixed  $user
-     * @return void
      */
-    protected function deleteTeams($user)
+    protected function deleteTeams(User $user): void
     {
         $user->teams()->detach();
 
-        $user->ownedTeams->each(function ($team) {
+        $user->ownedTeams->each(function (Team $team) {
             $this->deletesTeams->delete($team);
         });
     }

@@ -24,6 +24,9 @@ use Livewire\Livewire;
 
 class FilamentJetServiceProvider extends ServiceProvider
 {
+    /**
+     * @var array<int, class-string>
+     */
     protected array $pages = [
         Account::class,
         ApiTokens::class,
@@ -33,10 +36,8 @@ class FilamentJetServiceProvider extends ServiceProvider
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         if (Features::hasTeamFeatures()) {
             $this->configurePermissions();
@@ -91,10 +92,8 @@ class FilamentJetServiceProvider extends ServiceProvider
 
     /**
      * Configure the roles and permissions that are available within the application.
-     *
-     * @return void
      */
-    protected function configurePermissions()
+    protected function configurePermissions(): void
     {
         FilamentJet::role('admin', __('filament-jet::jet.permissions.admin.label'), [
             'create',
@@ -112,10 +111,8 @@ class FilamentJetServiceProvider extends ServiceProvider
 
     /**
      * Configure the sanctum permissions that are available within the application.
-     *
-     * @return void
      */
-    protected function configureApiPermissions()
+    protected function configureApiPermissions(): void
     {
         FilamentJet::defaultApiTokenPermissions(['read']);
     }

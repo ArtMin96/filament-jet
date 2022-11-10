@@ -119,4 +119,10 @@ return [
             'notify' => 'Team deleted',
         ],
     ],
+
+    'validations' => [
+        'already_belongs_to_team' => 'This user already belongs to the team.',
+        'already_invited_to_team' => 'This user has already been invited to the team.',
+        'cannot_leave_own_team' => 'You may not leave a team that you created.',
+    ],
 ];

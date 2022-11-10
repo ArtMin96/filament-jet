@@ -2,6 +2,8 @@
 
 namespace App\Actions\FilamentJet;
 
+use App\Models\Team;
+use App\Models\User;
 use ArtMin96\FilamentJet\Contracts\RemovesTeamMembers;
 use ArtMin96\FilamentJet\Events\TeamMemberRemoved;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -12,15 +14,8 @@ class RemoveTeamMember implements RemovesTeamMembers
 {
     /**
      * Remove the team member from the given team.
-     *
-     * @param  mixed  $user
-     * @param  mixed  $team
-     * @param  mixed  $teamMember
-     * @return void
-     *
-     * @throws AuthorizationException
      */
-    public function remove($user, $team, $teamMember)
+    public function remove(User $user, Team $team, User $teamMember): void
     {
         $this->authorize($user, $team, $teamMember);
 
@@ -33,15 +28,8 @@ class RemoveTeamMember implements RemovesTeamMembers
 
     /**
      * Authorize that the user can remove the team member.
-     *
-     * @param  mixed  $user
-     * @param  mixed  $team
-     * @param  mixed  $teamMember
-     * @return void
-     *
-     * @throws AuthorizationException
      */
-    protected function authorize($user, $team, $teamMember)
+    protected function authorize(User $user, Team $team, User $teamMember): void
     {
         if (! Gate::forUser($user)->check('removeTeamMember', $team) &&
             $user->id !== $teamMember->id) {
@@ -51,18 +39,12 @@ class RemoveTeamMember implements RemovesTeamMembers
 
     /**
      * Ensure that the currently authenticated user does not own the team.
-     *
-     * @param  mixed  $teamMember
-     * @param  mixed  $team
-     * @return void
-     *
-     * @throws ValidationException
      */
-    protected function ensureUserDoesNotOwnTeam($teamMember, $team)
+    protected function ensureUserDoesNotOwnTeam(User $teamMember, Team $team): void
     {
         if ($teamMember->id === $team->owner->id) {
             throw ValidationException::withMessages([
-                'team' => [__('You may not leave a team that you created.')],
+                'team' => [__('filament-jet::teams.validations.cannot_leave_own_team')],
             ])->errorBag('removeTeamMember');
         }
     }

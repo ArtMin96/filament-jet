@@ -2,11 +2,14 @@
 
 namespace App\Actions\FilamentJet;
 
+use App\Models\Team;
+use App\Models\User;
 use ArtMin96\FilamentJet\Contracts\InvitesTeamMembers;
 use ArtMin96\FilamentJet\Events\InvitingTeamMember;
 use ArtMin96\FilamentJet\FilamentJet;
 use ArtMin96\FilamentJet\Mail\TeamInvitation;
 use ArtMin96\FilamentJet\Rules\Role;
+use Closure;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
@@ -18,16 +21,8 @@ class InviteTeamMember implements InvitesTeamMembers
 {
     /**
      * Invite a new team member to the given team.
-     *
-     * @param  mixed  $user
-     * @param  mixed  $team
-     * @param  string  $email
-     * @param  string|null  $role
-     * @return void
-     *
-     * @throws AuthorizationException
      */
-    public function invite($user, $team, string $email, string $role = null)
+    public function invite(User $user, Team $team, string $email, string $role = null): void
     {
         Gate::forUser($user)->authorize('addTeamMember', $team);
 
@@ -45,21 +40,14 @@ class InviteTeamMember implements InvitesTeamMembers
 
     /**
      * Validate the invite member operation.
-     *
-     * @param  mixed  $team
-     * @param  string  $email
-     * @param  string|null  $role
-     * @return void
-     *
-     * @throws ValidationException
      */
-    protected function validate($team, string $email, ?string $role)
+    protected function validate(Team $team, string $email, ?string $role): void
     {
         Validator::make([
             'email' => $email,
             'role' => $role,
         ], $this->rules($team), [
-            'email.unique' => __('This user has already been invited to the team.'),
+            'email.unique' => __('filament-jet::teams.validations.already_invited_to_team'),
         ])->after(
             $this->ensureUserIsNotAlreadyOnTeam($team, $email)
         )->validateWithBag('addTeamMember');
@@ -68,15 +56,17 @@ class InviteTeamMember implements InvitesTeamMembers
     /**
      * Get the validation rules for inviting a team member.
      *
-     * @param  mixed  $team
-     * @return array
+     * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
      */
-    protected function rules($team)
+    protected function rules(Team $team): array
     {
         return array_filter([
-            'email' => ['required', 'email', Rule::unique('team_invitations')->where(function ($query) use ($team) {
-                $query->where('team_id', $team->id);
-            })],
+            'email' => [
+                'required', 'email',
+                Rule::unique('team_invitations')->where(function ($query) use ($team) {
+                    $query->where('team_id', $team->id);
+                })
+            ],
             'role' => FilamentJet::hasRoles()
                 ? ['required', 'string', new Role]
                 : null,
@@ -85,18 +75,14 @@ class InviteTeamMember implements InvitesTeamMembers
 
     /**
      * Ensure that the user is not already on the team.
-     *
-     * @param  mixed  $team
-     * @param  string  $email
-     * @return \Closure
      */
-    protected function ensureUserIsNotAlreadyOnTeam($team, string $email)
+    protected function ensureUserIsNotAlreadyOnTeam(Team $team, string $email): Closure
     {
         return function ($validator) use ($team, $email) {
             $validator->errors()->addIf(
                 $team->hasUserWithEmail($email),
                 'email',
-                __('This user already belongs to the team.')
+                __('filament-jet::teams.validations.already_belongs_to_team')
             );
         };
     }

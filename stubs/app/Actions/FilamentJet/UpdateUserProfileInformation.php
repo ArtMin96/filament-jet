@@ -2,6 +2,7 @@
 
 namespace App\Actions\FilamentJet;
 
+use App\Models\User;
 use ArtMin96\FilamentJet\Contracts\UpdatesUserProfileInformation;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 
@@ -10,11 +11,9 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
     /**
      * Validate and update the given user's profile information.
      *
-     * @param    $user
-     * @param  array  $input
-     * @return void
+     * @param  array<string, string>  $input
      */
-    public function update($user, array $input)
+    public function update(User $user, array $input): void
     {
         $user->updateProfilePhoto($input['profile_photo_path']);
 
@@ -32,11 +31,9 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
     /**
      * Update the given verified user's profile information.
      *
-     * @param  mixed  $user
-     * @param  array  $input
-     * @return void
+     * @param  array<string, string>  $input
      */
-    protected function updateVerifiedUser($user, array $input)
+    protected function updateVerifiedUser(User $user, array $input): void
     {
         $user->forceFill([
             'name' => $input['name'],

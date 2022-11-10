@@ -10,10 +10,8 @@ class FilamentJetServiceProvider extends BaseFilamentJetServiceProvider
 {
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         $this->configurePermissions();
 
@@ -22,10 +20,8 @@ class FilamentJetServiceProvider extends BaseFilamentJetServiceProvider
 
     /**
      * Configure the permissions that are available within the application.
-     *
-     * @return void
      */
-    protected function configurePermissions()
+    protected function configurePermissions(): void
     {
         FilamentJet::defaultApiTokenPermissions(['read']);
 

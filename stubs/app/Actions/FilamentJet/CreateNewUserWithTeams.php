@@ -3,6 +3,7 @@
 namespace App\Actions\FilamentJet;
 
 use App\Models\Team;
+use App\Models\User;
 use ArtMin96\FilamentJet\Contracts\CreatesNewUsers;
 use ArtMin96\FilamentJet\FilamentJet;
 use Illuminate\Auth\Events\Registered;
@@ -14,10 +15,9 @@ class CreateNewUser implements CreatesNewUsers
     /**
      * Create a newly registered user.
      *
-     * @param  array  $input
-     * @return mixed
+     * @param  array<string, string>  $input
      */
-    public function create(array $input)
+    public function create(array $input): User
     {
         return DB::transaction(function () use ($input) {
             return tap(FilamentJet::userModel()::create([
@@ -36,11 +36,8 @@ class CreateNewUser implements CreatesNewUsers
 
     /**
      * Create a personal team for the user.
-     *
-     * @param  \App\Models\User  $user
-     * @return void
      */
-    protected function createTeam($user)
+    protected function createTeam($user): void
     {
         $user->ownedTeams()->save(Team::forceCreate([
             'user_id' => $user->id,

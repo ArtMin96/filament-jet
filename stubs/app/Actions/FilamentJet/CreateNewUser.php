@@ -9,12 +9,11 @@ use Illuminate\Support\Facades\Hash;
 class CreateNewUser implements CreatesNewUsers
 {
     /**
-     * Validate and create a newly registered user.
+     * Create a newly registered user.
      *
-     * @param  array  $input
-     * @return mixed
+     * @param  array<string, string>  $input
      */
-    public function create(array $input)
+    public function create(array $input): User
     {
         return User::create([
             'name' => $input['name'],
