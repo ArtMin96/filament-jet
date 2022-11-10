@@ -55,6 +55,140 @@ return [
 ];
 ```
 
+## Profile Management
+
+Laravel Filament Jet's profile management features are accessed by the user using the top-right user profile navigation dropdown menu. Filament Jet actions that allow the user to update their name, email address, and, optionally, their profile photo.
+
+![Filament Jet profile information art](./art/profile-information.png)
+![Filament Jet update password art](./art/update-password.png)
+![Filament Jet two factor art](./art/two-factor.png)
+![Filament Jet two factor finish enabling art](./art/two-factor-finish-enabling.png)
+![Filament Jet two factor enabled art](./art/two-factor-enabled.png)
+![Filament Jet two factor secret codes hidden art](./art/two-factor-secret-codes-hidden.png)
+![Filament Jet browser sessions art](./art/browser-sessions.png)
+![Filament Jet delete account art](./art/delete-account.png)
+![Filament Jet download information art](./art/download-information.png)
+![Filament Jet download information ready art](./art/download-information-ready.png)
+
+You may want to disable the `updateProfileInformation` feature by adding a comment.
+
+```php
+use ArtMin96\FilamentJet\Features;
+
+'features' => [
+    // Features::updateProfileInformation(),
+],
+```
+
+### Enabling Profile Photos
+
+If you wish to allow users to upload custom profile photos, you must enable the feature in your application's `config/filament-jet.php` configuration file. To enable the feature, simply uncomment the corresponding feature entry from the `features` configuration item within this file:
+
+```php
+use ArtMin96\FilamentJet\Features;
+
+'features' => [
+    Features::profilePhotos(),
+],
+```
+
+Follow the link for more information: [Jetstream Profile Management](https://jetstream.laravel.com/2.x/features/profile-management.html)
+
+### Password Update
+
+You may want to disable the `updatePasswords` feature by adding a comment.
+
+```php
+use ArtMin96\FilamentJet\Features;
+
+'features' => [
+    // Features::updatePasswords(),
+],
+```
+
+You may want to update the password without filling in the current password.
+
+```php
+'profile' => [
+    // ...
+
+    'require_current_password_on_change_password' => false,
+],
+```
+
+### Two Factor Authentication
+
+When a user enables two-factor authentication for their account, they should scan the given QR code using a free TOTP authenticator application such as Google Authenticator. In addition, they should store the listed recovery codes in a secure password manager such as [1Password](https://1password.com/).
+
+You may want to disable the `twoFactorAuthentication` feature by adding a comment.
+
+```php
+use ArtMin96\FilamentJet\Features;
+
+'features' => [
+//     Features::twoFactorAuthentication([
+//        'confirm' => true,
+//        'confirmPassword' => true,
+//    ]),
+],
+```
+
+### Browser Sessions
+
+This feature utilizes Laravel's built-in `Illuminate\Session\Middleware\AuthenticateSession` middleware to safely log out other browser sessions that are authenticated as the current user.
+
+> **Session Driver**
+> To utilize browser session management within Filament Jet, ensure that your session configuration's `driver` (or `SESSION_DRIVER` environment variable) is set to 'database'.
+
+You may want to disable the `logoutOtherBrowserSessions` feature by adding a comment.
+
+```php
+use ArtMin96\FilamentJet\Features;
+
+'features' => [
+    // Features::logoutOtherBrowserSessions(),
+],
+```
+
+### Delete Account
+
+You may want to disable the `accountDeletion` feature by adding a comment.
+
+```php
+use ArtMin96\FilamentJet\Features;
+
+'features' => [
+    // Features::accountDeletion(),
+],
+```
+
+### Download Your Information
+
+You can download a copy of your information from your profile. Once your files are available, you can download them to your device.
+
+You may want to disable the `personalDataExport` feature by adding a comment.
+
+```php
+use ArtMin96\FilamentJet\Features;
+
+'features' => [
+    // Features::personalDataExport([
+    //    'export-name' => 'personal-data',
+    //    'add' => [
+            // ['nameInDownload' => '', 'content' => []]
+    //    ],
+    //    'add-files' => [
+            // ['pathToFile' => '', 'diskName' => '', 'directory' => '']
+    //    ],
+    // ]),
+],
+```
+
+- `add`: the first parameter is the name of the file in the inside the zip file. The second parameter is the content that should go in that file. If you pass an array here, we will encode it to JSON.
+- `add-file`: the first parameter is a path to a file which will be copied to the zip. You can also add a disk name as the second parameter.
+
+This uses the [spatie/laravel-personal-data-export](https://github.com/spatie/laravel-personal-data-export) package. Follow the link for other information.
+
 ## Teams
 
 If you installed Filament Jet using the `--teams` option, your application will be scaffolded to support team creation and management.
@@ -77,16 +211,26 @@ If you installed Filament Jet using the `--teams` option, your application will 
 If you want to disable the team feature, remove this line from the `config/filament-jet.php` config.
 
 ```php
-Features::teams([
-    'invitations' => false,
-    'middleware' => []
-])
+use ArtMin96\FilamentJet\Features;
+
+'features' => [
+    Features::teams([
+        'invitations' => false,
+        'middleware' => []
+    ])
+],
 ```
+
+If you want to add other middlewares, fill in the middleware array.
+
+Follow the link for more information: [Jetstream Teams](https://jetstream.laravel.com/2.x/features/teams.html)
 
 ### Invitations
 
 By default, Filament Jet will simply add any existing application user that you specify to your team.
 To get started, pass the `invitations` option when enabling the "teams" feature for your application. This may be done by modifying the `features` array of your application's `config/filament-jet.php` configuration file.
+
+Follow the link for more information: [Jetstream Teams](https://jetstream.laravel.com/2.x/features/teams.html)
 
 ## Email Verification
 

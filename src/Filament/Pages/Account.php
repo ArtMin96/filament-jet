@@ -148,6 +148,7 @@ class Account extends Page
                     ->copyable()
                     ->revealable()
                     ->generatable()
+                    ->required()
                     ->rules($this->passwordRules()),
                 Password::make('password_confirmation')
                     ->label(__('filament-jet::account.update_password.columns.confirm_password'))

@@ -11,8 +11,9 @@ trait CanExportPersonalData
     public function personalDataExportName(): string
     {
         $userName = Str::slug($this->name);
+        $exportName = Features::getOption(Features::personalDataExport(), 'export-name');
 
-        return "personal-data-{$userName}.zip";
+        return "{$exportName}-{$userName}.zip";
     }
 
     public function selectPersonalData(PersonalDataSelection $personalData): void
