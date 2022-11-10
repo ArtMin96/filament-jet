@@ -41,10 +41,8 @@ class ApiTokens extends Page
 
     /**
      * Mount the component.
-     *
-     * @return void
      */
-    public function mount()
+    public function mount(): void
     {
         $this->permissions = FilamentJet::$defaultPermissions;
     }
@@ -75,10 +73,8 @@ class ApiTokens extends Page
 
     /**
      * Create a new API token.
-     *
-     * @return void
      */
-    public function createApiToken()
+    public function createApiToken(): void
     {
         $state = $this->createApiTokenForm->getState();
 
@@ -93,7 +89,7 @@ class ApiTokens extends Page
         $this->emit('tokenCreated');
     }
 
-    protected function displayTokenValue($token)
+    protected function displayTokenValue($token): void
     {
         $this->plainTextToken = explode('|', $token->plainTextToken, 2)[1];
 

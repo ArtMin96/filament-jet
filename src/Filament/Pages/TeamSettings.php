@@ -21,6 +21,7 @@ use Filament\Facades\Filament;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\Actions\Action;
 use Filament\Pages\Page;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
 use Suleymanozev\FilamentRadioButtonField\Forms\Components\RadioButton;
 
@@ -76,10 +77,8 @@ class TeamSettings extends Page
 
     /**
      * Get the available team member roles.
-     *
-     * @return array
      */
-    public function getRolesProperty()
+    public function getRolesProperty(): array
     {
         return collect(FilamentJet::$roles)->transform(function ($role) {
             return with($role->jsonSerialize(), function ($data) {
@@ -89,7 +88,9 @@ class TeamSettings extends Page
                     $data['permissions']
                 ))->description($data['description']);
             });
-        })->values()->all();
+        })
+            ->values()
+            ->all();
     }
 
     protected function getForms(): array
@@ -189,7 +190,7 @@ class TeamSettings extends Page
         ];
     }
 
-    public function updateTeamName(UpdatesTeamNames $updater)
+    public function updateTeamName(UpdatesTeamNames $updater): void
     {
         $updater->update($this->user, $this->team, $this->teamState);
 
@@ -198,10 +199,8 @@ class TeamSettings extends Page
 
     /**
      * Add a new team member to a team.
-     *
-     * @return void
      */
-    public function addTeamMember()
+    public function addTeamMember(): void
     {
         $this->addTeamMemberForm->getState();
 
@@ -238,10 +237,9 @@ class TeamSettings extends Page
     /**
      * Cancel a pending team member invitation.
      *
-     * @param  int  $invitationId
-     * @return void
+     * @param int $invitationId
      */
-    public function cancelTeamInvitation($invitationId)
+    public function cancelTeamInvitation(int $invitationId): void
     {
         if (! empty($invitationId)) {
             $model = FilamentJet::teamInvitationModel();
@@ -259,12 +257,8 @@ class TeamSettings extends Page
      *
      * @param  ValidateTeamDeletion  $validator
      * @param  DeletesTeams  $deleter
-     * @return \Illuminate\Http\Response
-     *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Illuminate\Validation\ValidationException
      */
-    public function deleteTeam(ValidateTeamDeletion $validator, DeletesTeams $deleter)
+    public function deleteTeam(ValidateTeamDeletion $validator, DeletesTeams $deleter): Response
     {
         $validator->validate(Filament::auth()->user(), $this->team);
 
@@ -280,9 +274,8 @@ class TeamSettings extends Page
      *
      * @param    $userId
      * @param  RemovesTeamMembers  $remover
-     * @return void
      */
-    public function removeTeamMember($userId, RemovesTeamMembers $remover)
+    public function removeTeamMember($userId, RemovesTeamMembers $remover): void
     {
         $remover->remove(
             $this->user,
@@ -299,7 +292,6 @@ class TeamSettings extends Page
      * Remove the currently authenticated user from the team.
      *
      * @param  \ArtMin96\FilamentJet\Contracts\RemovesTeamMembers  $remover
-     * @return void
      */
     public function leaveTeam(RemovesTeamMembers $remover)
     {
@@ -322,9 +314,8 @@ class TeamSettings extends Page
      * Allow the given user's role to be managed.
      *
      * @param  int  $userId
-     * @return void
      */
-    public function manageRole($userId)
+    public function manageRole(int $userId): void
     {
         $this->managingRoleFor = FilamentJet::findUserByIdOrFail($userId);
         $this->currentRole = $this->managingRoleFor->teamRole($this->team)->key;
@@ -337,11 +328,8 @@ class TeamSettings extends Page
      * Save the role for the user being managed.
      *
      * @param  UpdateTeamMemberRole  $updater
-     * @return void
-     *
-     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function updateRole(UpdateTeamMemberRole $updater)
+    public function updateRole(UpdateTeamMemberRole $updater): void
     {
         $updater->update(
             $this->user,

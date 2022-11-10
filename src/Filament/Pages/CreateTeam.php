@@ -7,6 +7,7 @@ use ArtMin96\FilamentJet\Http\Livewire\Traits\Properties\HasUserProperty;
 use ArtMin96\FilamentJet\Traits\RedirectsActions;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\Page;
+use Illuminate\Http\Response;
 
 class CreateTeam extends Page
 {
@@ -41,11 +42,8 @@ class CreateTeam extends Page
 
     /**
      * Create a new team.
-     *
-     * @param  \ArtMin96\FilamentJet\Contracts\CreatesTeams  $creator
-     * @return \Illuminate\Http\Response
      */
-    public function createTeam(CreatesTeams $creator)
+    public function createTeam(CreatesTeams $creator): Response
     {
         $creator->create($this->user, $this->createTeamState);
 
