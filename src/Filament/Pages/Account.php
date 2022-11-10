@@ -20,8 +20,8 @@ use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\Page;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
+use Livewire\Redirector;
 use Phpsa\FilamentPasswordReveal\Password;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -160,7 +160,7 @@ class Account extends Page
     /**
      * Update the user's profile information.
      */
-    public function updateProfileInformation(UpdatesUserProfileInformation $updater): RedirectResponse
+    public function updateProfileInformation(UpdatesUserProfileInformation $updater): Redirector
     {
         $updater->update(
             $this->user,

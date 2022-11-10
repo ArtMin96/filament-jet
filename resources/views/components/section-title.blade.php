@@ -8,7 +8,7 @@
         </h3>
 
         <p @class([
-            'mt-1 text-base text-gray-600 filament-breezy-grid-description',
+            'mt-1 text-base text-gray-600 filament-jet-grid-description',
             'dark:text-gray-100' => config('filament.dark_mode')
         ])>
             {{ $description }}

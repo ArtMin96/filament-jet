@@ -21,8 +21,8 @@ use Filament\Facades\Filament;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\Actions\Action;
 use Filament\Pages\Page;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
+use Livewire\Redirector;
 use Suleymanozev\FilamentRadioButtonField\Forms\Components\RadioButton;
 
 class TeamSettings extends Page
@@ -258,7 +258,7 @@ class TeamSettings extends Page
      * @param  ValidateTeamDeletion  $validator
      * @param  DeletesTeams  $deleter
      */
-    public function deleteTeam(ValidateTeamDeletion $validator, DeletesTeams $deleter): Response
+    public function deleteTeam(ValidateTeamDeletion $validator, DeletesTeams $deleter): Redirector
     {
         $validator->validate(Filament::auth()->user(), $this->team);
 

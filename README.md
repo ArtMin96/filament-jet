@@ -13,6 +13,10 @@ There was a case when something from [Filament Breezy](https://github.com/jeffgr
 
 Filament Jet is a authentication starter kit for [Filament](https://github.com/filamentphp/filament) and provides the perfect starting point for your next [Filament](https://github.com/filamentphp/filament) application. Filament Jet provides the implementation for your application's login, registration, email verification, two-factor authentication, session management, personal data export, API via Laravel Sanctum, and optional team management features.
 
+Switchable team             |  User menu
+:--------------------------:|:-------------------------:
+![Filament Jet switchable team art](./art/switchable-team.png)  |  ![Filament Jet user menu art](./art/user-menu.png)
+
 ## Installation
 
 > **Warning**
@@ -49,6 +53,53 @@ This is the contents of the published config file:
 ```php
 return [
 ];
+```
+
+## Teams
+
+If you installed Filament Jet using the `--teams` option, your application will be scaffolded to support team creation and management.
+
+### Create Team
+
+![Filament Jet create team art](./art/create-team.png)
+
+### Team Settings
+
+![Filament Jet update team name art](./art/update-team-name.png)
+![Filament Jet add team member art](./art/add-team-member.png)
+![Filament Jet pending team invitations art](./art/pending-team-invitations.png)
+![Filament Jet team members art](./art/team-members.png)
+![Filament Jet manage team member role art](./art/manage-team-member-role.png)
+![Filament Jet delete team art](./art/delete-team.png)
+
+### Disabling team feature
+
+If you want to disable the team feature, remove this line from the `config/filament-jet.php` config.
+
+```php
+Features::teams([
+    'invitations' => false,
+    'middleware' => []
+])
+```
+
+### Invitations
+
+By default, Filament Jet will simply add any existing application user that you specify to your team.
+To get started, pass the `invitations` option when enabling the "teams" feature for your application. This may be done by modifying the `features` array of your application's `config/filament-jet.php` configuration file.
+
+## Email Verification
+
+To get started, verify that your `App\Models\User` model implements the `Illuminate\Contracts\Auth\MustVerifyEmail` contract
+
+```php
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+
+class User extends Authenticatable implements MustVerifyEmail
+{
+    // ...
+}
 ```
 
 ## Usage
