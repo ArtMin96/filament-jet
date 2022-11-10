@@ -10,12 +10,10 @@ use ArtMin96\FilamentJet\FilamentJet;
 use ArtMin96\FilamentJet\Mail\TeamInvitation;
 use ArtMin96\FilamentJet\Rules\Role;
 use Closure;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\ValidationException;
 
 class InviteTeamMember implements InvitesTeamMembers
 {
@@ -65,7 +63,7 @@ class InviteTeamMember implements InvitesTeamMembers
                 'required', 'email',
                 Rule::unique('team_invitations')->where(function ($query) use ($team) {
                     $query->where('team_id', $team->id);
-                })
+                }),
             ],
             'role' => FilamentJet::hasRoles()
                 ? ['required', 'string', new Role]

@@ -12,7 +12,6 @@ use ArtMin96\FilamentJet\Rules\Role;
 use Closure;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\ValidationException;
 
 class AddTeamMember implements AddsTeamMembers
 {

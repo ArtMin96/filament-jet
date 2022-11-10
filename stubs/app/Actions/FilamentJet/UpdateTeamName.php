@@ -5,7 +5,6 @@ namespace App\Actions\FilamentJet;
 use App\Models\Team;
 use App\Models\User;
 use ArtMin96\FilamentJet\Contracts\UpdatesTeamNames;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Gate;
 
 class UpdateTeamName implements UpdatesTeamNames
