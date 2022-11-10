@@ -49,7 +49,7 @@ Route::domain(config('filament.domain'))
             $verificationLimiter = config('filament-jet.limiters.verification', '6,1');
 
             Route::get('/email/verify', FilamentJet::emailVerificationComponent())
-                ->middleware(['throttle:'.$verificationLimiter])
+                ->middleware(['throttle:'.$verificationLimiter, 'auth:'.$guard])
                 ->name('verification.notice');
 
             Route::get('email/verify/{id}/{hash}', [FilamentJet::emailVerificationController() ?? EmailVerificationController::class, '__invoke'])

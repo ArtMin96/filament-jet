@@ -78,6 +78,8 @@ Please review [our security policy](../../security/policy) on how to report secu
 - [Arthur Minasyan](https://github.com/ArtMin96)
 - [All Contributors](../../contributors)
 
+This package was inspired by a package by [jeffgreco13](https://github.com/jeffgreco13) and [Laravel's jetstream](https://github.com/laravel/jetstream).
+
 ## License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
