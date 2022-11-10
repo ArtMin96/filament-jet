@@ -237,7 +237,7 @@ class TeamSettings extends Page
     /**
      * Cancel a pending team member invitation.
      *
-     * @param int $invitationId
+     * @param  int  $invitationId
      */
     public function cancelTeamInvitation(int $invitationId): void
     {
