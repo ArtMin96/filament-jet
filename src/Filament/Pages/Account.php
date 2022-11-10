@@ -20,8 +20,10 @@ use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\Page;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use Phpsa\FilamentPasswordReveal\Password;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class Account extends Page
 {
@@ -46,12 +48,12 @@ class Account extends Page
 
     protected static string $view = 'filament-jet::filament.pages.account';
 
-    public function boot()
+    public function boot(): void
     {
         $this->loginColumn = FilamentJet::username();
     }
 
-    public function mount()
+    public function mount(): void
     {
         $this->updateProfileInformationForm->fill($this->user->withoutRelations()->toArray());
 
@@ -80,11 +82,6 @@ class Account extends Page
         ];
     }
 
-    /**
-     * @return array
-     *
-     * @throws \Exception
-     */
     protected function updateProfileFormSchema(): array
     {
         $profilePhotoField = [];
@@ -162,10 +159,8 @@ class Account extends Page
 
     /**
      * Update the user's profile information.
-     *
-     * @return \Illuminate\Http\RedirectResponse
      */
-    public function updateProfileInformation(UpdatesUserProfileInformation $updater)
+    public function updateProfileInformation(UpdatesUserProfileInformation $updater): RedirectResponse
     {
         $updater->update(
             $this->user,
@@ -183,10 +178,8 @@ class Account extends Page
 
     /**
      * Update the user's password.
-     *
-     * @return void
      */
-    public function updatePassword(UpdatesUserPasswords $updater)
+    public function updatePassword(UpdatesUserPasswords $updater): void
     {
         $state = $this->updatePasswordForm->getState();
 
@@ -201,7 +194,7 @@ class Account extends Page
         $this->reset(['current_password', 'password', 'password_confirmation']);
     }
 
-    public function downloadPersonalData()
+    public function downloadPersonalData(): BinaryFileResponse
     {
         $path = glob(Storage::disk(config('personal-data-export.disk'))->path('')."{$this->user->id}_*.zip");
 
