@@ -137,7 +137,7 @@ use ArtMin96\FilamentJet\Features;
 
 This feature utilizes Laravel's built-in `Illuminate\Session\Middleware\AuthenticateSession` middleware to safely log out other browser sessions that are authenticated as the current user.
 
-> **Session Driver**
+> **Note**
 > To utilize browser session management within Filament Jet, ensure that your session configuration's `driver` (or `SESSION_DRIVER` environment variable) is set to 'database'.
 
 You may want to disable the `logoutOtherBrowserSessions` feature by adding a comment.
