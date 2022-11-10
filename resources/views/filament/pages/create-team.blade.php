@@ -11,7 +11,7 @@
         <x-slot name="form">
             <!-- Team Owner Information -->
             <div class="col-span-6">
-                <div class="block font-medium text-sm text-gray-700">
+                <div class="block font-medium text-sm text-gray-700 dark:text-gray-300">
                     {{ __('filament-jet::teams.create_team.team_owner_label') }}
                 </div>
 
@@ -20,7 +20,7 @@
 
                     <div class="ml-4 leading-tight">
                         <div>{{ $this->user->name }}</div>
-                        <div class="text-gray-700 text-sm">{{ $this->user->email }}</div>
+                        <div class="text-gray-700 text-sm dark:text-gray-300">{{ $this->user->email }}</div>
                     </div>
                 </div>
             </div>

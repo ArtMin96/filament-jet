@@ -171,7 +171,7 @@
             </x-slot>
 
             <x-slot name="content">
-                <div class="max-w-xl text-sm text-gray-600">
+                <div class="max-w-xl text-sm text-gray-600 dark:text-white">
                     {{ __('filament-jet::account.other_browser_sessions.heading') }}
                 </div>
 
@@ -199,7 +199,7 @@
             </x-slot>
 
             <x-slot name="content">
-                <div class="max-w-xl text-sm text-gray-600">
+                <div class="max-w-xl text-sm text-gray-600 dark:text-white">
                     {{ __('filament-jet::account.delete_account.warning') }}
                 </div>
 
@@ -225,7 +225,7 @@
             </x-slot>
 
             <x-slot name="content">
-                <div class="max-w-xl text-sm text-gray-600">
+                <div class="max-w-xl text-sm text-gray-600 dark:text-white">
                     {{ __('filament-jet::account.export_personal_data.warning') }}
                 </div>
 

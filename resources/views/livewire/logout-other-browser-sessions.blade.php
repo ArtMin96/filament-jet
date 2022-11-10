@@ -16,12 +16,12 @@
                 </div>
 
                 <div class="ml-4">
-                    <div class="text-sm text-gray-600">
+                    <div class="text-sm text-gray-600 dark:text-white">
                         {{ $session->agent->platform() ? $session->agent->platform() : __('filament-jet::account.other_browser_sessions.unknown_device') }} - {{ $session->agent->browser() ? $session->agent->browser() : __('filament-jet::account.other_browser_sessions.unknown_device') }}
                     </div>
 
                     <div>
-                        <div class="text-xs text-gray-500">
+                        <div class="text-xs text-gray-500 dark:text-gray-300">
                             {{ $session->ip_address }},
 
                             @if ($session->is_current_device)

@@ -11,7 +11,7 @@
         <x-slot name="form">
             <!-- Team Owner Information -->
             <div class="col-span-6">
-                <div class="block font-medium text-sm text-gray-700">
+                <div class="block font-medium text-sm text-gray-700 dark:text-gray-300">
                     {{ __('filament-jet::teams.team_settings.update_name.team_owner_label') }}
                 </div>
 
@@ -20,7 +20,7 @@
 
                     <div class="ml-4 leading-tight">
                         <div>{{ $team->owner->name }}</div>
-                        <div class="text-gray-700 text-sm">{{ $team->owner->email }}</div>
+                        <div class="text-gray-700 text-sm dark:text-gray-300">{{ $team->owner->email }}</div>
                     </div>
                 </div>
             </div>
@@ -51,7 +51,7 @@
 
             <x-slot name="form">
                 <div class="col-span-6">
-                    <div class="max-w-xl text-sm text-gray-600">
+                    <div class="max-w-xl text-sm text-gray-600 dark:text-white">
                         {{ __('filament-jet::teams.team_settings.add_team_member.note') }}
                     </div>
                 </div>
@@ -85,7 +85,7 @@
                     <div class="space-y-6">
                         @foreach ($team->teamInvitations as $invitation)
                             <div class="flex items-center justify-between">
-                                <div class="text-gray-600">{{ $invitation->email }}</div>
+                                <div class="text-gray-600 dark:text-gray-300">{{ $invitation->email }}</div>
 
                                 <div class="flex items-center">
                                     @if (Gate::check('removeTeamMember', $team))
@@ -189,7 +189,7 @@
             </x-slot>
 
             <x-slot name="content">
-                <div class="max-w-xl text-sm text-gray-600">
+                <div class="max-w-xl text-sm text-gray-600 dark:text-white">
                     {{ __('filament-jet::teams.team_settings.delete_team.note') }}
                 </div>
 
