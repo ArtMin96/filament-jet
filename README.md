@@ -106,17 +106,21 @@ You may want to disable the `updatePasswords` feature by adding a comment.
 use ArtMin96\FilamentJet\Features;
 
 'features' => [
-    // Features::updatePasswords(),
+    // Features::updatePasswords([
+    //     ...
+    // ]),
 ],
 ```
 
 You may want to update the password without filling in the current password.
 
 ```php
-'profile' => [
-    // ...
+use ArtMin96\FilamentJet\Features;
 
-    'require_current_password_on_change_password' => false,
+'features' => [
+    Features::updatePasswords([
+        'askCurrentPassword' => false
+    ]),
 ],
 ```
 

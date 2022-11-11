@@ -128,7 +128,7 @@ class Account extends Page
     {
         $currentPasswordField = [];
 
-        $requireCurrentPasswordOnUpdate = config('filament-jet.profile.require_current_password_on_change_password');
+        $requireCurrentPasswordOnUpdate = Features::getOption(Features::updatePasswords(), 'askCurrentPassword');
 
         if ($requireCurrentPasswordOnUpdate) {
             $currentPasswordField[] = Password::make('current_password')

@@ -58,8 +58,6 @@ return [
                 'tooltip' => 'After changing the email address, confirmation is mandatory.',
             ],
         ],
-
-        'require_current_password_on_change_password' => true,
     ],
 
     'should_register_navigation' => [
@@ -140,7 +138,9 @@ return [
             'controller' => \ArtMin96\FilamentJet\Http\Controllers\Auth\EmailVerificationController::class,
         ]),
         Features::updateProfileInformation(),
-        Features::updatePasswords(),
+        Features::updatePasswords([
+            'askCurrentPassword' => true
+        ]),
         Features::twoFactorAuthentication([
             'confirm' => true,
             'toggleRecoveryCodesVisibilityWithConfirmPassword' => true,
