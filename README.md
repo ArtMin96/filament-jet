@@ -336,6 +336,11 @@ use ArtMin96\FilamentJet\Features;
 ],
 ```
 
+### Two Factor Challenge
+
+![Filament Jet two factor code art](./art/two-factor-code.png)
+![Filament Jet two factor recovery-code art](./art/two-factor-recovery-code.png)
+
 ### Extending and Overriding Components
 
 All pages within the auth flow are full-page Livewire components made to work with Filament Forms. So you can easily extend any component to add your own fields and actions.
@@ -380,7 +385,7 @@ use ArtMin96\FilamentJet\Features;
 ],
 ```
 
-## Email Verification
+### Email Verification
 
 To get started, verify that your `App\Models\User` model implements the `Illuminate\Contracts\Auth\MustVerifyEmail` contract
 
@@ -394,9 +399,34 @@ class User extends Authenticatable implements MustVerifyEmail
 }
 ```
 
+Filament Jet includes support for requiring that a newly registered user verify their email address. However, support for this feature is disabled by default. To enable this feature, you should uncomment the relevant entry in the `features` configuration item of your application's `config/filament-jet.php` configuration file:
+
+```php
+use ArtMin96\FilamentJet\Features;
+
+'features' => [
+    Features::emailVerification([
+        // ...
+    ]),
+],
+```
+
+You may want to change the verification checker component or email verification controller:
+
+```php
+use ArtMin96\FilamentJet\Features;
+
+'features' => [
+    Features::emailVerification([
+        'component' => YourVerify::class,
+        'controller' => YourEmailVerificationController::class,
+    ]),
+],
+```
+
 ## Usage
 
-The `filament-jet` configuration file contains a features configuration array where you can enable or disable the feature you want.
+The `filament-jet` configuration file contains a `features` configuration array where you can enable or disable the feature you want.
 
 ## Testing
 
