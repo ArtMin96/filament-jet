@@ -48,11 +48,15 @@ Optionally, you can publish the views using
 php artisan vendor:publish --tag="filament-jet-views"
 ```
 
-This is the contents of the published config file:
+Update the `config/filament.php` to point to the Filament Jet's `Login::class`.
 
 ```php
-return [
-];
+'auth' => [
+    'guard' => env('FILAMENT_AUTH_GUARD', 'web'),
+    'pages' => [
+        'login' => \ArtMin96\FilamentJet\Http\Livewire\Auth\Login::class,
+    ],
+],
 ```
 
 ## Profile Management
@@ -256,6 +260,75 @@ use ArtMin96\FilamentJet\Features;
 ```
 
 Follow the link for more information: [Jetstream API](https://jetstream.laravel.com/2.x/features/api.html)
+
+## Authentication
+
+### Registration
+
+![Filament Jet register art](./art/register.png)
+
+#### Requiring Terms Of Service / Privacy Policy Approval
+
+Many applications require users to accept their terms of service / privacy policy during registration. Filament Jet allows you to easily enable this requirement for your own application, as well as provides a convenient way of writing these documents using Markdown.
+
+To get started, enable this feature in your application's `config/filament-jet.php` configuration file:
+
+```php
+use ArtMin96\FilamentJet\Features;
+
+'features' => [
+    Features::termsAndPrivacyPolicy(),
+],
+```
+
+Next, you may write your terms of service / privacy policy documents by modifying your application's `resources/markdown/terms.md` and `resources/markdown/policy.md` files.
+
+You may want to disable the `registration` feature by adding a comment.
+
+```php
+use ArtMin96\FilamentJet\Features;
+
+'features' => [
+    // Features::registration([
+    //     'component' => \ArtMin96\FilamentJet\Http\Livewire\Auth\Register::class,
+    //     'terms_of_service' => \ArtMin96\FilamentJet\Http\Livewire\TermsOfService::class,
+    //     'privacy_policy' => \ArtMin96\FilamentJet\Http\Livewire\PrivacyPolicy::class,
+    //     'auth_card_max_w' => null,
+    // ]),
+],
+```
+
+### Extending and Overriding Components
+
+All pages within the auth flow are full-page Livewire components made to work with Filament Forms. So you can easily extend any component to add your own fields and actions.
+
+You may want to change the registration component:
+
+```php
+use ArtMin96\FilamentJet\Features;
+
+'features' => [
+    Features::registration([
+        'component' => YourRegistrationComponent::class,
+        // ...
+    ]),
+],
+```
+
+You may want to change the terms of service or privacy policy component:
+
+```php
+use ArtMin96\FilamentJet\Features;
+
+'features' => [
+    Features::registration([
+        // ...
+        'terms_of_service' => YourTermsOfServiceComponent::class,
+        'privacy_policy' => YourPrivacyPolicyComponent::class,
+        // ...
+    ]),
+],
+```
 
 ## Email Verification
 
