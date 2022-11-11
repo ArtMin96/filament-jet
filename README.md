@@ -300,6 +300,30 @@ use ArtMin96\FilamentJet\Features;
 ],
 ```
 
+### Login
+
+![Filament Jet login art](./art/login.png)
+
+### Reset Password
+
+![Filament Jet reset password art](./art/reset-password.png)
+![Filament Jet reset password sent art](./art/reset-password-sent.png)
+![Filament Jet reset password update art](./art/reset-password-update.png)
+
+#### Disabling Reset Password Feature
+
+You may want to disable the `resetPasswords` feature by adding a comment.
+
+```php
+use ArtMin96\FilamentJet\Features;
+
+'features' => [
+    Features::resetPasswords([
+        'component' => \ArtMin96\FilamentJet\Http\Livewire\Auth\ResetPassword::class,
+    ]),
+],
+```
+
 ### Extending and Overriding Components
 
 All pages within the auth flow are full-page Livewire components made to work with Filament Forms. So you can easily extend any component to add your own fields and actions.
@@ -328,6 +352,18 @@ use ArtMin96\FilamentJet\Features;
         'terms_of_service' => YourTermsOfServiceComponent::class,
         'privacy_policy' => YourPrivacyPolicyComponent::class,
         // ...
+    ]),
+],
+```
+
+You may want to change the reset password component:
+
+```php
+use ArtMin96\FilamentJet\Features;
+
+'features' => [
+    Features::resetPasswords([
+        'component' => YourResetPasswordComponent::class,
     ]),
 ],
 ```

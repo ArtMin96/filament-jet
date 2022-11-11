@@ -24,10 +24,12 @@
         {{ __('filament::login.buttons.submit.label') }}
     </x-filament::button>
 
-    <div class="text-center">
-        <a class="text-primary-600 hover:text-primary-700" href="{{ route(config('filament-jet.route_group_prefix').'password.request') }}">
-            {{ __('filament-jet::login.forgot_password_link') }}
-        </a>
-    </div>
+    @if(\ArtMin96\FilamentJet\Features::enabled(\ArtMin96\FilamentJet\Features::resetPasswords()))
+        <div class="text-center">
+            <a class="text-primary-600 hover:text-primary-700" href="{{ route(config('filament-jet.route_group_prefix').'password.request') }}">
+                {{ __('filament-jet::login.forgot_password_link') }}
+            </a>
+        </div>
+    @endif
 
 </x-filament-jet::auth-card>
