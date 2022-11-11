@@ -3,6 +3,7 @@
 namespace ArtMin96\FilamentJet\Http\Controllers;
 
 use ArtMin96\FilamentJet\Contracts\AddsTeamMembers;
+use ArtMin96\FilamentJet\FilamentJet;
 use ArtMin96\FilamentJet\Models\TeamInvitation;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
@@ -28,6 +29,12 @@ class TeamInvitationController extends Controller
         );
 
         $invitation->delete();
+
+        $newTeamMember = FilamentJet::findUserByEmailOrFail($invitation->email);
+
+        if (! $newTeamMember->switchTeam($invitation->team)) {
+            abort(403);
+        }
 
         // TODO Notify after redirect
         // __('Great! You have accepted the invitation to join the :team team.', ['team' => $invitation->team->name])
