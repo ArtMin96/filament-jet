@@ -20,7 +20,7 @@ Switchable team             |  User menu
 ## Installation
 
 > **Warning**
-> Attempting to install Filament Jet into an existing Filament application will result in unexpected behavior and issues.
+> Attempting to install Filament Jet into an existing Filament application may result in unexpected behavior and issues.
 
 You can install the package via composer:
 
