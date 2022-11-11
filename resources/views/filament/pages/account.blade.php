@@ -98,11 +98,7 @@
                         <div class="mt-2">
                             {!! $this->user->twoFactorQrCodeSvg() !!}
 
-                            <div class="mt-4 max-w-xl text-sm text-gray-600 dark:text-gray-300">
-                                <p class="font-semibold">
-                                    {{ __('filament-jet::account.2fa.setup_key') }}: {{ decrypt($this->user->two_factor_secret) }}
-                                </p>
-                            </div>
+                            <x-filament-jet-two-factor-security-code :code="decrypt($this->user->two_factor_secret)" />
                         </div>
                     @endif
 
