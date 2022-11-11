@@ -57,7 +57,7 @@ return [
 
 ## Profile Management
 
-Laravel Filament Jet's profile management features are accessed by the user using the top-right user profile navigation dropdown menu. Filament Jet actions that allow the user to update their name, email address, and, optionally, their profile photo.
+Filament Jet's profile management features are accessed by the user using the top-right user profile navigation dropdown menu. Filament Jet actions that allow the user to update their name, email address, and, optionally, their profile photo.
 
 ![Filament Jet profile information art](./art/profile-information.png)
 ![Filament Jet update password art](./art/update-password.png)
