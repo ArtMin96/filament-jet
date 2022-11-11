@@ -38,7 +38,7 @@ trait HasHiddenAction
                     ->action('disableTwoFactorAuthentication');
             }
 
-            if (Features::optionEnabled(Features::twoFactorAuthentication(), 'confirmPassword')) {
+            if (Features::optionEnabled(Features::twoFactorAuthentication(), 'toggleRecoveryCodesVisibilityWithConfirmPassword')) {
                 $showRecoveryCodes = PasswordButtonAction::make('showing_recovery_codes')
                     ->label(__('filament-jet::account.2fa.enabled.show_codes'))
                     ->icon('heroicon-o-eye')

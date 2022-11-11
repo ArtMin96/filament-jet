@@ -143,7 +143,7 @@ return [
         Features::updatePasswords(),
         Features::twoFactorAuthentication([
             'confirm' => true,
-            'confirmPassword' => true,
+            'toggleRecoveryCodesVisibilityWithConfirmPassword' => true,
             // 'window' => 0,
         ]),
 

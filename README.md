@@ -130,10 +130,22 @@ You may want to disable the `twoFactorAuthentication` feature by adding a commen
 use ArtMin96\FilamentJet\Features;
 
 'features' => [
-//     Features::twoFactorAuthentication([
-//        'confirm' => true,
-//        'confirmPassword' => true,
-//    ]),
+    // Features::twoFactorAuthentication([
+    //     ...
+    // ]),
+],
+```
+
+You may want to toggle recovery codes visibility without password confirmation:
+
+```php
+use ArtMin96\FilamentJet\Features;
+
+'features' => [
+    Features::twoFactorAuthentication([
+        // ...
+        'toggleRecoveryCodesVisibilityWithConfirmPassword' => false,
+    ]),
 ],
 ```
 
