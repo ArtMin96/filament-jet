@@ -139,7 +139,7 @@ return [
         ]),
         Features::updateProfileInformation(),
         Features::updatePasswords([
-            'askCurrentPassword' => true
+            'askCurrentPassword' => true,
         ]),
         Features::twoFactorAuthentication([
             'confirm' => true,
