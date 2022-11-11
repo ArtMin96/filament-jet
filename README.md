@@ -283,6 +283,8 @@ use ArtMin96\FilamentJet\Features;
 
 Next, you may write your terms of service / privacy policy documents by modifying your application's `resources/markdown/terms.md` and `resources/markdown/policy.md` files.
 
+#### Disabling Registration Feature
+
 You may want to disable the `registration` feature by adding a comment.
 
 ```php
