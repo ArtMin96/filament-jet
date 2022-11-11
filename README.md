@@ -234,6 +234,29 @@ To get started, pass the `invitations` option when enabling the "teams" feature 
 
 Follow the link for more information: [Jetstream Teams](https://jetstream.laravel.com/2.x/features/teams.html)
 
+## API
+
+![Filament Jet api token create art](./art/api-token-create.png)
+![Filament Jet api token display art](./art/api-token-display.png)
+![Filament Jet api token list art](./art/api-token-list.png)
+![Filament Jet api token permissions art](./art/api-token-permissions.png)
+
+Laravel Sanctum provides a featherweight authentication system for SPAs (single page applications), mobile applications, and simple, token-based APIs. Sanctum allows each user of your application to generate multiple API tokens for their account. These tokens may be granted abilities / permissions which specify which actions the tokens are allowed to perform.
+
+### Enabling API Support
+
+If your application will be offering an API that may be consumed by third-parties, you must enable Filament Jet's API feature. To do so, you should uncomment the relevant entry in the `features` configuration option of your application's `config/filament-jet.php` configuration file:
+
+```php
+use ArtMin96\FilamentJet\Features;
+
+'features' => [
+    Features::api()
+],
+```
+
+Follow the link for more information: [Jetstream API](https://jetstream.laravel.com/2.x/features/api.html)
+
 ## Email Verification
 
 To get started, verify that your `App\Models\User` model implements the `Illuminate\Contracts\Auth\MustVerifyEmail` contract
