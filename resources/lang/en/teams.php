@@ -84,7 +84,7 @@ return [
 
             'notifications' => [
                 'invited' => 'Great! You have accepted the invitation to join the :team team.',
-                'feature_disabled' => 'The Teams feature is unavailable.'
+                'feature_disabled' => 'The Teams feature is unavailable.',
             ],
 
             'actions' => [
