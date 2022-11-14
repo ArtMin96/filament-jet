@@ -41,7 +41,7 @@ class ConfirmTwoFactorAuthentication
             empty($code) ||
             ! $this->provider->verify(decrypt($user->two_factor_secret), $code)) {
             throw ValidationException::withMessages([
-                'two_factor_code' => [__('The provided two factor authentication code was invalid.')],
+                'two_factor_code' => [__('filament-jet::account.2fa.confirmation.invalid_confirmation_code')],
             ])->errorBag('confirmTwoFactorAuthentication');
         }
 

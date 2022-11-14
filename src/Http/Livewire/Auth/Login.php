@@ -104,6 +104,7 @@ class Login extends FilamentLogin
 
                     return null;
                 }
+
                 Filament::auth()->login($this->user, $this->remember);
 
                 return app(LoginResponse::class);

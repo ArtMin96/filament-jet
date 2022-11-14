@@ -65,6 +65,7 @@ return [
         'confirmation' => [
             'success_notification' => 'Code verified. Two factor authentication enabled.',
             'invalid_code' => 'The code you have entered is invalid.',
+            'invalid_confirmation_code' => 'The provided two factor authentication code was invalid.',
         ],
 
         'columns' => [

@@ -3,8 +3,10 @@
 namespace ArtMin96\FilamentJet\Http\Controllers;
 
 use ArtMin96\FilamentJet\Contracts\AddsTeamMembers;
+use ArtMin96\FilamentJet\Features;
 use ArtMin96\FilamentJet\FilamentJet;
 use ArtMin96\FilamentJet\Models\TeamInvitation;
+use Filament\Notifications\Notification;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -21,6 +23,17 @@ class TeamInvitationController extends Controller
      */
     public function accept(Request $request, TeamInvitation $invitation)
     {
+        if (! Features::hasTeamFeatures()) {
+            $invitation->delete();
+
+            Notification::make()
+                ->title(__('filament-jet::teams.team_settings.invitations.notifications.feature_disabled'))
+                ->success()
+                ->send();
+
+            return redirect(config('filament.path'));
+        }
+
         app(AddsTeamMembers::class)->add(
             $invitation->team->owner,
             $invitation->team,
@@ -36,8 +49,10 @@ class TeamInvitationController extends Controller
             abort(403);
         }
 
-        // TODO Notify after redirect
-        // __('Great! You have accepted the invitation to join the :team team.', ['team' => $invitation->team->name])
+        Notification::make()
+            ->title(__('filament-jet::teams.team_settings.invitations.notifications.invited', ['team' => $invitation->team->name]))
+            ->success()
+            ->send();
 
         return redirect(config('filament.path'));
     }

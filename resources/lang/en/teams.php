@@ -82,6 +82,11 @@ return [
                 ],
             ],
 
+            'notifications' => [
+                'invited' => 'Great! You have accepted the invitation to join the :team team.',
+                'feature_disabled' => 'The Teams feature is unavailable.'
+            ],
+
             'actions' => [
                 'cancel' => 'Cancel',
             ],
@@ -117,6 +122,10 @@ return [
             ],
 
             'notify' => 'Team deleted',
+
+            'validation' => [
+                'cannot_delete_personal_team' => 'You may not delete your personal team.',
+            ],
         ],
     ],
 
