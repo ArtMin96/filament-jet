@@ -299,6 +299,36 @@ class FilamentJet
     }
 
     /**
+     * Determine team invitation controller.
+     *
+     * @return bool
+     */
+    public static function teamInvitationController()
+    {
+        return Features::getOption(Features::teams(), 'invitation.controller');
+    }
+
+    /**
+     * Determine team invitation accept action.
+     *
+     * @return bool
+     */
+    public static function teamInvitationAcceptAction()
+    {
+        return Features::getOption(Features::teams(), 'invitation.actions.accept');
+    }
+
+    /**
+     * Determine team invitation destroy action.
+     *
+     * @return bool
+     */
+    public static function teamInvitationDestroyAction()
+    {
+        return Features::getOption(Features::teams(), 'invitation.actions.destroy');
+    }
+
+    /**
      * Find a user instance by the given ID.
      *
      * @param  int  $id

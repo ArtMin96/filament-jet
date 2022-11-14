@@ -38,7 +38,7 @@ Route::domain(config('filament.domain'))
             Route::middleware(
                 Features::getOption(Features::teams(), 'middleware') ?? []
             )->group(function () {
-                Route::get('/team-invitations/{invitation}', [TeamInvitationController::class, 'accept'])
+                Route::get('/team-invitations/{invitation}', [FilamentJet::teamInvitationController(), FilamentJet::teamInvitationAcceptAction()])
                     ->middleware(['signed'])
                     ->name('team-invitations.accept');
             });

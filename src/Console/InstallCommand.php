@@ -141,7 +141,7 @@ class InstallCommand extends Command
         }
 
         $this->line('');
-        $this->components->info('FilamentJet scaffolding installed successfully.');
+        $this->components->info('Filament Jet scaffolding installed successfully.');
     }
 
     protected function installTeamStack()
@@ -165,7 +165,31 @@ class InstallCommand extends Command
         $this->callSilent('vendor:publish', ['--tag' => 'filament-jet-team-migrations', '--force' => true]);
 
         // Configuration...
-        $this->replaceInFile('// Features::teams([\'invitations\' => true])', 'Features::teams([\'invitations\' => true])', config_path('filament-jet.php'));
+        $this->replaceInFile(
+            '// Features::teams([
+                   //     \'invitations\' => true,
+                   //     \'middleware\' => [\'verified\'],
+                   //     \'invitation\' => [
+                   //         \'controller\' => \ArtMin96\FilamentJet\Http\Controllers\TeamInvitationController::class,
+                   //         \'actions\' => [
+                   //             \'accept\' => \'accept\',
+                   //             \'destroy\' => \'destroy\',
+                   //         ],
+                   //     ],
+                   // ])',
+            ' Features::teams([
+                        \'invitations\' => true,
+                        \'middleware\' => [\'verified\'],
+                        \'invitation\' => [
+                            \'controller\' => \ArtMin96\FilamentJet\Http\Controllers\TeamInvitationController::class,
+                            \'actions\' => [
+                                \'accept\' => \'accept\',
+                                \'destroy\' => \'destroy\',
+                            ],
+                        ],
+                    ])',
+            config_path('filament-jet.php')
+        );
 
         // Directories...
         (new Filesystem)->ensureDirectoryExists(app_path('Actions/FilamentJet'));
@@ -213,15 +237,6 @@ Route::domain(config("filament.domain"))
     ->name(config('filament-jet.route_group_prefix'))
     ->prefix(config("filament.path"))
     ->group(function () {
-        // Teams...
-        if (\ArtMin96\FilamentJet\Features::hasTeamFeatures()) {
-            Route::group(['middleware' => 'verified'], function () {
-                Route::get('/team-invitations/{invitation}', [\ArtMin96\FilamentJet\Http\Controllers\TeamInvitationController::class, 'accept'])
-                    ->middleware(['signed'])
-                    ->name('team-invitations.accept');
-            });
-        }
-
         // Personal data export...
         if (\ArtMin96\FilamentJet\Features::canExportPersonalData()) {
             Route::personalDataExports('personal-data-exports');

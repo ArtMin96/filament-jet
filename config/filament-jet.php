@@ -153,6 +153,13 @@ return [
         Features::teams([
             'invitations' => true,
             'middleware' => ['verified'],
+            'invitation' => [
+                'controller' => \ArtMin96\FilamentJet\Http\Controllers\TeamInvitationController::class,
+                'actions' => [
+                    'accept' => 'accept',
+                    'destroy' => 'destroy',
+                ],
+            ],
         ]),
         Features::logoutOtherBrowserSessions(),
         Features::accountDeletion(),

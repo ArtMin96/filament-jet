@@ -59,6 +59,7 @@ class TeamSettings extends Page
 
     public function mount()
     {
+        dd(Features::getOption(Features::teams(), 'invitation.accept_action'));
         $this->team = $this->user->currentTeam;
 
         if (! $this->team) {
