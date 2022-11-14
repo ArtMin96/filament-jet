@@ -10,20 +10,22 @@
 
         <x-slot name="form">
             <!-- Team Owner Information -->
-            <div class="col-span-6">
-                <div class="block font-medium text-sm text-gray-700 dark:text-gray-300">
-                    {{ __('filament-jet::teams.team_settings.update_name.team_owner_label') }}
-                </div>
+            @if($team->owner)  {{-- Temporarily solve the problem of team owner not found, after deleting a team, before the redirect --}}
+                <div class="col-span-6">
+                    <div class="block font-medium text-sm text-gray-700 dark:text-gray-300">
+                        {{ __('filament-jet::teams.team_settings.update_name.team_owner_label') }}
+                    </div>
 
-                <div class="flex items-center mt-2">
-                    <img class="w-12 h-12 rounded-full object-cover" src="{{ $team->owner->profile_photo_url }}" alt="{{ $team->owner->name }}">
+                    <div class="flex items-center mt-2">
+                        <img class="w-12 h-12 rounded-full object-cover" src="{{ $team->owner->profile_photo_url }}" alt="{{ $team->owner->name }}">
 
-                    <div class="ml-4 leading-tight">
-                        <div>{{ $team->owner->name }}</div>
-                        <div class="text-gray-700 text-sm dark:text-gray-300">{{ $team->owner->email }}</div>
+                        <div class="ml-4 leading-tight">
+                            <div>{{ $team->owner->name }}</div>
+                            <div class="text-gray-700 text-sm dark:text-gray-300">{{ $team->owner->email }}</div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            @endif
 
             {{ $this->updateTeamNameForm }}
         </x-slot>
