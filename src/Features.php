@@ -244,7 +244,7 @@ class Features
     public static function updatePasswords(array $options = [])
     {
         if (! empty($options)) {
-            config(['filament-jet-options.email-verification' => $options]);
+            config(['filament-jet-options.update-passwords' => $options]);
         }
 
         return 'update-passwords';
