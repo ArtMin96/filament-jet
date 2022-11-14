@@ -238,10 +238,15 @@ class Features
     /**
      * Enable the update password feature.
      *
+     * @param  array  $options
      * @return string
      */
-    public static function updatePasswords()
+    public static function updatePasswords(array $options = [])
     {
+        if (! empty($options)) {
+            config(['filament-jet-options.email-verification' => $options]);
+        }
+
         return 'update-passwords';
     }
 
