@@ -34,14 +34,12 @@ class FilamentJetServiceProvider extends PluginServiceProvider
     public function configurePackage(Package $package): void
     {
         $package->name(static::$name)
-            ->hasConfigFile()
             ->hasRoute('web')
             ->hasViews()
             ->hasMigrations([
                 '2014_10_12_000000_create_users_table',
                 '2014_10_12_200000_add_two_factor_columns_to_users_table',
             ])
-//            ->runsMigrations()
             ->hasTranslations()
             ->hasCommand(InstallCommand::class);
     }
@@ -72,6 +70,7 @@ class FilamentJetServiceProvider extends PluginServiceProvider
         }
 
         $this->configureComponents();
+        $this->configurePublishing();
 
         Livewire::component(Login::getName(), Login::class);
         Livewire::component(ResetPassword::getName(), ResetPassword::class);
@@ -145,6 +144,10 @@ class FilamentJetServiceProvider extends PluginServiceProvider
         if (! $this->app->runningInConsole()) {
             return;
         }
+
+        $this->publishes([
+            __DIR__.'/../stubs/config/filament-jet.php' => config_path('filament-jet.php'),
+        ], 'filament-jet-config');
 
         $this->publishes([
             __DIR__.'/../database/migrations/2022_10_21_100000_create_teams_table.php' => database_path('migrations/2022_10_21_100000_create_teams_table.php'),

@@ -128,7 +128,7 @@ class Account extends Page
     {
         $currentPasswordField = [];
 
-        $requireCurrentPasswordOnUpdate = Features::getOption(Features::updatePasswords(), 'askCurrentPassword');
+        $requireCurrentPasswordOnUpdate = Features::optionEnabled(Features::updatePasswords(), 'askCurrentPassword');
 
         if ($requireCurrentPasswordOnUpdate) {
             $currentPasswordField[] = Password::make('current_password')
