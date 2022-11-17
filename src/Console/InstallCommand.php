@@ -177,16 +177,16 @@ class InstallCommand extends Command
         // Configuration...
         $this->replaceInFile(
             '// Features::teams([
-       //     \'invitations\' => true,
-       //     \'middleware\' => [\'verified\'],
-       //     \'invitation\' => [
-       //         \'controller\' => \ArtMin96\FilamentJet\Http\Controllers\TeamInvitationController::class,
-       //         \'actions\' => [
-       //             \'accept\' => \'accept\',
-       //             \'destroy\' => \'destroy\',
-       //         ],
-       //     ],
-       // ])',
+        //     \'invitations\' => true,
+        //     \'middleware\' => [\'verified\'],
+        //     \'invitation\' => [
+        //         \'controller\' => \ArtMin96\FilamentJet\Http\Controllers\TeamInvitationController::class,
+        //         \'actions\' => [
+        //             \'accept\' => \'accept\',
+        //             \'destroy\' => \'destroy\',
+        //         ],
+        //     ],
+        // ]),',
             'Features::teams([
             \'invitations\' => true,
             \'middleware\' => [\'verified\'],
@@ -197,7 +197,7 @@ class InstallCommand extends Command
                     \'destroy\' => \'destroy\',
                 ],
             ],
-        ])',
+        ]),',
             config_path('filament-jet.php')
         );
 
