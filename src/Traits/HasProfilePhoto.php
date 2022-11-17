@@ -9,7 +9,7 @@ trait HasProfilePhoto
 {
     public function getFilamentAvatarUrl(): ?string
     {
-        return $this->profile_photo_url;
+        return Features::enabled(Features::profilePhotos()) ? $this->profile_photo_url : '';
     }
 
     /**

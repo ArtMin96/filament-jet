@@ -53,7 +53,17 @@ class InstallCommand extends Command
 
         // Configure Email Verification...
         if ($this->option('verification')) {
-            $this->replaceInFile('// Features::emailVerification(),', 'Features::emailVerification(),', config_path('filament-jet.php'));
+            $this->replaceInFile(
+                '// Features::emailVerification([
+        //     \'component\' => \ArtMin96\FilamentJet\Http\Livewire\Auth\Verify::class,
+        //     \'controller\' => \ArtMin96\FilamentJet\Http\Controllers\Auth\EmailVerificationController::class,
+        // ]),',
+                'Features::emailVerification([
+             \'component\' => \ArtMin96\FilamentJet\Http\Livewire\Auth\Verify::class,
+             \'controller\' => \ArtMin96\FilamentJet\Http\Controllers\Auth\EmailVerificationController::class,
+        ]),',
+                config_path('filament-jet.php')
+            );
         }
 
         $this->installStack();
@@ -167,27 +177,27 @@ class InstallCommand extends Command
         // Configuration...
         $this->replaceInFile(
             '// Features::teams([
-                   //     \'invitations\' => true,
-                   //     \'middleware\' => [\'verified\'],
-                   //     \'invitation\' => [
-                   //         \'controller\' => \ArtMin96\FilamentJet\Http\Controllers\TeamInvitationController::class,
-                   //         \'actions\' => [
-                   //             \'accept\' => \'accept\',
-                   //             \'destroy\' => \'destroy\',
-                   //         ],
-                   //     ],
-                   // ])',
-            ' Features::teams([
-                        \'invitations\' => true,
-                        \'middleware\' => [\'verified\'],
-                        \'invitation\' => [
-                            \'controller\' => \ArtMin96\FilamentJet\Http\Controllers\TeamInvitationController::class,
-                            \'actions\' => [
-                                \'accept\' => \'accept\',
-                                \'destroy\' => \'destroy\',
-                            ],
-                        ],
-                    ])',
+       //     \'invitations\' => true,
+       //     \'middleware\' => [\'verified\'],
+       //     \'invitation\' => [
+       //         \'controller\' => \ArtMin96\FilamentJet\Http\Controllers\TeamInvitationController::class,
+       //         \'actions\' => [
+       //             \'accept\' => \'accept\',
+       //             \'destroy\' => \'destroy\',
+       //         ],
+       //     ],
+       // ])',
+            'Features::teams([
+            \'invitations\' => true,
+            \'middleware\' => [\'verified\'],
+            \'invitation\' => [
+                \'controller\' => \ArtMin96\FilamentJet\Http\Controllers\TeamInvitationController::class,
+                \'actions\' => [
+                    \'accept\' => \'accept\',
+                    \'destroy\' => \'destroy\',
+                ],
+            ],
+        ])',
             config_path('filament-jet.php')
         );
 
