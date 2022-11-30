@@ -627,7 +627,7 @@ class FilamentJet
         app()->singleton(ResetsUserPasswords::class, $class);
     }
 
-    public static function getVerifyEmailUrl(MustVerifyEmail | Model | Authenticatable $user): string
+    public static function getVerifyEmailUrl(MustVerifyEmail|Model|Authenticatable $user): string
     {
         return URL::temporarySignedRoute(
             config('filament-jet.route_group_prefix').'auth.email-verification.verify',
@@ -639,7 +639,7 @@ class FilamentJet
         );
     }
 
-    public static function getResetPasswordUrl(string $token, CanResetPassword | Model | Authenticatable $user): string
+    public static function getResetPasswordUrl(string $token, CanResetPassword|Model|Authenticatable $user): string
     {
         return URL::signedRoute(config('filament-jet.route_group_prefix').'auth.password-reset.reset', [
             'email' => $user->getEmailForPasswordReset(),

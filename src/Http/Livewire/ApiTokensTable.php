@@ -36,7 +36,7 @@ class ApiTokensTable extends Component implements HasTable
         return view('filament-jet::livewire.api-tokens-table');
     }
 
-    protected function getTableQuery(): Builder | Relation
+    protected function getTableQuery(): Builder|Relation
     {
         return app(Sanctum::$personalAccessTokenModel)->where([
             ['tokenable_id', '=', Filament::auth()->id()],
@@ -58,7 +58,7 @@ class ApiTokensTable extends Component implements HasTable
                 ->searchable()
                 ->sortable()
                 ->formatStateUsing(
-                    fn (string | null $state): string | null => $state ? Carbon::parse($state)->diffForHumans() : __('filament-jet::api.table.never')
+                    fn (string|null $state): string|null => $state ? Carbon::parse($state)->diffForHumans() : __('filament-jet::api.table.never')
                 ),
         ];
     }

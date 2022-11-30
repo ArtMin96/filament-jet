@@ -120,7 +120,7 @@ return [
             'has_brand' => true,
             'rate_limiting' => [
                 'enabled' => true,
-                'limit' => 5
+                'limit' => 5,
             ],
             'pipelines' => [],
         ]),
@@ -132,7 +132,7 @@ return [
             'has_brand' => true,
             'rate_limiting' => [
                 'enabled' => true,
-                'limit' => 5
+                'limit' => 5,
             ],
         ]),
         Features::resetPasswords([
@@ -142,7 +142,7 @@ return [
                 'has_brand' => true,
                 'rate_limiting' => [
                     'enabled' => true,
-                    'limit' => 5
+                    'limit' => 5,
                 ],
             ],
             'reset' => [
@@ -151,7 +151,7 @@ return [
                 'has_brand' => true,
                 'rate_limiting' => [
                     'enabled' => true,
-                    'limit' => 5
+                    'limit' => 5,
                 ],
             ],
         ]),
@@ -176,7 +176,7 @@ return [
                 'has_brand' => true,
                 'rate_limiting' => [
                     'enabled' => true,
-                    'limit' => 5
+                    'limit' => 5,
                 ],
             ],
             'confirm' => true,

@@ -26,8 +26,8 @@ class AttemptToAuthenticate
     }
 
     /**
-     * @param array<string, string> $data
-     * @param Closure               $next
+     * @param  array<string, string>  $data
+     * @param  Closure  $next
      */
     public function handle(array $data, Closure $next)
     {
@@ -54,7 +54,7 @@ class AttemptToAuthenticate
     /**
      * Fire the failed authentication attempt event with the given arguments.
      *
-     * @param array<string, string> $data
+     * @param  array<string, string>  $data
      */
     protected function fireFailedEvent(array $data): void
     {

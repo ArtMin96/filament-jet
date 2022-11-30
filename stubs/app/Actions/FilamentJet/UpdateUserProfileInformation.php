@@ -15,10 +15,10 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
     /**
      * Validate and update the given user's profile information.
      *
-     * @param Model|Authenticatable $user
-     * @param array<string, string> $input
+     * @param  Model|Authenticatable  $user
+     * @param  array<string, string>  $input
      */
-    public function update(Model | Authenticatable $user, array $input): void
+    public function update(Model|Authenticatable $user, array $input): void
     {
         if (Features::managesProfilePhotos()) {
             $user->updateProfilePhoto($input['profile_photo_path']);
@@ -38,10 +38,10 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
     /**
      * Update the given verified user's profile information.
      *
-     * @param Model|Authenticatable $user
-     * @param array<string, string> $input
+     * @param  Model|Authenticatable  $user
+     * @param  array<string, string>  $input
      */
-    protected function updateVerifiedUser(Model | Authenticatable $user, array $input): void
+    protected function updateVerifiedUser(Model|Authenticatable $user, array $input): void
     {
         $user->forceFill([
             'name' => $input['name'],

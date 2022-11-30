@@ -22,13 +22,13 @@ class TwoFactorLogin extends CardPage
 {
     use WithRateLimiting;
 
-    public null | string $code = '';
+    public null|string $code = '';
 
-    public null | string $recoveryCode = '';
+    public null|string $recoveryCode = '';
 
     public bool $usingRecoveryCode = false;
 
-    public null | Model | Authenticatable $challengedUser = null;
+    public null|Model|Authenticatable $challengedUser = null;
 
     protected static string $view = 'filament-jet::filament.pages.auth.two-factor-login';
 
@@ -47,9 +47,9 @@ class TwoFactorLogin extends CardPage
     /**
      * Determine if the request has a valid two factor code.
      *
-     * @param string|null $code
+     * @param  string|null  $code
      */
-    public function hasValidCode(null | string $code): bool
+    public function hasValidCode(null|string $code): bool
     {
         return $code && tap(app(TwoFactorAuthenticationProvider::class)->verify(
             decrypt($this->challengedUser()->two_factor_secret), $code
@@ -63,9 +63,9 @@ class TwoFactorLogin extends CardPage
     /**
      * Get the valid recovery code if one exists on the request.
      *
-     * @param string|null $recoveryCode
+     * @param  string|null  $recoveryCode
      */
-    public function validRecoveryCode(null | string $recoveryCode): null | string
+    public function validRecoveryCode(null|string $recoveryCode): null|string
     {
         if (! $recoveryCode) {
             return null;
@@ -98,7 +98,7 @@ class TwoFactorLogin extends CardPage
     /**
      * Get the user that is attempting the two factor challenge.
      */
-    public function challengedUser(): null | Model | Authenticatable | Redirector
+    public function challengedUser(): null|Model|Authenticatable|Redirector
     {
         if ($this->challengedUser) {
             return $this->challengedUser;
@@ -108,7 +108,6 @@ class TwoFactorLogin extends CardPage
 
         if (! session()->has("{$this->sessionPrefix}login.id") ||
             ! $user = $userModel::find(session()->get("{$this->sessionPrefix}login.id"))) {
-
             return redirect()->to(jetRouteActions()->loginRoute());
         }
 
@@ -162,7 +161,6 @@ class TwoFactorLogin extends CardPage
 
             event(new RecoveryCodeReplaced($user, $code));
         } elseif (! $this->hasValidCode($data['code'] ?? '')) {
-
             [$key, $message] = isset($data['recoveryCode'])
                 ? ['recoveryCode', __('filament-jet::auth/two-factor-login.messages.failed.recoveryCode')]
                 : ['code', __('filament-jet::auth/two-factor-login.messages.failed.code')];

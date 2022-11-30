@@ -35,7 +35,7 @@ class ApiTokens extends Page
      *
      * @var string|null
      */
-    public null | string $plainTextToken = '';
+    public null|string $plainTextToken = '';
 
     protected static string $view = 'filament-jet::filament.pages.api-tokens';
 

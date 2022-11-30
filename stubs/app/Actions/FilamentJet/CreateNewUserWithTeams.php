@@ -19,7 +19,7 @@ class CreateNewUser implements CreatesNewUsers
      *
      * @param  array<string, string>  $input
      */
-    public function create(array $input): Model | Authenticatable
+    public function create(array $input): Model|Authenticatable
     {
         return DB::transaction(function () use ($input) {
             return tap(FilamentJet::userModel()::create([
@@ -27,7 +27,6 @@ class CreateNewUser implements CreatesNewUsers
                 'email' => $input['email'],
                 'password' => Hash::make($input['password']),
             ]), function ($user) {
-
                 app()->bind(
                     \Illuminate\Auth\Listeners\SendEmailVerificationNotification::class,
                     \ArtMin96\FilamentJet\Listeners\Auth\SendEmailVerificationNotification::class,
@@ -47,9 +46,9 @@ class CreateNewUser implements CreatesNewUsers
     /**
      * Create a personal team for the user.
      *
-     * @param Model|Authenticatable $user
+     * @param  Model|Authenticatable  $user
      */
-    protected function createTeam(Model | Authenticatable $user): void
+    protected function createTeam(Model|Authenticatable $user): void
     {
         $user->ownedTeams()->save(Team::forceCreate([
             'user_id' => $user->getKey(),

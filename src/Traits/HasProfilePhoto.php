@@ -15,7 +15,7 @@ trait HasProfilePhoto
     /**
      * Update the user's profile photo.
      *
-     * @param string|null $photo
+     * @param  string|null  $photo
      */
     public function updateProfilePhoto(null|string $photo): void
     {

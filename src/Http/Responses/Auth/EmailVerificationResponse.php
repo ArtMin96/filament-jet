@@ -9,7 +9,7 @@ use Livewire\Redirector;
 
 class EmailVerificationResponse implements Responsable
 {
-    public function toResponse($request): RedirectResponse | Redirector
+    public function toResponse($request): RedirectResponse|Redirector
     {
         return redirect()->intended(Filament::getUrl());
     }

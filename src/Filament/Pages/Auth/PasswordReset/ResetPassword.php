@@ -83,7 +83,7 @@ class ResetPassword extends CardPage
 
         $status = $this->broker()->reset(
             $data,
-            function (CanResetPassword | Model | Authenticatable $user) use ($data) {
+            function (CanResetPassword|Model|Authenticatable $user) use ($data) {
                 app(ResetsUserPasswords::class)->reset($user, $data);
             },
         );
@@ -127,7 +127,7 @@ class ResetPassword extends CardPage
     }
 
     /**
-     * @param string $propertyName
+     * @param  string  $propertyName
      */
     public function propertyIsPublicAndNotDefinedOnBaseClass($propertyName): bool
     {

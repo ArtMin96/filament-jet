@@ -38,11 +38,11 @@ class Account extends Page
 
     public array $updateProfileInformationState = [];
 
-    public null | string $currentPassword;
+    public null|string $currentPassword;
 
-    public null | string $password;
+    public null|string $password;
 
-    public null | string $passwordConfirmation;
+    public null|string $passwordConfirmation;
 
     protected static string $view = 'filament-jet::filament.pages.account';
 

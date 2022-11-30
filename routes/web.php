@@ -15,8 +15,7 @@ Route::domain(config('filament.domain'))
 
         Route::name('auth.')
             ->middleware(['guest:'.$guard])
-            ->group(function () use ($guard) {
-
+            ->group(function () {
                 // Two Factor Authentication...
                 if (Features::enabled(Features::twoFactorAuthentication())) {
                     Route::get('/two-factor-login', \ArtMin96\FilamentJet\Filament\Pages\Auth\TwoFactorLogin::class)->name('two-factor.login');
@@ -60,7 +59,6 @@ Route::domain(config('filament.domain'))
 
         // Email verification...
         if (Features::enabled(Features::emailVerification())) {
-
             Route::name('auth.email-verification.')
                 ->prefix('/email-verification')
                 ->group(function () {
@@ -68,7 +66,7 @@ Route::domain(config('filament.domain'))
 
                     Route::get('/verify', [
                         Features::getOption(Features::emailVerification(), 'controller') ?? EmailVerificationController::class,
-                        '__invoke'
+                        '__invoke',
                     ])
                         ->name('verify');
                 });

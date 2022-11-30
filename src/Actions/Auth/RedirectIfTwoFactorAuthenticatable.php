@@ -29,8 +29,8 @@ class RedirectIfTwoFactorAuthenticatable
     }
 
     /**
-     * @param array   $data
-     * @param Closure $next
+     * @param  array  $data
+     * @param  Closure  $next
      */
     public function handle(array $data, Closure $next)
     {
@@ -85,10 +85,10 @@ class RedirectIfTwoFactorAuthenticatable
     /**
      * Fire the failed authentication attempt event with the given arguments.
      *
-     * @param array<string, string> $data
-     * @param Authenticatable|null  $user
+     * @param  array<string, string>  $data
+     * @param  Authenticatable|null  $user
      */
-    protected function fireFailedEvent(array $data, Authenticatable | Model | null $user = null): void
+    protected function fireFailedEvent(array $data, Authenticatable|Model|null $user = null): void
     {
         event(new Failed(config('filament.auth.guard'), $user, [
             FilamentJet::username() => $data[FilamentJet::username()],
@@ -99,10 +99,10 @@ class RedirectIfTwoFactorAuthenticatable
     /**
      * Get the two factor authentication enabled response.
      *
-     * @param array                 $data
-     * @param Authenticatable|Model $user
+     * @param  array  $data
+     * @param  Authenticatable|Model  $user
      */
-    protected function twoFactorChallengeResponse(array $data, Authenticatable | Model $user): Redirector | RedirectResponse
+    protected function twoFactorChallengeResponse(array $data, Authenticatable|Model $user): Redirector|RedirectResponse
     {
         session()->put([
             jet()->getTwoFactorLoginSessionPrefix().'login.id' => $user->getKey(),
