@@ -116,10 +116,8 @@ class InstallCommand extends Command
             });
 
         // Directories...
-        (new Filesystem)->ensureDirectoryExists(app_path('Filament/Pages'));
         (new Filesystem)->ensureDirectoryExists(app_path('Actions/FilamentJet'));
         (new Filesystem)->ensureDirectoryExists(resource_path('markdown'));
-        (new Filesystem)->ensureDirectoryExists(resource_path('views/filament/pages'));
 
         // Terms Of Service / Privacy Policy...
         copy(__DIR__.'/../../stubs/resources/markdown/terms.md', resource_path('markdown/terms.md'));
@@ -141,9 +139,6 @@ class InstallCommand extends Command
         copy(__DIR__.'/../../stubs/app/Actions/FilamentJet/UpdateUserProfileInformation.php', app_path('Actions/FilamentJet/UpdateUserProfileInformation.php'));
         copy(__DIR__.'/../../stubs/app/Actions/FilamentJet/UpdateUserPassword.php', app_path('Actions/FilamentJet/UpdateUserPassword.php'));
         copy(__DIR__.'/../../stubs/app/Actions/FilamentJet/DeleteUser.php', app_path('Actions/FilamentJet/DeleteUser.php'));
-
-        // Other Views...
-        (new Filesystem)->copyDirectory(__DIR__.'/../../stubs/resources/views/filament/pages', resource_path('views/filament/pages'));
 
         // Routes...
         $this->replaceInFile('auth:api', 'auth:sanctum', base_path('routes/api.php'));
