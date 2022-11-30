@@ -9,7 +9,7 @@
         </x-slot>
 
         <x-slot name="form">
-            {{ $this->createApiTokenForm }}
+            {{ $this->form }}
         </x-slot>
 
         <x-slot name="actions">

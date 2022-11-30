@@ -43,6 +43,26 @@ class Features
     }
 
     /**
+     * Determine if the application has registration features.
+     *
+     * @return bool
+     */
+    public static function hasRegistrationFeature(): bool
+    {
+        return static::enabled(static::registration());
+    }
+
+    /**
+     * Determine if the application has reset password features.
+     *
+     * @return bool
+     */
+    public static function hasResetPasswordFeature(): bool
+    {
+        return static::enabled(static::resetPasswords());
+    }
+
+    /**
      * Determine if the application is using any features that require "profile" management.
      *
      * @return bool
@@ -143,6 +163,21 @@ class Features
     public static function hasAccountDeletionFeatures()
     {
         return static::enabled(static::accountDeletion());
+    }
+
+    /**
+     * Get login feature options.
+     *
+     * @param  array  $options
+     * @return string
+     */
+    public static function login(array $options = [])
+    {
+        if (! empty($options)) {
+            config(['filament-jet-options.login' => $options]);
+        }
+
+        return 'login';
     }
 
     /**

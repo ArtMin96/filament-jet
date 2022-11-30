@@ -59,6 +59,70 @@ Update the `config/filament.php` to point to the Filament Jet's `Login::class`.
 ],
 ```
 
+## Customizing The Authentication Pipeline
+
+Filament Jet authenticates login requests through a pipeline of invokable classes. If you would like, you may define a custom pipeline of classes that login requests should be piped through.
+To define your custom pipeline, you may use the `FilamentJet::authenticateThrough` method. This method accepts a closure which should return the array of classes to pipe the login request through. Typically, this method should be called from the `boot` method of your `App\Providers\FilamentJetServiceProvider` class.
+The example below contains the default pipeline definition that you may use as a starting point when making your own modifications:
+
+```php
+use ArtMin96\FilamentJet\Actions\Auth\AttemptToAuthenticate;
+use ArtMin96\FilamentJet\Actions\Auth\RedirectIfTwoFactorAuthenticatable;
+use ArtMin96\FilamentJet\Actions\Auth\PrepareAuthenticatedSession;
+use ArtMin96\FilamentJet\Features;
+use ArtMin96\FilamentJet\FilamentJet;
+
+FilamentJet::authenticateThrough(function (Request $request) {
+    return array_filter([
+            Features::enabled(Features::twoFactorAuthentication()) ? RedirectIfTwoFactorAuthenticatable::class : null,
+            AttemptToAuthenticate::class,
+            PrepareAuthenticatedSession::class,
+    ]);
+});
+```
+
+You may want to change the size of the auth card.
+
+```php
+use ArtMin96\FilamentJet\Features;
+
+'features' => [
+    Features::login([
+        'card_width' => 'md',
+    ]),
+],
+```
+
+Show/hide brand.
+
+```php
+use ArtMin96\FilamentJet\Features;
+
+'features' => [
+    Features::login([
+        'has_brand' => true,
+    ]),
+],
+```
+
+Full config for login.
+
+```php
+use ArtMin96\FilamentJet\Features;
+
+'features' => [
+    Features::login([
+        'card_width' => 'md',
+        'has_brand' => true,
+        'rate_limiting' => [
+            'enabled' => true,
+            'limit' => 5,
+        ],
+        'pipelines' => [],
+    ]),
+],
+```
+
 ## Profile Management
 
 Filament Jet's profile management features are accessed by the user using the top-right user profile navigation dropdown menu. Filament Jet actions that allow the user to update their name, email address, and, optionally, their profile photo.
@@ -119,7 +183,7 @@ use ArtMin96\FilamentJet\Features;
 
 'features' => [
     Features::updatePasswords([
-        'askCurrentPassword' => false
+        'askCurrentPassword' => false,
     ]),
 ],
 ```
@@ -127,6 +191,27 @@ use ArtMin96\FilamentJet\Features;
 ### Two Factor Authentication
 
 When a user enables two-factor authentication for their account, they should scan the given QR code using a free TOTP authenticator application such as Google Authenticator. In addition, they should store the listed recovery codes in a secure password manager such as [1Password](https://1password.com/).
+
+```php
+use ArtMin96\FilamentJet\Features;
+
+'features' => [
+    Features::twoFactorAuthentication([
+        'authentication' => [
+            'session_prefix' => 'filament.',
+            'card_width' => 'md',
+            'has_brand' => true,
+            'rate_limiting' => [
+                'enabled' => true,
+                'limit' => 5,
+            ],
+        ],
+        'confirm' => true,
+        'toggleRecoveryCodesVisibilityWithConfirmPassword' => true,
+        // 'window' => 0,
+    ]),
+],
+```
 
 You may want to disable the `twoFactorAuthentication` feature by adding a comment.
 
@@ -238,8 +323,8 @@ use ArtMin96\FilamentJet\Features;
 'features' => [
     Features::teams([
         'invitations' => false,
-        'middleware' => []
-    ])
+        'middleware' => [],
+    ]),
 ],
 ```
 
@@ -271,7 +356,7 @@ If your application will be offering an API that may be consumed by third-partie
 use ArtMin96\FilamentJet\Features;
 
 'features' => [
-    Features::api()
+    Features::api(),
 ],
 ```
 
@@ -308,10 +393,15 @@ use ArtMin96\FilamentJet\Features;
 
 'features' => [
     // Features::registration([
-    //     'component' => \ArtMin96\FilamentJet\Http\Livewire\Auth\Register::class,
+    //     'page' => \ArtMin96\FilamentJet\Filament\Pages\Auth\Register::class,
     //     'terms_of_service' => \ArtMin96\FilamentJet\Http\Livewire\TermsOfService::class,
     //     'privacy_policy' => \ArtMin96\FilamentJet\Http\Livewire\PrivacyPolicy::class,
-    //     'auth_card_max_w' => null,
+    //     'card_width' => 'md',
+    //     'has_brand' => true,
+    //     'rate_limiting' => [
+    //         'enabled' => true,
+    //         'limit' => 5,
+    //     ],
     // ]),
 ],
 ```
@@ -334,9 +424,26 @@ You may want to disable the `resetPasswords` feature by adding a comment.
 use ArtMin96\FilamentJet\Features;
 
 'features' => [
-    Features::resetPasswords([
-        'component' => \ArtMin96\FilamentJet\Http\Livewire\Auth\ResetPassword::class,
-    ]),
+    // Features::resetPasswords([
+    //     'request' => [
+    //         'page' => \ArtMin96\FilamentJet\Filament\Pages\Auth\PasswordReset\RequestPasswordReset::class,
+    //         'card_width' => 'md',
+    //         'has_brand' => true,
+    //         'rate_limiting' => [
+    //             'enabled' => true,
+    //             'limit' => 5,
+    //         ],
+    //     ],
+    //     'reset' => [
+    //         'page' => \ArtMin96\FilamentJet\Filament\Pages\Auth\PasswordReset\ResetPassword::class,
+    //         'card_width' => 'md',
+    //         'has_brand' => true,
+    //         'rate_limiting' => [
+    //             'enabled' => true,
+    //             'limit' => 5,
+    //         ],
+    //     ],
+    // ]),
 ],
 ```
 
@@ -355,9 +462,16 @@ You may want to change the registration component:
 use ArtMin96\FilamentJet\Features;
 
 'features' => [
-    Features::registration([
-        'component' => YourRegistrationComponent::class,
-        // ...
+     Features::registration([
+        'page' => \ArtMin96\FilamentJet\Filament\Pages\Auth\Register::class,
+        'terms_of_service' => \ArtMin96\FilamentJet\Http\Livewire\TermsOfService::class,
+        'privacy_policy' => \ArtMin96\FilamentJet\Http\Livewire\PrivacyPolicy::class,
+        'card_width' => 'md',
+        'has_brand' => true,
+        'rate_limiting' => [
+            'enabled' => true,
+            'limit' => 5
+        ],
     ]),
 ],
 ```
@@ -377,14 +491,21 @@ use ArtMin96\FilamentJet\Features;
 ],
 ```
 
-You may want to change the reset password component:
+You may want to change the reset password pages:
 
 ```php
 use ArtMin96\FilamentJet\Features;
 
 'features' => [
     Features::resetPasswords([
-        'component' => YourResetPasswordComponent::class,
+        'request' => [
+            'page' => \ArtMin96\FilamentJet\Filament\Pages\Auth\PasswordReset\RequestPasswordReset::class,
+            // ...
+        ],
+        'reset' => [
+            'page' => \ArtMin96\FilamentJet\Filament\Pages\Auth\PasswordReset\ResetPassword::class,
+            // ...
+        ],
     ]),
 ],
 ```
@@ -415,15 +536,21 @@ use ArtMin96\FilamentJet\Features;
 ],
 ```
 
-You may want to change the verification checker component or email verification controller:
+You may want to change the verification checker page or email verification controller:
 
 ```php
 use ArtMin96\FilamentJet\Features;
 
 'features' => [
     Features::emailVerification([
-        'component' => YourVerify::class,
-        'controller' => YourEmailVerificationController::class,
+        'page' => \ArtMin96\FilamentJet\Filament\Pages\Auth\EmailVerification\EmailVerificationPrompt::class,
+        'controller' => \ArtMin96\FilamentJet\Http\Controllers\Auth\EmailVerificationController::class,
+        'card_width' => 'md',
+        'has_brand' => true,
+        'rate_limiting' => [
+            'enabled' => true,
+            'limit' => 5
+        ],
     ]),
 ],
 ```

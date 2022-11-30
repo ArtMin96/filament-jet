@@ -25,15 +25,6 @@ return [
 
     'email' => 'email',
 
-    'redirects' => [
-        'login' => null,
-        'logout' => null,
-        'password-confirmation' => null,
-        'register' => config('filament.home_url', '/'),
-        'email-verification' => null,
-        'password-reset' => null,
-    ],
-
     /*
      |--------------------------------------------------------------------------
      | Route Group Prefix
@@ -124,24 +115,70 @@ return [
     */
 
     'features' => [
+        Features::login([
+            'card_width' => 'md',
+            'has_brand' => true,
+            'rate_limiting' => [
+                'enabled' => true,
+                'limit' => 5
+            ],
+            'pipelines' => [],
+        ]),
         Features::registration([
-            'component' => \ArtMin96\FilamentJet\Http\Livewire\Auth\Register::class,
+            'page' => \ArtMin96\FilamentJet\Filament\Pages\Auth\Register::class,
             'terms_of_service' => \ArtMin96\FilamentJet\Http\Livewire\TermsOfService::class,
             'privacy_policy' => \ArtMin96\FilamentJet\Http\Livewire\PrivacyPolicy::class,
-            'auth_card_max_w' => null,
+            'card_width' => 'md',
+            'has_brand' => true,
+            'rate_limiting' => [
+                'enabled' => true,
+                'limit' => 5
+            ],
         ]),
         Features::resetPasswords([
-            'component' => \ArtMin96\FilamentJet\Http\Livewire\Auth\ResetPassword::class,
+            'request' => [
+                'page' => \ArtMin96\FilamentJet\Filament\Pages\Auth\PasswordReset\RequestPasswordReset::class,
+                'card_width' => 'md',
+                'has_brand' => true,
+                'rate_limiting' => [
+                    'enabled' => true,
+                    'limit' => 5
+                ],
+            ],
+            'reset' => [
+                'page' => \ArtMin96\FilamentJet\Filament\Pages\Auth\PasswordReset\ResetPassword::class,
+                'card_width' => 'md',
+                'has_brand' => true,
+                'rate_limiting' => [
+                    'enabled' => true,
+                    'limit' => 5
+                ],
+            ],
         ]),
         // Features::emailVerification([
-        //     'component' => \ArtMin96\FilamentJet\Http\Livewire\Auth\Verify::class,
+        //     'page' => \ArtMin96\FilamentJet\Filament\Pages\Auth\EmailVerification\EmailVerificationPrompt::class,
         //     'controller' => \ArtMin96\FilamentJet\Http\Controllers\Auth\EmailVerificationController::class,
+        //     'card_width' => 'md',
+        //     'has_brand' => true,
+        //     'rate_limiting' => [
+        //         'enabled' => true,
+        //         'limit' => 5
+        //     ],
         // ]),
         Features::updateProfileInformation(),
         Features::updatePasswords([
             'askCurrentPassword' => true,
         ]),
         Features::twoFactorAuthentication([
+            'authentication' => [
+                'session_prefix' => 'filament.',
+                'card_width' => 'md',
+                'has_brand' => true,
+                'rate_limiting' => [
+                    'enabled' => true,
+                    'limit' => 5
+                ],
+            ],
             'confirm' => true,
             'toggleRecoveryCodesVisibilityWithConfirmPassword' => true,
             // 'window' => 0,
@@ -227,12 +264,14 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Reset Broker
+    | Filament Jet Password Broker
     |--------------------------------------------------------------------------
     |
-    | The reset broker to be used in your reset password requests.
+    | Here you may specify which password broker Fortify can use when a user
+    | is resetting their password. This configured value should match one
+    | of your password brokers setup in your "auth" configuration file.
     |
     */
 
-    'reset_broker' => config('auth.defaults.passwords'),
+    'passwords' => config('auth.defaults.passwords'),
 ];

@@ -2,30 +2,41 @@
 
 namespace ArtMin96\FilamentJet;
 
+use App\Actions\FilamentJet\ResetUserPassword;
 use App\Actions\FilamentJet\UpdateUserPassword;
 use App\Actions\FilamentJet\UpdateUserProfileInformation;
 use ArtMin96\FilamentJet\Console\InstallCommand;
 use ArtMin96\FilamentJet\Contracts\TwoFactorAuthenticationProvider as TwoFactorAuthenticationProviderContract;
 use ArtMin96\FilamentJet\Filament\Pages\Account;
 use ArtMin96\FilamentJet\Filament\Pages\ApiTokens;
+use ArtMin96\FilamentJet\Filament\Pages\Auth\EmailVerification\EmailVerificationPrompt;
+use ArtMin96\FilamentJet\Filament\Pages\Auth\Login;
+use ArtMin96\FilamentJet\Filament\Pages\Auth\PasswordReset\RequestPasswordReset;
+use ArtMin96\FilamentJet\Filament\Pages\Auth\PasswordReset\ResetPassword;
+use ArtMin96\FilamentJet\Filament\Pages\Auth\Register;
+use ArtMin96\FilamentJet\Filament\Pages\Auth\TwoFactorLogin;
 use ArtMin96\FilamentJet\Http\Livewire\ApiTokensTable;
-use ArtMin96\FilamentJet\Http\Livewire\Auth\Login;
-use ArtMin96\FilamentJet\Http\Livewire\Auth\Register;
-use ArtMin96\FilamentJet\Http\Livewire\Auth\ResetPassword;
-use ArtMin96\FilamentJet\Http\Livewire\Auth\Verify;
 use ArtMin96\FilamentJet\Http\Livewire\LogoutOtherBrowserSessions;
-use ArtMin96\FilamentJet\Http\Livewire\PersonalDataExport;
 use ArtMin96\FilamentJet\Http\Livewire\PrivacyPolicy;
 use ArtMin96\FilamentJet\Http\Livewire\TermsOfService;
+use ArtMin96\FilamentJet\Http\Responses\Auth\Contracts\EmailVerificationResponse as EmailVerificationResponseContract;
+use ArtMin96\FilamentJet\Http\Responses\Auth\Contracts\PasswordResetResponse as PasswordResetResponseContract;
+use ArtMin96\FilamentJet\Http\Responses\Auth\Contracts\TwoFactorLoginResponse as TwoFactorLoginResponseContract;
+use ArtMin96\FilamentJet\Http\Responses\Auth\EmailVerificationResponse;
+use ArtMin96\FilamentJet\Http\Responses\Auth\PasswordResetResponse;
+use ArtMin96\FilamentJet\Http\Responses\Auth\TwoFactorLoginResponse;
 use Filament\Facades\Filament;
 use Filament\Navigation\UserMenuItem;
 use Filament\PluginServiceProvider;
+use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Contracts\Cache\Repository;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\View\Compilers\BladeCompiler;
 use Livewire\Livewire;
 use PragmaRX\Google2FA\Google2FA;
 use Spatie\LaravelPackageTools\Package;
+
+include 'helpers.php';
 
 class FilamentJetServiceProvider extends PluginServiceProvider
 {
@@ -42,6 +53,23 @@ class FilamentJetServiceProvider extends PluginServiceProvider
             ])
             ->hasTranslations()
             ->hasCommand(InstallCommand::class);
+    }
+
+    public function packageRegistered(): void
+    {
+        parent::packageRegistered();
+
+        if (Features::enabled(Features::emailVerification())) {
+            $this->app->bind(EmailVerificationResponseContract::class, EmailVerificationResponse::class);
+        }
+
+        if (Features::hasResetPasswordFeature()) {
+            $this->app->bind(PasswordResetResponseContract::class, PasswordResetResponse::class);
+        }
+
+        if (Features::enabled(Features::twoFactorAuthentication())) {
+            $this->app->bind(TwoFactorLoginResponseContract::class, TwoFactorLoginResponse::class);
+        }
     }
 
     public function packageBooted(): void
@@ -73,13 +101,14 @@ class FilamentJetServiceProvider extends PluginServiceProvider
         $this->configurePublishing();
 
         Livewire::component(Login::getName(), Login::class);
+        Livewire::component(TwoFactorLogin::getName(), TwoFactorLogin::class);
+        Livewire::component(EmailVerificationPrompt::getName(), EmailVerificationPrompt::class);
+        Livewire::component(RequestPasswordReset::getName(), RequestPasswordReset::class);
         Livewire::component(ResetPassword::getName(), ResetPassword::class);
-        Livewire::component(Verify::getName(), Verify::class);
         Livewire::component(LogoutOtherBrowserSessions::getName(), LogoutOtherBrowserSessions::class);
-        Livewire::component(PersonalDataExport::getName(), PersonalDataExport::class);
         Livewire::component(ApiTokensTable::getName(), ApiTokensTable::class);
 
-        if (Features::enabled(Features::registration())) {
+        if (Features::hasRegistrationFeature()) {
             Livewire::component(Register::getName(), Register::class);
         }
 
@@ -90,6 +119,7 @@ class FilamentJetServiceProvider extends PluginServiceProvider
 
         FilamentJet::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         FilamentJet::updateUserPasswordsUsing(UpdateUserPassword::class);
+        FilamentJet::resetUserPasswordsUsing(ResetUserPassword::class);
     }
 
     public function register()
@@ -101,6 +131,10 @@ class FilamentJetServiceProvider extends PluginServiceProvider
                 $app->make(Google2FA::class),
                 $app->make(Repository::class)
             );
+        });
+
+        $this->app->bind(StatefulGuard::class, function () {
+            return Filament::auth();
         });
     }
 

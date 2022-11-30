@@ -2,43 +2,23 @@
 
 namespace ArtMin96\FilamentJet\Http\Controllers\Auth;
 
+use ArtMin96\FilamentJet\Http\Responses\Auth\Contracts\EmailVerificationResponse;
 use Filament\Facades\Filament;
-use Filament\Http\Middleware\Authenticate;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Events\Verified;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Routing\Controller;
 
 class EmailVerificationController extends Controller
 {
-    public function __construct()
+    public function __invoke(): EmailVerificationResponse
     {
-        $this->middleware([Authenticate::class]);
-    }
+        /** @var MustVerifyEmail $user */
+        $user = Filament::auth()->user();
 
-    public function __invoke(string $id, string $hash): RedirectResponse
-    {
-        if (! hash_equals($id, (string) Filament::auth()->id())) {
-            throw new AuthorizationException();
+        if ((! $user->hasVerifiedEmail()) && $user->markEmailAsVerified()) {
+            event(new Verified($user));
         }
 
-        if (
-            ! hash_equals(
-                $hash,
-                sha1(Filament::auth()->user()->getEmailForVerification())
-            )
-        ) {
-            throw new AuthorizationException();
-        }
-
-        if (Filament::auth()->user()->hasVerifiedEmail()) {
-            return redirect(config('filament.home_url'));
-        }
-
-        if (Filament::auth()->user()->markEmailAsVerified()) {
-            event(new Verified(auth()->user()));
-        }
-
-        return redirect(config('filament.home_url'));
+        return app(EmailVerificationResponse::class);
     }
 }

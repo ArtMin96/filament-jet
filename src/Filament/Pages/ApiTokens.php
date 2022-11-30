@@ -35,13 +35,10 @@ class ApiTokens extends Page
      *
      * @var string|null
      */
-    public $plainTextToken;
+    public null | string $plainTextToken = '';
 
     protected static string $view = 'filament-jet::filament.pages.api-tokens';
 
-    /**
-     * Mount the component.
-     */
     public function mount(): void
     {
         $this->permissions = FilamentJet::$defaultPermissions;
@@ -52,22 +49,19 @@ class ApiTokens extends Page
         return config('filament-jet.should_register_navigation.api_tokens');
     }
 
-    protected function getForms(): array
+    protected function getFormSchema(): array
     {
         return [
-            'createApiTokenForm' => $this->makeForm()
-                ->schema([
-                    TextInput::make('name')
-                        ->label(__('filament-jet::api.fields.token_name'))
-                        ->required()
-                        ->maxLength(255),
-                    CheckboxList::make('permissions')
-                        ->label(__('filament-jet::api.fields.permissions'))
-                        ->options($this->sanctumPermissions)
-                        ->visible(FilamentJet::hasPermissions())
-                        ->columns(2)
-                        ->required(),
-                ]),
+            TextInput::make('name')
+                ->label(__('filament-jet::api.fields.token_name'))
+                ->required()
+                ->maxLength(255),
+            CheckboxList::make('permissions')
+                ->label(__('filament-jet::api.fields.permissions'))
+                ->options($this->sanctumPermissions)
+                ->visible(FilamentJet::hasPermissions())
+                ->columns(2)
+                ->required(),
         ];
     }
 
@@ -76,7 +70,7 @@ class ApiTokens extends Page
      */
     public function createApiToken(): void
     {
-        $state = $this->createApiTokenForm->getState();
+        $state = $this->form->getState();
 
         $this->displayTokenValue($this->user->createToken(
             $state['name'],

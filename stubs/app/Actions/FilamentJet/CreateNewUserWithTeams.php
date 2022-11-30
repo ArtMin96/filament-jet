@@ -3,10 +3,12 @@
 namespace App\Actions\FilamentJet;
 
 use App\Models\Team;
-use App\Models\User;
 use ArtMin96\FilamentJet\Contracts\CreatesNewUsers;
+use ArtMin96\FilamentJet\Features;
 use ArtMin96\FilamentJet\FilamentJet;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
@@ -17,7 +19,7 @@ class CreateNewUser implements CreatesNewUsers
      *
      * @param  array<string, string>  $input
      */
-    public function create(array $input): User
+    public function create(array $input): Model | Authenticatable
     {
         return DB::transaction(function () use ($input) {
             return tap(FilamentJet::userModel()::create([
@@ -25,9 +27,17 @@ class CreateNewUser implements CreatesNewUsers
                 'email' => $input['email'],
                 'password' => Hash::make($input['password']),
             ]), function ($user) {
+
+                app()->bind(
+                    \Illuminate\Auth\Listeners\SendEmailVerificationNotification::class,
+                    \ArtMin96\FilamentJet\Listeners\Auth\SendEmailVerificationNotification::class,
+                );
+
                 event(new Registered($user));
 
-                $this->createTeam($user);
+                if (Features::hasTeamFeatures()) {
+                    $this->createTeam($user);
+                }
 
                 return $user;
             });
@@ -36,11 +46,13 @@ class CreateNewUser implements CreatesNewUsers
 
     /**
      * Create a personal team for the user.
+     *
+     * @param Model|Authenticatable $user
      */
-    protected function createTeam($user): void
+    protected function createTeam(Model | Authenticatable $user): void
     {
         $user->ownedTeams()->save(Team::forceCreate([
-            'user_id' => $user->id,
+            'user_id' => $user->getKey(),
             'name' => explode(' ', $user->name, 2)[0]."'s Team",
             'personal_team' => true,
         ]));

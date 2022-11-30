@@ -10,7 +10,6 @@ trait RedirectsActions
      * Get the redirect response for the given action.
      *
      * @param  mixed  $action
-     * @return \Illuminate\Http\Response
      */
     public function redirectPath($action)
     {

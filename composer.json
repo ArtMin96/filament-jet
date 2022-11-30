@@ -44,6 +44,9 @@
         "spatie/laravel-ray": "^1.26"
     },
     "autoload": {
+        "files": [
+            "src/helpers.php"
+        ],
         "psr-4": {
             "ArtMin96\\FilamentJet\\": "src",
             "ArtMin96\\FilamentJet\\Database\\Factories\\": "database/factories"

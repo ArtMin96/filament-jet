@@ -27,7 +27,7 @@ class InstallCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Install the FilamentJet components and resources';
+    protected $description = 'Install the Filament Jet components and resources';
 
     /**
      * Execute the console command.
@@ -55,12 +55,24 @@ class InstallCommand extends Command
         if ($this->option('verification')) {
             $this->replaceInFile(
                 '// Features::emailVerification([
-        //     \'component\' => \ArtMin96\FilamentJet\Http\Livewire\Auth\Verify::class,
+        //     \'page\' => \ArtMin96\FilamentJet\Filament\Pages\Auth\EmailVerification\EmailVerificationPrompt::class,
         //     \'controller\' => \ArtMin96\FilamentJet\Http\Controllers\Auth\EmailVerificationController::class,
+        //     \'card_width\' => \'md\',
+        //     \'has_brand\' => true,
+        //     \'rate_limiting\' => [
+        //         \'enabled\' => true,
+        //         \'limit\' => 5
+        //     ],
         // ]),',
                 'Features::emailVerification([
-             \'component\' => \ArtMin96\FilamentJet\Http\Livewire\Auth\Verify::class,
-             \'controller\' => \ArtMin96\FilamentJet\Http\Controllers\Auth\EmailVerificationController::class,
+            \'page\' => \ArtMin96\FilamentJet\Filament\Pages\Auth\EmailVerification\EmailVerificationPrompt::class,
+            \'controller\' => \ArtMin96\FilamentJet\Http\Controllers\Auth\EmailVerificationController::class,
+            \'card_width\' => \'md\',
+            \'has_brand\' => true,
+            \'rate_limiting\' => [
+                \'enabled\' => true,
+                \'limit\' => 5
+            ],
         ]),',
                 config_path('filament-jet.php')
             );
@@ -123,14 +135,9 @@ class InstallCommand extends Command
         // Factories...
         copy(__DIR__.'/../../database/factories/UserFactory.php', base_path('database/factories/UserFactory.php'));
 
-        // Pages...
-        copy(__DIR__.'/../../stubs/app/Filament/Pages/Account.php', app_path('Filament/Pages/Account.php'));
-        copy(__DIR__.'/../../stubs/app/Filament/Pages/ApiTokens.php', app_path('Filament/Pages/ApiTokens.php'));
-        copy(__DIR__.'/../../stubs/resources/views/filament/pages/account.blade.php', resource_path('views/filament/pages/account.blade.php'));
-        copy(__DIR__.'/../../stubs/resources/views/filament/pages/api-tokens.blade.php', resource_path('views/filament/pages/api-tokens.blade.php'));
-
         // Actions...
         copy(__DIR__.'/../../stubs/app/Actions/FilamentJet/CreateNewUser.php', app_path('Actions/FilamentJet/CreateNewUser.php'));
+        copy(__DIR__.'/../../stubs/app/Actions/FilamentJet/ResetUserPassword.php', app_path('Actions/FilamentJet/ResetUserPassword.php'));
         copy(__DIR__.'/../../stubs/app/Actions/FilamentJet/UpdateUserProfileInformation.php', app_path('Actions/FilamentJet/UpdateUserProfileInformation.php'));
         copy(__DIR__.'/../../stubs/app/Actions/FilamentJet/UpdateUserPassword.php', app_path('Actions/FilamentJet/UpdateUserPassword.php'));
         copy(__DIR__.'/../../stubs/app/Actions/FilamentJet/DeleteUser.php', app_path('Actions/FilamentJet/DeleteUser.php'));
@@ -156,10 +163,7 @@ class InstallCommand extends Command
 
     protected function installTeamStack()
     {
-        copy(__DIR__.'/../../stubs/app/Filament/Pages/TeamSettings.php', app_path('Filament/Pages/TeamSettings.php'));
-        copy(__DIR__.'/../../stubs/app/Filament/Pages/CreateTeam.php', app_path('Filament/Pages/CreateTeam.php'));
-        copy(__DIR__.'/../../stubs/resources/views/filament/pages/create-team.blade.php', resource_path('views/filament/pages/create-team.blade.php'));
-        copy(__DIR__.'/../../stubs/resources/views/filament/pages/team-settings.blade.php', resource_path('views/filament/pages/team-settings.blade.php'));
+        // ...
 
         $this->ensureApplicationIsTeamCompatible();
     }

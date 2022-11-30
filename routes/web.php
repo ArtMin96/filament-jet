@@ -13,23 +13,38 @@ Route::domain(config('filament.domain'))
         $guard = config('filament.auth.guard');
         $authMiddleware = config('filament-jet.auth_middleware', 'auth');
 
-        if (Features::enabled(Features::registration())) {
-            Route::middleware(['guest:'.$guard])->group(function () {
-                Route::get('/register', FilamentJet::registrationComponent())->name('register');
+        Route::name('auth.')
+            ->middleware(['guest:'.$guard])
+            ->group(function () use ($guard) {
+
+                // Two Factor Authentication...
+                if (Features::enabled(Features::twoFactorAuthentication())) {
+                    Route::get('/two-factor-login', \ArtMin96\FilamentJet\Filament\Pages\Auth\TwoFactorLogin::class)->name('two-factor.login');
+                }
+
+                // Registration...
+                if (Features::hasRegistrationFeature()) {
+                    Route::get('/register', FilamentJet::registrationPage())->name('register');
+                }
+
+                // Password Reset...
+                if (Features::hasResetPasswordFeature()) {
+                    Route::name('password-reset.')
+                        ->prefix('/password-reset')
+                        ->group(function () {
+                            Route::get('/request', Features::getOption(Features::resetPasswords(), 'request.page'))->name('request');
+                            Route::get('/reset', Features::getOption(Features::resetPasswords(), 'reset.page'))
+                                ->middleware(['signed'])
+                                ->name('reset');
+                        });
+                }
             });
 
+        if (Features::enabled(Features::registration())) {
             if (FilamentJet::hasTermsAndPrivacyPolicyFeature()) {
                 Route::get('/terms-of-service', FilamentJet::termsOfServiceComponent())->name('terms');
                 Route::get('/privacy-policy', FilamentJet::privacyPolicyComponent())->name('policy');
             }
-        }
-
-        // Password Reset...
-        if (Features::enabled(Features::resetPasswords())) {
-            Route::middleware(['guest:'.$guard])->group(function () {
-                Route::get('/password/reset', FilamentJet::resetPasswordsComponent())->name('password.request');
-                Route::get('/password/reset/{token}', FilamentJet::resetPasswordsComponent())->name('password.reset');
-            });
         }
 
         // Teams...
@@ -45,14 +60,17 @@ Route::domain(config('filament.domain'))
 
         // Email verification...
         if (Features::enabled(Features::emailVerification())) {
-            $verificationLimiter = config('filament-jet.limiters.verification', '6,1');
 
-            Route::get('/email/verify', FilamentJet::emailVerificationComponent())
-                ->middleware(['throttle:'.$verificationLimiter])
-                ->name('verification.notice');
+            Route::name('auth.email-verification.')
+                ->prefix('/email-verification')
+                ->group(function () {
+                    Route::get('/prompt', Features::getOption(Features::emailVerification(), 'page'))->name('prompt');
 
-            Route::get('email/verify/{id}/{hash}', [FilamentJet::emailVerificationController() ?? EmailVerificationController::class, '__invoke'])
-                ->middleware(['signed', 'throttle:'.$verificationLimiter])
-                ->name('verification.verify');
+                    Route::get('/verify', [
+                        Features::getOption(Features::emailVerification(), 'controller') ?? EmailVerificationController::class,
+                        '__invoke'
+                    ])
+                        ->name('verify');
+                });
         }
     });

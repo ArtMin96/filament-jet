@@ -9,14 +9,13 @@ trait HasProfilePhoto
 {
     public function getFilamentAvatarUrl(): ?string
     {
-        return Features::enabled(Features::profilePhotos()) ? $this->profile_photo_url : '';
+        return Features::managesProfilePhotos() ? $this->profile_photo_url : null;
     }
 
     /**
      * Update the user's profile photo.
      *
-     * @param  \Illuminate\Http\UploadedFile  $photo
-     * @return void
+     * @param string|null $photo
      */
     public function updateProfilePhoto(null|string $photo): void
     {
@@ -33,10 +32,8 @@ trait HasProfilePhoto
 
     /**
      * Delete the user's profile photo.
-     *
-     * @return void
      */
-    public function deleteProfilePhoto()
+    public function deleteProfilePhoto(): void
     {
         if (! Features::managesProfilePhotos()) {
             return;
@@ -55,8 +52,6 @@ trait HasProfilePhoto
 
     /**
      * Get the URL to the user's profile photo.
-     *
-     * @return string
      */
     public function getProfilePhotoUrlAttribute(): string
     {
@@ -67,8 +62,6 @@ trait HasProfilePhoto
 
     /**
      * Get the default profile photo URL if no profile photo has been uploaded.
-     *
-     * @return string
      */
     protected function defaultProfilePhotoUrl(): string
     {
@@ -81,8 +74,6 @@ trait HasProfilePhoto
 
     /**
      * Get the disk that profile photos should be stored on.
-     *
-     * @return string
      */
     public function profilePhotoDisk(): string
     {
@@ -91,8 +82,6 @@ trait HasProfilePhoto
 
     /**
      * Get the directory that profile photos should be stored on.
-     *
-     * @return string
      */
     public function profilePhotoDirectory(): string
     {

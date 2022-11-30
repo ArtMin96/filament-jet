@@ -5,13 +5,17 @@ namespace ArtMin96\FilamentJet\Http\Livewire;
 use ArtMin96\FilamentJet\FilamentJet;
 use ArtMin96\FilamentJet\Http\Livewire\Traits\Properties\HasSanctumPermissionsProperty;
 use Filament\Facades\Filament;
+use Filament\Forms\ComponentContainer;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\BulkAction;
+use Filament\Tables\Columns\TagsColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
+use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -27,12 +31,12 @@ class ApiTokensTable extends Component implements HasTable
         'tokenCreated' => '$refresh',
     ];
 
-    public function render()
+    public function render(): View
     {
         return view('filament-jet::livewire.api-tokens-table');
     }
 
-    protected function getTableQuery(): Builder|Relation
+    protected function getTableQuery(): Builder | Relation
     {
         return app(Sanctum::$personalAccessTokenModel)->where([
             ['tokenable_id', '=', Filament::auth()->id()],
@@ -47,12 +51,14 @@ class ApiTokensTable extends Component implements HasTable
                 ->label(__('filament-jet::api.fields.token_name'))
                 ->searchable()
                 ->sortable(),
+            TagsColumn::make('abilities'),
             TextColumn::make('last_used_at')
                 ->label(__('filament-jet::api.fields.last_used_at'))
+                ->color('secondary')
                 ->searchable()
                 ->sortable()
                 ->formatStateUsing(
-                    fn (string|null $state): string|null => $state ? Carbon::parse($state)->diffForHumans() : __('filament-jet::api.table.never')
+                    fn (string | null $state): string | null => $state ? Carbon::parse($state)->diffForHumans() : __('filament-jet::api.table.never')
                 ),
         ];
     }
@@ -76,7 +82,7 @@ class ApiTokensTable extends Component implements HasTable
                 ->icon('heroicon-o-pencil-alt')
                 ->modalWidth('sm')
                 ->mountUsing(
-                    fn ($form, $record) => $form->fill($record->toArray())
+                    fn (ComponentContainer $form, Model $record) => $form->fill($record->toArray())
                 )
                 ->form([
                     CheckboxList::make('abilities')
@@ -105,7 +111,7 @@ class ApiTokensTable extends Component implements HasTable
         ];
     }
 
-    public function edit($record, $data)
+    public function edit(Model $record, array $data)
     {
         $record->forceFill([
             'abilities' => FilamentJet::validPermissions($data['abilities']),
@@ -114,7 +120,7 @@ class ApiTokensTable extends Component implements HasTable
         Filament::notify('success', __('filament-jet::api.update.notify'));
     }
 
-    public function delete($record)
+    public function delete(Model $record)
     {
         $record->delete();
 

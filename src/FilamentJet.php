@@ -9,14 +9,28 @@ use ArtMin96\FilamentJet\Contracts\DeletesTeams;
 use ArtMin96\FilamentJet\Contracts\DeletesUsers;
 use ArtMin96\FilamentJet\Contracts\InvitesTeamMembers;
 use ArtMin96\FilamentJet\Contracts\RemovesTeamMembers;
+use ArtMin96\FilamentJet\Contracts\ResetsUserPasswords;
 use ArtMin96\FilamentJet\Contracts\UpdatesTeamNames;
 use ArtMin96\FilamentJet\Contracts\UpdatesUserPasswords;
 use ArtMin96\FilamentJet\Contracts\UpdatesUserProfileInformation;
 use ArtMin96\FilamentJet\Traits\HasTeams;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Validation\Rules\Password;
 
 class FilamentJet
 {
+    /**
+     * The callback that is responsible for building the authentication pipeline array, if applicable.
+     *
+     * @var callable|null
+     */
+    public static $authenticateThroughCallback;
+
     /**
      * The roles that are available to assign to users.
      *
@@ -65,6 +79,33 @@ class FilamentJet
      * @var string
      */
     public static $teamInvitationModel = 'App\\Models\\TeamInvitation';
+
+    /**
+     * The password rules that should be used by FilamentJet.
+     *
+     * @var array
+     */
+    public static array $passwordRules = [];
+
+    /**
+     * Register a callback that is responsible for building the authentication pipeline array.
+     *
+     * @param  callable  $callback
+     */
+    public static function loginThrough(callable $callback): void
+    {
+        static::authenticateThrough($callback);
+    }
+
+    /**
+     * Register a callback that is responsible for building the authentication pipeline array.
+     *
+     * @param  callable  $callback
+     */
+    public static function authenticateThrough(callable $callback): void
+    {
+        static::$authenticateThroughCallback = $callback;
+    }
 
     /**
      * Get the username used for authentication.
@@ -239,13 +280,13 @@ class FilamentJet
     }
 
     /**
-     * Determine registration component.
+     * Determine registration page.
      *
      * @return bool
      */
-    public static function registrationComponent()
+    public static function registrationPage()
     {
-        return Features::getOption(Features::registration(), 'component');
+        return Features::getOption(Features::registration(), 'page');
     }
 
     /**
@@ -255,7 +296,7 @@ class FilamentJet
      */
     public static function emailVerificationComponent()
     {
-        return Features::getOption(Features::emailVerification(), 'component');
+        return Features::getOption(Features::emailVerification(), 'page');
     }
 
     /**
@@ -293,7 +334,7 @@ class FilamentJet
      *
      * @return bool
      */
-    public static function resetPasswordsComponent()
+    public static function resetPasswordPage()
     {
         return Features::getOption(Features::resetPasswords(), 'component');
     }
@@ -574,6 +615,46 @@ class FilamentJet
     public static function deleteUsersUsing(string $class)
     {
         return app()->singleton(DeletesUsers::class, $class);
+    }
+
+    /**
+     * Register a class / callback that should be used to reset user passwords.
+     *
+     * @param  string  $class
+     */
+    public static function resetUserPasswordsUsing(string $class): void
+    {
+        app()->singleton(ResetsUserPasswords::class, $class);
+    }
+
+    public static function getVerifyEmailUrl(MustVerifyEmail | Model | Authenticatable $user): string
+    {
+        return URL::temporarySignedRoute(
+            config('filament-jet.route_group_prefix').'auth.email-verification.verify',
+            now()->addMinutes(config('auth.verification.expire', 60)),
+            [
+                'id' => $user->getKey(),
+                'hash' => sha1($user->getEmailForVerification()),
+            ],
+        );
+    }
+
+    public static function getResetPasswordUrl(string $token, CanResetPassword | Model | Authenticatable $user): string
+    {
+        return URL::signedRoute(config('filament-jet.route_group_prefix').'auth.password-reset.reset', [
+            'email' => $user->getEmailForPasswordReset(),
+            'token' => $token,
+        ]);
+    }
+
+    public static function setPasswordRules(array $rules): void
+    {
+        static::$passwordRules = $rules ?: Password::default();
+    }
+
+    public static function getPasswordRules(): array
+    {
+        return static::$passwordRules;
     }
 
     /**

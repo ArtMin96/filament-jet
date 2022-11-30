@@ -19,11 +19,28 @@ class RemoveTeamsCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Remove teams components and resources from FilamentJet';
+    protected $description = 'Remove teams components and resources from Filament Jet';
 
     public function handle()
     {
-        (new Filesystem)->delete(resource_path('views/filament/pages/teams.blade.php'));
-        (new Filesystem)->delete(app_path('Filament/Pages/Teams.php'));
+        // Models...
+        (new Filesystem)->delete(app_path('Models/Membership.php'));
+        (new Filesystem)->delete(app_path('Models/Team.php'));
+        (new Filesystem)->delete(app_path('Models/TeamInvitation.php'));
+
+        // Actions...
+        (new Filesystem)->delete(app_path('Actions/FilamentJet/AddTeamMember.php'));
+        (new Filesystem)->delete(app_path('Actions/FilamentJet/CreateTeam.php'));
+        (new Filesystem)->delete(app_path('Actions/FilamentJet/DeleteTeam.php'));
+        (new Filesystem)->delete(app_path('Actions/FilamentJet/DeleteUser.php'));
+        (new Filesystem)->delete(app_path('Actions/FilamentJet/InviteTeamMember.php'));
+        (new Filesystem)->delete(app_path('Actions/FilamentJet/RemoveTeamMember.php'));
+        (new Filesystem)->delete(app_path('Actions/FilamentJet/UpdateTeamName.php'));
+
+        // Policies...
+        (new Filesystem)->delete(app_path('Policies/TeamPolicy.php'));
+
+        // Factories...
+        (new Filesystem)->delete(base_path('database/factories/TeamFactory.php'));
     }
 }

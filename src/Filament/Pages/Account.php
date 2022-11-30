@@ -36,22 +36,15 @@ class Account extends Page
     use CanDeleteAccount;
     use ProcessesExport;
 
-    protected string $loginColumn;
-
     public array $updateProfileInformationState = [];
 
-    public $current_password;
+    public null | string $currentPassword;
 
-    public $password;
+    public null | string $password;
 
-    public $password_confirmation;
+    public null | string $passwordConfirmation;
 
     protected static string $view = 'filament-jet::filament.pages.account';
-
-    public function boot(): void
-    {
-        $this->loginColumn = FilamentJet::username();
-    }
 
     public function mount(): void
     {
@@ -84,78 +77,67 @@ class Account extends Page
 
     protected function updateProfileFormSchema(): array
     {
-        $profilePhotoField = [];
-
-        if (Features::managesProfilePhotos()) {
-            $profilePhotoField[] = FileUpload::make('profile_photo_path')
-                ->image()
-                ->avatar()
-                ->disk($this->user->profilePhotoDisk())
-                ->directory($this->user->profilePhotoDirectory())
-                ->visible(Features::managesProfilePhotos())
-                ->rules(['nullable', 'mimes:jpg,jpeg,png', 'max:1024']);
-        }
-
-        return array_merge(
-            $profilePhotoField,
-            [
-                TextInput::make('name')
-                    ->label(__('filament-jet::account.profile_information.columns.name'))
-                    ->required()
-                    ->maxLength(255),
-                TextInput::make($this->loginColumn)
-                    ->label(__('filament-jet::account.profile_information.columns.email'))
-                    ->hintAction(
-                        ! empty(config('filament-jet.profile.login_field.hint_action')) && Features::enabled(Features::emailVerification())
-                            ? Action::make('newEmailVerifyNote')
-                                ->tooltip(config('filament-jet.profile.login_field.hint_action.tooltip'))
-                                ->icon(config('filament-jet.profile.login_field.hint_action.icon'))
-                            : null
-                    )
-                    ->email(fn (): bool => $this->loginColumn === 'email')
-                    ->unique(
-                        table: FilamentJet::userModel(),
-                        column: $this->loginColumn,
-                        ignorable: $this->user
-                    )
-                    ->required()
-                    ->maxLength(255),
-            ]
-        );
+        return array_filter([
+            Features::managesProfilePhotos()
+                ? FileUpload::make('profile_photo_path')
+                    ->image()
+                    ->avatar()
+                    ->disk($this->user->profilePhotoDisk())
+                    ->directory($this->user->profilePhotoDirectory())
+                    ->visible(Features::managesProfilePhotos())
+                    ->rules(['nullable', 'mimes:jpg,jpeg,png', 'max:1024'])
+                : null,
+            TextInput::make('name')
+                ->label(__('filament-jet::account.profile_information.columns.name'))
+                ->required()
+                ->maxLength(255),
+            TextInput::make(FilamentJet::username())
+                ->label(__('filament-jet::account.profile_information.columns.email'))
+                ->hintAction(
+                    ! empty(config('filament-jet.profile.login_field.hint_action')) && Features::enabled(Features::emailVerification())
+                        ? Action::make('newEmailVerifyNote')
+                        ->tooltip(config('filament-jet.profile.login_field.hint_action.tooltip'))
+                        ->icon(config('filament-jet.profile.login_field.hint_action.icon'))
+                        : null
+                )
+                ->email(fn (): bool => FilamentJet::username() === 'email')
+                ->unique(
+                    table: FilamentJet::userModel(),
+                    column: FilamentJet::username(),
+                    ignorable: $this->user
+                )
+                ->required()
+                ->maxLength(255),
+        ]);
     }
 
     protected function updatePasswordFormSchema(): array
     {
-        $currentPasswordField = [];
-
         $requireCurrentPasswordOnUpdate = Features::optionEnabled(Features::updatePasswords(), 'askCurrentPassword');
 
-        if ($requireCurrentPasswordOnUpdate) {
-            $currentPasswordField[] = Password::make('current_password')
-                ->label(__('filament-jet::account.update_password.columns.current_password'))
-                ->autocomplete('current_password')
-                ->revealable()
-                ->required()
-                ->rule('current_password');
-        }
-
-        return array_merge(
-            $currentPasswordField,
-            [
-                Password::make('password')
-                    ->label(__('filament-jet::account.update_password.columns.new_password'))
-                    ->autocomplete('new_password')
-                    ->copyable()
+        return array_filter([
+            $requireCurrentPasswordOnUpdate
+                ? Password::make('currentPassword')
+                    ->label(__('filament-jet::account.update_password.columns.current_password'))
+                    ->autocomplete('currentPassword')
                     ->revealable()
-                    ->generatable()
                     ->required()
-                    ->rules($this->passwordRules()),
-                Password::make('password_confirmation')
-                    ->label(__('filament-jet::account.update_password.columns.confirm_password'))
-                    ->autocomplete('password_confirmation')
-                    ->revealable(),
-            ]
-        );
+                    ->rule('current_password')
+                : null,
+            Password::make('password')
+                ->label(__('filament-jet::account.update_password.columns.new_password'))
+                ->autocomplete('new_password')
+                ->copyable()
+                ->revealable()
+                ->generatable()
+                ->required()
+                ->rules(FilamentJet::getPasswordRules())
+                ->same('passwordConfirmation'),
+            Password::make('passwordConfirmation')
+                ->label(__('filament-jet::account.update_password.columns.confirm_password'))
+                ->autocomplete('passwordConfirmation')
+                ->revealable(),
+        ]);
     }
 
     /**
