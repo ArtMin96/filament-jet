@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use ArtMin96\FilamentJet\Traits\CanExportPersonalData;
 use ArtMin96\FilamentJet\Traits\HasProfilePhoto;
 use ArtMin96\FilamentJet\Traits\TwoFactorAuthenticatable;
 use Filament\Models\Contracts\FilamentUser;
@@ -18,6 +19,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
+    use CanExportPersonalData;
 
     /**
      * The attributes that are mass assignable.

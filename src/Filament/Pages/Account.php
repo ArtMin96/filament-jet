@@ -13,7 +13,6 @@ use ArtMin96\FilamentJet\Filament\Traits\HasHiddenAction;
 use ArtMin96\FilamentJet\Filament\Traits\HasTwoFactorAuthentication;
 use ArtMin96\FilamentJet\FilamentJet;
 use ArtMin96\FilamentJet\Http\Livewire\Traits\Properties\HasUserProperty;
-use ArtMin96\FilamentJet\Traits\PasswordValidationRules;
 use ArtMin96\FilamentJet\Traits\ProcessesExport;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Actions\Action;
@@ -27,7 +26,6 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class Account extends Page
 {
-    use PasswordValidationRules;
     use HasHiddenAction;
     use HasCachedAction;
     use HasUserProperty;
@@ -36,13 +34,13 @@ class Account extends Page
     use CanDeleteAccount;
     use ProcessesExport;
 
-    public array $updateProfileInformationState = [];
+    public ?array $updateProfileInformationState = [];
 
-    public null|string $currentPassword;
+    public ?string $currentPassword;
 
-    public null|string $password;
+    public ?string $password;
 
-    public null|string $passwordConfirmation;
+    public ?string $passwordConfirmation;
 
     protected static string $view = 'filament-jet::filament.pages.account';
 
