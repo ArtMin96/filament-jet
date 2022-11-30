@@ -12,7 +12,7 @@ use App\Actions\FilamentJet\ResetUserPassword;
 use App\Actions\FilamentJet\UpdateTeamName;
 use App\Actions\FilamentJet\UpdateUserPassword;
 use App\Actions\FilamentJet\UpdateUserProfileInformation;
-use App\Filament\Pages\CreateTeam as CreateTeamPage;
+use ArtMin96\FilamentJet\Filament\Pages\CreateTeam as CreateTeamPage;
 use ArtMin96\FilamentJet\Console\InstallCommand;
 use ArtMin96\FilamentJet\Contracts\TwoFactorAuthenticationProvider as TwoFactorAuthenticationProviderContract;
 use ArtMin96\FilamentJet\Filament\Pages\Account;
