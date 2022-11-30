@@ -96,27 +96,7 @@ class FilamentJetServiceProvider extends PluginServiceProvider
     {
         parent::packageBooted();
 
-        if (config('filament-jet.user_menu.account') || config('filament-jet.user_menu.api_tokens.show')) {
-            Filament::serving(function () {
-                $userMenuItems = [];
-
-                if (config('filament-jet.user_menu.account')) {
-                    $userMenuItems['account'] = UserMenuItem::make()
-                        ->url(Account::getUrl());
-                }
-
-                if (Features::hasApiFeatures() && config('filament-jet.user_menu.api_tokens.show')) {
-                    $userMenuItems['api-tokens'] = UserMenuItem::make()
-                        ->label(__('filament-jet::jet.user_menu.api_tokens'))
-                        ->icon(config('filament-jet.user_menu.api_tokens.icon', 'heroicon-o-key'))
-                        ->sort(config('filament-jet.user_menu.api_tokens.sort'))
-                        ->url(ApiTokens::getUrl());
-                }
-
-                Filament::registerUserMenuItems($userMenuItems);
-            });
-        }
-
+        $this->configureDisks();
         $this->ensureApplicationIsTeamCompatible();
         $this->configureComponents();
         $this->configurePublishing();
@@ -142,6 +122,27 @@ class FilamentJetServiceProvider extends PluginServiceProvider
         FilamentJet::updateUserPasswordsUsing(UpdateUserPassword::class);
         FilamentJet::resetUserPasswordsUsing(ResetUserPassword::class);
         FilamentJet::deleteUsersUsing(DeleteUser::class);
+
+        if (config('filament-jet.user_menu.account') || config('filament-jet.user_menu.api_tokens.show')) {
+            Filament::serving(function () {
+                $userMenuItems = [];
+
+                if (config('filament-jet.user_menu.account')) {
+                    $userMenuItems['account'] = UserMenuItem::make()
+                        ->url(Account::getUrl());
+                }
+
+                if (Features::hasApiFeatures() && config('filament-jet.user_menu.api_tokens.show')) {
+                    $userMenuItems['api-tokens'] = UserMenuItem::make()
+                        ->label(__('filament-jet::jet.user_menu.api_tokens'))
+                        ->icon(config('filament-jet.user_menu.api_tokens.icon', 'heroicon-o-key'))
+                        ->sort(config('filament-jet.user_menu.api_tokens.sort'))
+                        ->url(ApiTokens::getUrl());
+                }
+
+                Filament::registerUserMenuItems($userMenuItems);
+            });
+        }
     }
 
     public function register()
@@ -205,6 +206,21 @@ class FilamentJetServiceProvider extends PluginServiceProvider
             __DIR__.'/../database/migrations/2022_10_21_200000_create_team_user_table.php' => database_path('migrations/2022_10_21_200000_create_team_user_table.php'),
             __DIR__.'/../database/migrations/2022_10_21_300000_create_team_invitations_table.php' => database_path('migrations/2022_10_21_300000_create_team_invitations_table.php'),
         ], 'filament-jet-team-migrations');
+    }
+
+    protected function configureDisks(): void
+    {
+        config()->set(
+            'filesystems.disks',
+            collect(config()->get('filesystems.disks'))
+                ->merge([
+                    'personal-data-exports' => [
+                        'driver' => 'local',
+                        'root' => storage_path('app/personal-data-exports'),
+                    ]
+                ])
+                ->toArray()
+        );
     }
 
     /**
