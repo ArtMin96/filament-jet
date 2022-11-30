@@ -2,7 +2,14 @@
 
 namespace ArtMin96\FilamentJet;
 
+use App\Actions\FilamentJet\AddTeamMember;
+use App\Actions\FilamentJet\CreateTeam;
+use App\Actions\FilamentJet\DeleteTeam;
+use App\Actions\FilamentJet\DeleteUser;
+use App\Actions\FilamentJet\InviteTeamMember;
+use App\Actions\FilamentJet\RemoveTeamMember;
 use App\Actions\FilamentJet\ResetUserPassword;
+use App\Actions\FilamentJet\UpdateTeamName;
 use App\Actions\FilamentJet\UpdateUserPassword;
 use App\Actions\FilamentJet\UpdateUserProfileInformation;
 use ArtMin96\FilamentJet\Console\InstallCommand;
@@ -15,9 +22,11 @@ use ArtMin96\FilamentJet\Filament\Pages\Auth\PasswordReset\RequestPasswordReset;
 use ArtMin96\FilamentJet\Filament\Pages\Auth\PasswordReset\ResetPassword;
 use ArtMin96\FilamentJet\Filament\Pages\Auth\Register;
 use ArtMin96\FilamentJet\Filament\Pages\Auth\TwoFactorLogin;
+use ArtMin96\FilamentJet\Filament\Pages\TeamSettings;
 use ArtMin96\FilamentJet\Http\Livewire\ApiTokensTable;
 use ArtMin96\FilamentJet\Http\Livewire\LogoutOtherBrowserSessions;
 use ArtMin96\FilamentJet\Http\Livewire\PrivacyPolicy;
+use ArtMin96\FilamentJet\Http\Livewire\SwitchableTeam;
 use ArtMin96\FilamentJet\Http\Livewire\TermsOfService;
 use ArtMin96\FilamentJet\Http\Responses\Auth\Contracts\EmailVerificationResponse as EmailVerificationResponseContract;
 use ArtMin96\FilamentJet\Http\Responses\Auth\Contracts\PasswordResetResponse as PasswordResetResponseContract;
@@ -35,12 +44,23 @@ use Illuminate\View\Compilers\BladeCompiler;
 use Livewire\Livewire;
 use PragmaRX\Google2FA\Google2FA;
 use Spatie\LaravelPackageTools\Package;
+use App\Filament\Pages\CreateTeam as CreateTeamPage;
 
 include 'helpers.php';
 
 class FilamentJetServiceProvider extends PluginServiceProvider
 {
     public static string $name = 'filament-jet';
+
+    /**
+     * @var array<int, class-string>
+     */
+    protected array $pages = [
+        Account::class,
+        ApiTokens::class,
+        TeamSettings::class,
+        CreateTeamPage::class,
+    ];
 
     public function configurePackage(Package $package): void
     {
@@ -97,6 +117,7 @@ class FilamentJetServiceProvider extends PluginServiceProvider
             });
         }
 
+        $this->ensureApplicationIsTeamCompatible();
         $this->configureComponents();
         $this->configurePublishing();
 
@@ -120,6 +141,7 @@ class FilamentJetServiceProvider extends PluginServiceProvider
         FilamentJet::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);
         FilamentJet::updateUserPasswordsUsing(UpdateUserPassword::class);
         FilamentJet::resetUserPasswordsUsing(ResetUserPassword::class);
+        FilamentJet::deleteUsersUsing(DeleteUser::class);
     }
 
     public function register()
@@ -140,10 +162,8 @@ class FilamentJetServiceProvider extends PluginServiceProvider
 
     /**
      * Configure the Filament Account Blade components.
-     *
-     * @return void
      */
-    protected function configureComponents()
+    protected function configureComponents(): void
     {
         $this->callAfterResolving(BladeCompiler::class, function () {
             $this->registerComponent('auth-card');
@@ -161,19 +181,16 @@ class FilamentJetServiceProvider extends PluginServiceProvider
      * Register the given component.
      *
      * @param  string  $component
-     * @return void
      */
-    protected function registerComponent(string $component)
+    protected function registerComponent(string $component): void
     {
         Blade::component('filament-jet::components.'.$component, 'filament-jet-'.$component);
     }
 
     /**
      * Configure publishing for the package.
-     *
-     * @return void
      */
-    protected function configurePublishing()
+    protected function configurePublishing(): void
     {
         if (! $this->app->runningInConsole()) {
             return;
@@ -188,5 +205,55 @@ class FilamentJetServiceProvider extends PluginServiceProvider
             __DIR__.'/../database/migrations/2022_10_21_200000_create_team_user_table.php' => database_path('migrations/2022_10_21_200000_create_team_user_table.php'),
             __DIR__.'/../database/migrations/2022_10_21_300000_create_team_invitations_table.php' => database_path('migrations/2022_10_21_300000_create_team_invitations_table.php'),
         ], 'filament-jet-team-migrations');
+    }
+
+    /**
+     * Ensure the installed user model is ready for team usage.
+     */
+    protected function ensureApplicationIsTeamCompatible(): void
+    {
+        if (Features::hasTeamFeatures()) {
+            FilamentJet::createTeamsUsing(CreateTeam::class);
+            FilamentJet::updateTeamNamesUsing(UpdateTeamName::class);
+            FilamentJet::addTeamMembersUsing(AddTeamMember::class);
+            FilamentJet::inviteTeamMembersUsing(InviteTeamMember::class);
+            FilamentJet::removeTeamMembersUsing(RemoveTeamMember::class);
+            FilamentJet::deleteTeamsUsing(DeleteTeam::class);
+            FilamentJet::deleteUsersUsing(DeleteUser::class);
+
+            if (config('filament-jet.user_menu.switchable_team', true)) {
+                Livewire::component('switchable-team', SwitchableTeam::class);
+
+                Filament::registerRenderHook(
+                    'user-menu.start',
+                    fn (): string => Blade::render('@livewire(\'switchable-team\')'),
+                );
+            }
+
+            if (config('filament-jet.user_menu.team_settings.show') ||
+                config('filament-jet.user_menu.create_team.show')) {
+                Filament::serving(function () {
+                    $userMenuItems = [];
+
+                    if (config('filament-jet.user_menu.team_settings.show')) {
+                        $userMenuItems['team-settings'] = UserMenuItem::make()
+                            ->label(__('filament-jet::jet.user_menu.team_settings'))
+                            ->icon(config('filament-jet.user_menu.team_settings.icon', 'heroicon-o-cog'))
+                            ->sort(config('filament-jet.user_menu.team_settings.sort'))
+                            ->url(TeamSettings::getUrl());
+                    }
+
+                    if (config('filament-jet.user_menu.create_team.show')) {
+                        $userMenuItems['create-team'] = UserMenuItem::make()
+                            ->label(__('filament-jet::jet.user_menu.create_team'))
+                            ->icon(config('filament-jet.user_menu.create_team.icon', 'heroicon-o-users'))
+                            ->sort(config('filament-jet.user_menu.create_team.sort'))
+                            ->url(CreateTeamPage::getUrl());
+                    }
+
+                    Filament::registerUserMenuItems($userMenuItems);
+                });
+            }
+        }
     }
 }

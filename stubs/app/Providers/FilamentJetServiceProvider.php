@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Actions\FilamentJet\DeleteUser;
 use ArtMin96\FilamentJet\FilamentJet;
 use ArtMin96\FilamentJet\FilamentJetServiceProvider as BaseFilamentJetServiceProvider;
 
@@ -14,8 +13,6 @@ class FilamentJetServiceProvider extends BaseFilamentJetServiceProvider
     public function boot(): void
     {
         $this->configurePermissions();
-
-        FilamentJet::deleteUsersUsing(DeleteUser::class);
     }
 
     /**
