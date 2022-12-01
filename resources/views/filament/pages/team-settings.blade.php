@@ -17,7 +17,7 @@
                     </div>
 
                     <div class="flex items-center mt-2">
-                        <img class="w-12 h-12 rounded-full object-cover" src="{{ $team->owner->profile_photo_url }}" alt="{{ $team->owner->name }}">
+                        <x-filament-jet-user-avatar :src="$team->owner->profile_photo_url" :size="'lg'" />
 
                         <div class="ml-4 leading-tight">
                             <div>{{ $team->owner->name }}</div>

@@ -16,7 +16,7 @@
                 </div>
 
                 <div class="flex items-center mt-2">
-                    <img class="w-12 h-12 rounded-full object-cover" src="{{ $this->user->profile_photo_url }}" alt="{{ $this->user->name }}">
+                    <x-filament-jet-user-avatar :src="$this->user->profile_photo_url" :size="'lg'" />
 
                     <div class="ml-4 leading-tight">
                         <div>{{ $this->user->name }}</div>

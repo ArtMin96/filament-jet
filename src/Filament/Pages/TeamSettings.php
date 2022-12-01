@@ -2,6 +2,7 @@
 
 namespace ArtMin96\FilamentJet\Filament\Pages;
 
+use App\Models\Team;
 use App\Models\User;
 use ArtMin96\FilamentJet\Actions\UpdateTeamMemberRole;
 use ArtMin96\FilamentJet\Actions\ValidateTeamDeletion;
@@ -17,10 +18,14 @@ use ArtMin96\FilamentJet\FilamentJet;
 use ArtMin96\FilamentJet\Http\Livewire\Traits\Properties\HasUserProperty;
 use ArtMin96\FilamentJet\Role;
 use ArtMin96\FilamentJet\Traits\RedirectsActions;
+use Closure;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Pages\Actions\Action;
 use Filament\Pages\Page;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
 use Livewire\Redirector;
 use Suleymanozev\FilamentRadioButtonField\Forms\Components\RadioButton;
@@ -33,29 +38,25 @@ class TeamSettings extends Page
 
     protected static string $view = 'filament-jet::filament.pages.team-settings';
 
-    public $team;
+    public ?Team $team;
 
-    public array $teamState = [];
+    public ?array $teamState = [];
 
-    public array $addTeamMemberState = [];
+    public ?array $addTeamMemberState = [];
 
-    public $email;
+    public ?string $email = null;
 
-    public $role;
+    public ?string $role = null;
 
     /**
      * The user that is having their role managed.
-     *
-     * @var mixed
      */
-    public $managingRoleFor;
+    public Authenticatable|Model $managingRoleFor;
 
     /**
      * The current role for the user that is having their role managed.
-     *
-     * @var string
      */
-    public $currentRole;
+    public ?string $currentRole = null;
 
     public function mount()
     {
@@ -80,15 +81,16 @@ class TeamSettings extends Page
      */
     public function getRolesProperty(): array
     {
-        return collect(FilamentJet::$roles)->transform(function ($role) {
-            return with($role->jsonSerialize(), function ($data) {
-                return (new Role(
-                    $data['key'],
-                    $data['name'],
-                    $data['permissions']
-                ))->description($data['description']);
-            });
-        })
+        return collect(FilamentJet::$roles)
+            ->transform(function ($role) {
+                return with($role->jsonSerialize(), function ($data) {
+                    return (new Role(
+                        $data['key'],
+                        $data['name'],
+                        $data['permissions']
+                    ))->description($data['description']);
+                });
+            })
             ->values()
             ->all();
     }
@@ -116,16 +118,16 @@ class TeamSettings extends Page
                             ->required()
                             ->maxLength(255)
                             ->rule('email')
-                            ->exists(table: User::class, column: 'email')
-                            ->rules([
-                                function () {
-                                    return function (string $attribute, $value, \Closure $fail) {
-                                        if ($this->team->hasUserWithEmail($value)) {
-                                            $fail(__('filament-jet::validation.teams.user_belongs_to_team'));
-                                        }
-                                    };
-                                },
-                            ]),
+                            ->exists(table: User::class, column: 'email'),
+//                            ->rules([
+//                                function () {
+//                                    return function (string $attribute, $value, Closure $fail) {
+//                                        if ($this->team->hasUserWithEmail($value)) {
+//                                            $fail(__('filament-jet::validation.teams.user_belongs_to_team'));
+//                                        }
+//                                    };
+//                                },
+//                            ]),
                         RadioButton::make('role')
                             ->label(__('filament-jet::teams.team_settings.add_team_member.fields.role'))
                             ->options(
@@ -194,7 +196,10 @@ class TeamSettings extends Page
     {
         $updater->update($this->user, $this->team, $this->teamState);
 
-        $this->notify('success', __('filament-jet::teams.team_settings.update_name.updated'));
+        Notification::make()
+            ->title(__('filament-jet::teams.team_settings.update_name.updated'))
+            ->success()
+            ->send();
     }
 
     /**
@@ -231,7 +236,10 @@ class TeamSettings extends Page
 
         $this->team = $this->team->fresh();
 
-        $this->notify('success', $message);
+        Notification::make()
+            ->title($message)
+            ->success()
+            ->send();
     }
 
     /**
@@ -249,7 +257,10 @@ class TeamSettings extends Page
 
         $this->team = $this->team->fresh();
 
-        $this->notify('success', __('filament-jet::teams.team_settings.add_team_member.notify.invitation_canceled'));
+        Notification::make()
+            ->title(__('filament-jet::teams.team_settings.add_team_member.notify.invitation_canceled'))
+            ->success()
+            ->send();
     }
 
     /**
@@ -264,7 +275,10 @@ class TeamSettings extends Page
 
         $deleter->delete($this->team);
 
-        $this->notify('success', __('filament-jet::teams.team_settings.delete_team.notify'), true);
+        Notification::make()
+            ->title(__('filament-jet::teams.team_settings.delete_team.notify'))
+            ->success()
+            ->send();
 
         return $this->redirectPath($deleter);
     }
@@ -272,10 +286,10 @@ class TeamSettings extends Page
     /**
      * Remove a team member from the team.
      *
-     * @param    $userId
-     * @param  RemovesTeamMembers  $remover
+     * @param int                $userId
+     * @param RemovesTeamMembers $remover
      */
-    public function removeTeamMember($userId, RemovesTeamMembers $remover): void
+    public function removeTeamMember(int $userId, RemovesTeamMembers $remover): void
     {
         $remover->remove(
             $this->user,
@@ -285,15 +299,18 @@ class TeamSettings extends Page
 
         $this->team = $this->team->fresh();
 
-        $this->notify('success', __('filament-jet::teams.team_settings.team_members.notify.removed'));
+        Notification::make()
+            ->title(__('filament-jet::teams.team_settings.team_members.notify.removed'))
+            ->success()
+            ->send();
     }
 
     /**
      * Remove the currently authenticated user from the team.
      *
-     * @param  \ArtMin96\FilamentJet\Contracts\RemovesTeamMembers  $remover
+     * @param  RemovesTeamMembers  $remover
      */
-    public function leaveTeam(RemovesTeamMembers $remover)
+    public function leaveTeam(RemovesTeamMembers $remover): Redirector
     {
         $this->errorBagExcept('team');
 
@@ -305,7 +322,10 @@ class TeamSettings extends Page
 
         $this->team = $this->team->fresh();
 
-        $this->notify('success', __('filament-jet::teams.team_settings.team_members.notify.leave'), true);
+        Notification::make()
+            ->title(__('filament-jet::teams.team_settings.team_members.notify.leave'))
+            ->success()
+            ->send();
 
         return redirect(config('filament.path'));
     }
@@ -340,6 +360,9 @@ class TeamSettings extends Page
 
         $this->team = $this->team->fresh();
 
-        $this->notify('success', __('filament-jet::teams.team_settings.team_members.manage.notify.success'));
+        Notification::make()
+            ->title(__('filament-jet::teams.team_settings.team_members.manage.notify.success'))
+            ->success()
+            ->send();
     }
 }

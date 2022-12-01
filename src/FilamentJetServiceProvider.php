@@ -175,6 +175,7 @@ class FilamentJetServiceProvider extends PluginServiceProvider
             $this->registerComponent('token-field');
             $this->registerComponent('progress-bar');
             $this->registerComponent('two-factor-security-code');
+            $this->registerComponent('user-avatar');
         });
     }
 

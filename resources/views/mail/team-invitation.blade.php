@@ -4,7 +4,7 @@
     @if (ArtMin96\FilamentJet\Features::enabled(ArtMin96\FilamentJet\Features::registration()))
         {{ __('filament-jet::teams.team_settings.invitations.mail.registration.title') }}
 
-        @component('mail::button', ['url' => route('register')])
+        @component('mail::button', ['url' => jetRouteActions()->registrationRoute()])
             {{ __('filament-jet::teams.team_settings.invitations.mail.actions.create_account') }}
         @endcomponent
 

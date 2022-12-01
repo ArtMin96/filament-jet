@@ -3,6 +3,7 @@
 namespace ArtMin96\FilamentJet\Traits;
 
 use ArtMin96\FilamentJet\Features;
+use Filament\Facades\Filament;
 use Illuminate\Support\Facades\Storage;
 
 trait HasProfilePhoto
@@ -57,19 +58,7 @@ trait HasProfilePhoto
     {
         return $this->profile_photo_path
             ? Storage::disk($this->profilePhotoDisk())->url($this->profile_photo_path)
-            : $this->defaultProfilePhotoUrl();
-    }
-
-    /**
-     * Get the default profile photo URL if no profile photo has been uploaded.
-     */
-    protected function defaultProfilePhotoUrl(): string
-    {
-        $name = trim(collect(explode(' ', $this->name))->map(function ($segment) {
-            return mb_substr($segment, 0, 1);
-        })->join(' '));
-
-        return 'https://ui-avatars.com/api/?name='.urlencode($name).'&color=7F9CF5&background=EBF4FF';
+            : app(config('filament.default_avatar_provider'))->get($this);
     }
 
     /**
