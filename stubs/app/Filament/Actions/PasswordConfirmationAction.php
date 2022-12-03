@@ -1,15 +1,15 @@
 <?php
 
-namespace ArtMin96\FilamentJet\Filament\Actions;
+namespace ArtMin96\FilamentAccount\Filament\Actions;
 
 use Filament\Forms;
 use Filament\Pages\Actions\ButtonAction;
 
-class PasswordButtonAction extends ButtonAction
+class PasswordConfirmationAction extends ButtonAction
 {
     protected function isPasswordSessionValid()
     {
-        return session()->has('auth.password_confirmed_at') && (time() - session('auth.password_confirmed_at', 0)) < config('filament-jet.password_confirmation_seconds');
+        return session()->has('auth.password_confirmed_at') && (time() - session('auth.password_confirmed_at', 0)) < config('filament-account.password_confirmation_seconds');
     }
 
     protected function setUp(): void
@@ -19,13 +19,13 @@ class PasswordButtonAction extends ButtonAction
             //
         } else {
             $this->requiresConfirmation()
-                ->modalHeading(__('filament-jet::jet.password_confirmation_modal.heading'))
+                ->modalHeading(__('filament-account::account.account_page.password_confirmation_modal.heading'))
                 ->modalSubheading(
-                    __('filament-jet::jet.password_confirmation_modal.description')
+                    __('filament-account::account.account_page.password_confirmation_modal.description')
                 )
                 ->form([
                     Forms\Components\TextInput::make('current_password')
-                        ->label(__('filament-jet::jet.password_confirmation_modal.current_password'))
+                        ->label(__('filament-account::account.account_page.password_confirmation_modal.current_password'))
                         ->required()
                         ->password()
                         ->rule('current_password'),

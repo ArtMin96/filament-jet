@@ -11,7 +11,7 @@ use ArtMin96\FilamentJet\Contracts\InvitesTeamMembers;
 use ArtMin96\FilamentJet\Contracts\RemovesTeamMembers;
 use ArtMin96\FilamentJet\Contracts\UpdatesTeamNames;
 use ArtMin96\FilamentJet\Features;
-use ArtMin96\FilamentJet\Filament\Actions\AlwaysAskPasswordButtonAction;
+use ArtMin96\FilamentJet\Filament\Actions\AlwaysAskPasswordConfirmationAction;
 use ArtMin96\FilamentJet\Filament\Traits\HasCachedAction;
 use ArtMin96\FilamentJet\FilamentJet;
 use ArtMin96\FilamentJet\Http\Livewire\Traits\Properties\HasUserProperty;
@@ -160,7 +160,7 @@ class TeamSettings extends Page
     protected function getHiddenActions(): array
     {
         return [
-            AlwaysAskPasswordButtonAction::make('delete_team')
+            AlwaysAskPasswordConfirmationAction::make('delete_team')
                 ->label(__('filament-jet::teams/delete.buttons.delete'))
                 ->icon('heroicon-o-trash')
                 ->color('danger')

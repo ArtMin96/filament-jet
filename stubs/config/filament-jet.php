@@ -256,7 +256,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | Number of seconds before asking the user to confirm their password in
-    | PasswordButtonAction again. 300 = 5 minutes.
+    | PasswordConfirmationAction again. 300 = 5 minutes.
     |
     */
 

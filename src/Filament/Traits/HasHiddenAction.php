@@ -3,8 +3,8 @@
 namespace ArtMin96\FilamentJet\Filament\Traits;
 
 use ArtMin96\FilamentJet\Features;
-use ArtMin96\FilamentJet\Filament\Actions\AlwaysAskPasswordButtonAction;
-use ArtMin96\FilamentJet\Filament\Actions\PasswordButtonAction;
+use ArtMin96\FilamentJet\Filament\Actions\AlwaysAskPasswordConfirmationAction;
+use ArtMin96\FilamentJet\Filament\Actions\PasswordConfirmationAction;
 use Filament\Pages\Actions\Action;
 
 trait HasHiddenAction
@@ -15,7 +15,7 @@ trait HasHiddenAction
 
         if (Features::canManageTwoFactorAuthentication()) {
             if (config('filament-jet.password_confirmation.enable_two_factor_authentication', true)) {
-                $enable2fa = PasswordButtonAction::make('enable2fa')
+                $enable2fa = PasswordConfirmationAction::make('enable2fa')
                     ->label(__('filament-jet::account/two-factor.buttons.enable'))
                     ->icon('heroicon-s-shield-check')
                     ->action('enableTwoFactorAuthentication');
@@ -27,7 +27,7 @@ trait HasHiddenAction
             }
 
             if (config('filament-jet.password_confirmation.disable_two_factor_authentication', true)) {
-                $disable2fa = PasswordButtonAction::make('disable2fa')
+                $disable2fa = PasswordConfirmationAction::make('disable2fa')
                     ->label(__('filament-jet::account/two-factor.buttons.disable'))
                     ->color('danger')
                     ->action('disableTwoFactorAuthentication');
@@ -39,14 +39,14 @@ trait HasHiddenAction
             }
 
             if (Features::optionEnabled(Features::twoFactorAuthentication(), 'toggleRecoveryCodesVisibilityWithConfirmPassword')) {
-                $showRecoveryCodes = PasswordButtonAction::make('showing_recovery_codes')
+                $showRecoveryCodes = PasswordConfirmationAction::make('showing_recovery_codes')
                     ->label(__('filament-jet::account/two-factor.buttons.show_codes'))
                     ->icon('heroicon-o-eye')
                     ->color('secondary')
                     ->visible(! $this->showingRecoveryCodes)
                     ->action('showRecoveryCodes');
 
-                $regenerateRecoveryCodes = PasswordButtonAction::make('regenerate_recovery_codes')
+                $regenerateRecoveryCodes = PasswordConfirmationAction::make('regenerate_recovery_codes')
                     ->label(__('filament-jet::account/two-factor.buttons.regenerate_codes'))
                     ->icon('heroicon-o-refresh')
                     ->action('regenerateRecoveryCodes');
@@ -80,7 +80,7 @@ trait HasHiddenAction
 
         if (Features::canLogoutOtherBrowserSessions()) {
             $actions = array_merge($actions, [
-                PasswordButtonAction::make('logout_other_browser_sessions')
+                PasswordConfirmationAction::make('logout_other_browser_sessions')
                     ->label(__('filament-jet::account/browser-sessions.buttons.confirm'))
                     ->icon('heroicon-o-globe-alt')
                     ->action('logoutOtherBrowserSessions'),
@@ -89,7 +89,7 @@ trait HasHiddenAction
 
         if (Features::hasAccountDeletionFeatures()) {
             $actions = array_merge($actions, [
-                AlwaysAskPasswordButtonAction::make('delete_account')
+                AlwaysAskPasswordConfirmationAction::make('delete_account')
                     ->label(__('filament-jet::account/delete-account.buttons.confirm'))
                     ->icon('heroicon-o-trash')
                     ->color('danger')

@@ -3,9 +3,9 @@
 namespace ArtMin96\FilamentJet\Filament\Actions;
 
 use Filament\Forms;
-use Filament\Pages\Actions\ButtonAction;
+use Filament\Pages\Actions\Action;
 
-class AlwaysAskPasswordButtonAction extends ButtonAction
+class AlwaysAskPasswordConfirmationAction extends Action
 {
     protected function setUp(): void
     {
