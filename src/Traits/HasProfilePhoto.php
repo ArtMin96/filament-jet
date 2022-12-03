@@ -10,7 +10,9 @@ trait HasProfilePhoto
 {
     public function getFilamentAvatarUrl(): ?string
     {
-        return Features::managesProfilePhotos() ? $this->profile_photo_url : null;
+        return Features::managesProfilePhotos() && $this->photoExists()
+            ? $this->profile_photo_url
+            : $this->filamentDefaultAvatar();
     }
 
     /**
@@ -58,7 +60,20 @@ trait HasProfilePhoto
     {
         return $this->profile_photo_path
             ? Storage::disk($this->profilePhotoDisk())->url($this->profile_photo_path)
-            : app(config('filament.default_avatar_provider'))->get($this);
+            : $this->filamentDefaultAvatar();
+    }
+
+    /**
+     * Determine if the image file exists.
+     */
+    public function photoExists(): bool
+    {
+        return Storage::disk($this->profilePhotoDisk())->exists($this->profile_photo_path);
+    }
+
+    public function filamentDefaultAvatar(): string
+    {
+        return app(config('filament.default_avatar_provider'))->get($this);
     }
 
     /**

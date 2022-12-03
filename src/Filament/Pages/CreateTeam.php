@@ -6,6 +6,7 @@ use ArtMin96\FilamentJet\Contracts\CreatesTeams;
 use ArtMin96\FilamentJet\Http\Livewire\Traits\Properties\HasUserProperty;
 use ArtMin96\FilamentJet\Traits\RedirectsActions;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Livewire\Redirector;
 
@@ -31,7 +32,7 @@ class CreateTeam extends Page
                 'createTeamForm' => $this->makeForm()
                     ->schema([
                         TextInput::make('name')
-                            ->label(__('filament-jet::teams.create_team.fields.team_name'))
+                            ->label(__('filament-jet::teams/create.fields.team_name'))
                             ->required()
                             ->maxLength(255),
                     ])
@@ -47,7 +48,10 @@ class CreateTeam extends Page
     {
         $creator->create($this->user, $this->createTeamState);
 
-        $this->notify('success', __('filament-jet::teams.create_team.created'), true);
+        Notification::make()
+            ->title(__('filament-jet::teams/create.created'))
+            ->success()
+            ->send();
 
         return $this->redirectPath($creator);
     }
