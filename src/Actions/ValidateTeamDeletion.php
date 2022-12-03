@@ -18,7 +18,7 @@ class ValidateTeamDeletion
 
         if ($team->personal_team) {
             Notification::make()
-                ->title(__('filament-jet::teams.team_settings.delete_team.validation.cannot_delete_personal_team'))
+                ->title(__('filament-jet::teams/delete.messages.cannot_delete_personal_team'))
                 ->warning()
                 ->send();
         }

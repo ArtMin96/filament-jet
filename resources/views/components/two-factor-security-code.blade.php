@@ -3,7 +3,7 @@
 <div class="mt-4 max-w-xl text-sm text-gray-600 dark:text-gray-300">
     <div class="flex items-center">
         <p class="font-semibold mr-2">
-            {{ __('filament-jet::account.2fa.setup_key') }}:
+            {{ __('filament-jet::account/two-factor.setup_key') }}:
         </p>
 
         <div x-data="{ displayTwoFactorSecret: false }" class="flex items-center">

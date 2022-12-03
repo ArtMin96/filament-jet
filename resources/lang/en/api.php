@@ -1,6 +1,7 @@
 <?php
 
 return [
+
     'create' => [
         'title' => 'Create API Token',
         'description' => 'API tokens allow third-party services to authenticate with our application on your behalf.',
@@ -20,7 +21,7 @@ return [
         'title' => 'API Token',
         'description' => 'Please copy your new API token. For your security, it won\'t be shown again.',
 
-        'actions' => [
+        'buttons' => [
             'close' => 'Close',
         ],
     ],
@@ -38,4 +39,5 @@ return [
         'permissions' => 'Permissions',
         'last_used_at' => 'Last used',
     ],
+
 ];

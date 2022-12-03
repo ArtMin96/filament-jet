@@ -6,6 +6,7 @@ use ArtMin96\FilamentJet\Events\TeamSwitched;
 use ArtMin96\FilamentJet\FilamentJet;
 use ArtMin96\FilamentJet\Http\Livewire\Traits\Properties\HasUserProperty;
 use Filament\Facades\Filament;
+use Filament\Notifications\Notification;
 use Illuminate\View\View;
 use Livewire\Component;
 
@@ -35,6 +36,11 @@ class SwitchableTeam extends Component
         }
 
         TeamSwitched::dispatch($team->fresh(), $this->user);
+
+        Notification::make()
+            ->title(__('Team switched'))
+            ->success()
+            ->send();
 
         return redirect(config('filament.path'), 303);
     }

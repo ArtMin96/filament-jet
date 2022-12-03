@@ -8,6 +8,7 @@ use ArtMin96\FilamentJet\Actions\EnableTwoFactorAuthentication;
 use ArtMin96\FilamentJet\Actions\GenerateNewRecoveryCodes;
 use ArtMin96\FilamentJet\Features;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 
 trait HasTwoFactorAuthentication
 {
@@ -43,9 +44,9 @@ trait HasTwoFactorAuthentication
     {
         return [
             TextInput::make('two_factor_code')
-                ->label(__('filament-jet::account.2fa.columns.2fa_code'))
+                ->label(__('filament-jet::account/two-factor.fields.code'))
                 ->disableLabel()
-                ->placeholder(__('filament-jet::account.2fa.columns.2fa_code'))
+                ->placeholder(__('filament-jet::account/two-factor.fields.code'))
                 ->rules('nullable|string'),
         ];
     }
@@ -81,7 +82,10 @@ trait HasTwoFactorAuthentication
     {
         $confirm($this->user, $this->two_factor_code);
 
-        $this->notify('success', __('filament-jet::account.2fa.confirmation.success_notification'));
+        Notification::make()
+            ->title(__('filament-jet::account/two-factor.messages.verified'))
+            ->success()
+            ->send();
 
         $this->showingQrCode = false;
         $this->showingConfirmation = false;
@@ -101,6 +105,11 @@ trait HasTwoFactorAuthentication
         $generate($this->user);
 
         $this->showingRecoveryCodes = true;
+
+        Notification::make()
+            ->title(__('filament-jet::account/two-factor.messages.recovery_codes_regenerated'))
+            ->success()
+            ->send();
     }
 
     /**
@@ -117,7 +126,10 @@ trait HasTwoFactorAuthentication
         $this->showingConfirmation = false;
         $this->showingRecoveryCodes = false;
 
-        $this->notify('warning', __('filament-jet::account.2fa.notify.disabled'));
+        Notification::make()
+            ->title(__('filament-jet::account/two-factor.messages.disabled'))
+            ->warning()
+            ->send();
     }
 
     public function exportPersonalData()

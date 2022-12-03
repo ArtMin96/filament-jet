@@ -1,11 +1,11 @@
 <x-filament::page>
     <x-filament-jet-form-section submit="updateTeamName">
         <x-slot name="title">
-            {{ __('filament-jet::teams.team_settings.update_name.title') }}
+            {{ __('filament-jet::teams/name.title') }}
         </x-slot>
 
         <x-slot name="description">
-            {{ __('filament-jet::teams.team_settings.update_name.description') }}
+            {{ __('filament-jet::teams/name.description') }}
         </x-slot>
 
         <x-slot name="form">
@@ -13,7 +13,7 @@
             @if($team->owner)  {{-- Temporarily solve the problem of team owner not found, after deleting a team, before the redirect --}}
                 <div class="col-span-6">
                     <div class="block font-medium text-sm text-gray-700 dark:text-gray-300">
-                        {{ __('filament-jet::teams.team_settings.update_name.team_owner_label') }}
+                        {{ __('filament-jet::teams/name.team_owner.label') }}
                     </div>
 
                     <div class="flex items-center mt-2">
@@ -33,7 +33,7 @@
         @if(\Illuminate\Support\Facades\Gate::check('update', $team))
             <x-slot name="actions">
                 <x-filament::button type="submit">
-                    {{ __('filament-jet::teams.team_settings.update_name.actions.save') }}
+                    {{ __('filament-jet::teams/name.buttons.save') }}
                 </x-filament::button>
             </x-slot>
         @endif
@@ -44,17 +44,17 @@
 
         <x-filament-jet-form-section submit="addTeamMember">
             <x-slot name="title">
-                {{ __('filament-jet::teams.team_settings.add_team_member.title') }}
+                {{ __('filament-jet::teams/add-member.title') }}
             </x-slot>
 
             <x-slot name="description">
-                {{ __('filament-jet::teams.team_settings.add_team_member.description') }}
+                {{ __('filament-jet::teams/add-member.description') }}
             </x-slot>
 
             <x-slot name="form">
                 <div class="col-span-6">
                     <div class="max-w-xl text-sm text-gray-600 dark:text-white">
-                        {{ __('filament-jet::teams.team_settings.add_team_member.note') }}
+                        {{ __('filament-jet::teams/add-member.note') }}
                     </div>
                 </div>
 
@@ -63,7 +63,7 @@
 
             <x-slot name="actions">
                 <x-filament::button type="submit">
-                    {{ __('filament-jet::teams.team_settings.update_name.actions.save') }}
+                    {{ __('filament-jet::teams/add-member.buttons.save') }}
                 </x-filament::button>
             </x-slot>
         </x-filament-jet-form-section>
@@ -76,11 +76,11 @@
         <div class="mt-10 sm:mt-0">
             <x-filament-jet-action-section>
                 <x-slot name="title">
-                    {{ __('filament-jet::teams.team_settings.invitations.title') }}
+                    {{ __('filament-jet::teams/invitations.title') }}
                 </x-slot>
 
                 <x-slot name="description">
-                    {{ __('filament-jet::teams.team_settings.invitations.description') }}
+                    {{ __('filament-jet::teams/invitations.description') }}
                 </x-slot>
 
                 <x-slot name="content">
@@ -91,11 +91,10 @@
 
                                 <div class="flex items-center">
                                     @if (Gate::check('removeTeamMember', $team))
-                                        {{ $this->getCachedAction('cancel_team_invitation') }}
                                         <!-- Cancel Team Invitation -->
                                         <button class="cursor-pointer ml-6 text-sm text-red-500 focus:outline-none"
                                                 wire:click="cancelTeamInvitation({{ $invitation->id }})">
-                                            {{ __('filament-jet::teams.team_settings.invitations.actions.cancel') }}
+                                            {{ __('filament-jet::teams/invitations.buttons.cancel') }}
                                         </button>
                                     @endif
                                 </div>
@@ -114,11 +113,11 @@
         <div class="mt-10 sm:mt-0">
             <x-filament-jet-action-section>
                 <x-slot name="title">
-                    {{ __('filament-jet::teams.team_settings.team_members.title') }}
+                    {{ __('filament-jet::teams/members.title') }}
                 </x-slot>
 
                 <x-slot name="description">
-                    {{ __('filament-jet::teams.team_settings.team_members.description') }}
+                    {{ __('filament-jet::teams/members.description') }}
                 </x-slot>
 
                 <!-- Team Member List -->
@@ -162,20 +161,6 @@
                 </x-slot>
             </x-filament-jet-action-section>
         </div>
-
-        <x-tables::modal id="update-role" width="lg">
-            <x-slot name="subheading">
-                <h3 class="text-xl">{{ __('filament-spatie-backup::backup.pages.backups.modal.label') }}</h3>
-            </x-slot>
-
-            <x-slot name="actions">
-                <x-filament::modal.actions full-width>
-                    <x-filament::button wire:click="updateRole()" color="primary">
-                        {{ __('filament-spatie-backup::backup.pages.backups.modal.buttons.only_db') }}
-                    </x-filament::button>
-                </x-filament::modal.actions>
-            </x-slot>
-        </x-tables::modal>
     @endif
 
     @if(\Illuminate\Support\Facades\Gate::check('delete', $team) && ! $team->personal_team)
@@ -183,16 +168,16 @@
 
         <x-filament-jet-action-section>
             <x-slot name="title">
-                {{ __('filament-jet::teams.team_settings.delete_team.title') }}
+                {{ __('filament-jet::teams/delete.title') }}
             </x-slot>
 
             <x-slot name="description">
-                {{ __('filament-jet::teams.team_settings.delete_team.description') }}
+                {{ __('filament-jet::teams/delete.description') }}
             </x-slot>
 
             <x-slot name="content">
                 <div class="max-w-xl text-sm text-gray-600 dark:text-white">
-                    {{ __('filament-jet::teams.team_settings.delete_team.note') }}
+                    {{ __('filament-jet::teams/delete.note') }}
                 </div>
 
                 <div class="mt-5 text-right">

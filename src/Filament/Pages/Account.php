@@ -86,11 +86,11 @@ class Account extends Page
                     ->rules(['nullable', 'mimes:jpg,jpeg,png', 'max:1024'])
                 : null,
             TextInput::make('name')
-                ->label(__('filament-jet::account.profile_information.columns.name'))
+                ->label(__('filament-jet::account/update-information.fields.name'))
                 ->required()
                 ->maxLength(255),
             TextInput::make(FilamentJet::username())
-                ->label(__('filament-jet::account.profile_information.columns.email'))
+                ->label(__('filament-jet::account/update-information.fields.email'))
                 ->hintAction(
                     ! empty(config('filament-jet.profile.login_field.hint_action')) && Features::enabled(Features::emailVerification())
                         ? Action::make('newEmailVerifyNote')
@@ -116,14 +116,14 @@ class Account extends Page
         return array_filter([
             $requireCurrentPasswordOnUpdate
                 ? Password::make('currentPassword')
-                    ->label(__('filament-jet::account.update_password.columns.current_password'))
+                    ->label(__('filament-jet::account/update-password.fields.current_password'))
                     ->autocomplete('currentPassword')
                     ->revealable()
                     ->required()
                     ->rule('current_password')
                 : null,
             Password::make('password')
-                ->label(__('filament-jet::account.update_password.columns.new_password'))
+                ->label(__('filament-jet::account/update-password.fields.new_password'))
                 ->autocomplete('new_password')
                 ->copyable()
                 ->revealable()
@@ -132,7 +132,7 @@ class Account extends Page
                 ->rules(FilamentJet::getPasswordRules())
                 ->same('passwordConfirmation'),
             Password::make('passwordConfirmation')
-                ->label(__('filament-jet::account.update_password.columns.confirm_password'))
+                ->label(__('filament-jet::account/update-password.fields.confirm_password'))
                 ->autocomplete('passwordConfirmation')
                 ->revealable(),
         ]);
@@ -150,7 +150,7 @@ class Account extends Page
 
         $this->notify(
             status: 'success',
-            message: __('filament-jet::account.profile_information.updated'),
+            message: __('filament-jet::account/update-information.messages.updated'),
             isAfterRedirect: true
         );
 
@@ -166,7 +166,7 @@ class Account extends Page
 
         $updater->update($this->user, $state);
 
-        $this->notify('success', __('filament-jet::account.update_password.changed'));
+        $this->notify('success', __('filament-jet::account/update-password.messages.updated'));
 
         session()->forget('password_hash_'.config('filament.auth.guard'));
 

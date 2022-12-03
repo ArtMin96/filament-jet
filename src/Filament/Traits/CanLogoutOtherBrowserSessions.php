@@ -2,6 +2,7 @@
 
 namespace ArtMin96\FilamentJet\Filament\Traits;
 
+use Filament\Notifications\Notification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -28,7 +29,10 @@ trait CanLogoutOtherBrowserSessions
 
         $this->emit('loggedOut');
 
-        $this->notify('success', __('filament-jet::account.other_browser_sessions.confirmation.success_notification'));
+        Notification::make()
+            ->title(__('filament-jet::account/browser-sessions.messages.cleared'))
+            ->success()
+            ->send();
     }
 
     /**

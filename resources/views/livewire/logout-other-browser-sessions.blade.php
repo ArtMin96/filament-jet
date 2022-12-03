@@ -17,7 +17,7 @@
 
                 <div class="ml-4">
                     <div class="text-sm text-gray-600 dark:text-white">
-                        {{ $session->agent->platform() ? $session->agent->platform() : __('filament-jet::account.other_browser_sessions.unknown_device') }} - {{ $session->agent->browser() ? $session->agent->browser() : __('filament-jet::account.other_browser_sessions.unknown_device') }}
+                        {{ $session->agent->platform() ? $session->agent->platform() : __('filament-jet::account/browser-sessions.statuses.unknown_device') }} - {{ $session->agent->browser() ? $session->agent->browser() : __('filament-jet::account.other_browser_sessions.unknown_device') }}
                     </div>
 
                     <div>
@@ -25,9 +25,9 @@
                             {{ $session->ip_address }},
 
                             @if ($session->is_current_device)
-                                <span class="text-success-500 font-semibold">{{ __('filament-jet::account.other_browser_sessions.this_device') }}</span>
+                                <span class="text-success-500 font-semibold">{{ __('filament-jet::account/browser-sessions.statuses.this_device') }}</span>
                             @else
-                                {{ __('filament-jet::account.other_browser_sessions.last_active') }} {{ $session->last_active }}
+                                {{ __('filament-jet::account/browser-sessions.statuses.last_active') }} {{ $session->last_active }}
                             @endif
                         </div>
                     </div>

@@ -2,11 +2,11 @@
     @if(\ArtMin96\FilamentJet\Features::canUpdateProfileInformation())
         <x-filament-jet-form-section submit="updateProfileInformation">
             <x-slot name="title">
-                {{ __('filament-jet::account.profile_information.title') }}
+                {{ __('filament-jet::account/update-information.title') }}
             </x-slot>
 
             <x-slot name="description">
-                {{ __('filament-jet::account.profile_information.description') }}
+                {{ __('filament-jet::account/update-information.description') }}
             </x-slot>
 
             <x-slot name="form">
@@ -15,7 +15,7 @@
 
             <x-slot name="actions">
                 <x-filament::button type="submit" icon="heroicon-o-identification">
-                    {{ __('filament-jet::account.profile_information.submit') }}
+                    {{ __('filament-jet::account/update-information.buttons.save') }}
                 </x-filament::button>
             </x-slot>
         </x-filament-jet-form-section>
@@ -26,11 +26,11 @@
 
         <x-filament-jet-form-section submit="updatePassword">
             <x-slot name="title">
-                {{ __('filament-jet::account.update_password.title') }}
+                {{ __('filament-jet::account/update-password.title') }}
             </x-slot>
 
             <x-slot name="description">
-                {{ __('filament-jet::account.update_password.description') }}
+                {{ __('filament-jet::account/update-password.description') }}
             </x-slot>
 
             <x-slot name="form">
@@ -39,7 +39,7 @@
 
             <x-slot name="actions">
                 <x-filament::button type="submit" icon="heroicon-o-lock-closed">
-                    {{ __('filament-jet::account.update_password.submit') }}
+                    {{ __('filament-jet::account/update-password.buttons.save') }}
                 </x-filament::button>
             </x-slot>
         </x-filament-jet-form-section>
@@ -57,29 +57,29 @@
 
         <x-filament-jet-action-section>
             <x-slot name="title">
-                {{ __('filament-jet::account.2fa.title') }}
+                {{ __('filament-jet::account/two-factor.title') }}
             </x-slot>
 
             <x-slot name="description">
-                {{ __('filament-jet::account.2fa.description') }}
+                {{ __('filament-jet::account/two-factor.description') }}
             </x-slot>
 
             <x-slot name="content">
                 <h3 class="text-lg font-medium text-gray-900 dark:text-white">
                     @if ($this->enabled)
                         @if ($showingConfirmation)
-                            {{ __('filament-jet::account.2fa.finish_enabling.title') }}
+                            {{ __('filament-jet::account/two-factor.finish_enabling.title') }}
                         @else
-                            {{ __('filament-jet::account.2fa.enabled.title') }}
+                            {{ __('filament-jet::account/two-factor.enabled.title') }}
                         @endif
                     @else
-                        {{ __('filament-jet::account.2fa.disabled.title') }}
+                        {{ __('filament-jet::account/two-factor.disabled.title') }}
                     @endif
                 </h3>
 
                 <div class="mt-3 max-w-xl text-sm text-gray-600 dark:text-gray-300">
                     <p>
-                        {{ __('filament-jet::account.2fa.card_description') }}
+                        {{ __('filament-jet::account/two-factor.note') }}
                     </p>
                 </div>
 
@@ -88,9 +88,9 @@
                         <div class="mt-3 max-w-xl text-sm text-gray-600 dark:text-gray-300">
                             <p class="font-semibold">
                                 @if($showingConfirmation)
-                                    {{ __('filament-jet::account.2fa.finish_enabling.description') }}
+                                    {{ __('filament-jet::account/two-factor.finish_enabling.description') }}
                                 @else
-                                    {{ __('filament-jet::account.2fa.enabled.description') }}
+                                    {{ __('filament-jet::account/two-factor.enabled.description') }}
                                 @endif
                             </p>
                         </div>
@@ -104,7 +104,7 @@
 
                     @if($showingRecoveryCodes)
                         <hr class="my-3"/>
-                        <p class="mt-3 max-w-xl text-sm text-gray-600 dark:text-gray-300">{{ __('filament-jet::account.2fa.enabled.store_codes') }}</p>
+                        <p class="mt-3 max-w-xl text-sm text-gray-600 dark:text-gray-300">{{ __('filament-jet::account/two-factor.enabled.store_codes') }}</p>
 
                         <div class="space-y-2">
                             @foreach (json_decode(decrypt($user->two_factor_recovery_codes), true) as $code)
@@ -135,11 +135,11 @@
 
                                 <div class="mt-5">
                                     <x-filament::button type="submit">
-                                        {{ __('filament-jet::account.2fa.actions.confirm_finish') }}
+                                        {{ __('filament-jet::account/two-factor.buttons.confirm_finish') }}
                                     </x-filament::button>
 
                                     <x-filament::button color="secondary" wire:click="disableTwoFactorAuthentication">
-                                        {{ __('filament-jet::account.2fa.actions.cancel_setup') }}
+                                        {{ __('filament-jet::account/two-factor.buttons.cancel_setup') }}
                                     </x-filament::button>
                                 </div>
                             </div>
@@ -159,16 +159,16 @@
 
         <x-filament-jet-action-section>
             <x-slot name="title">
-                {{ __('filament-jet::account.other_browser_sessions.title') }}
+                {{ __('filament-jet::account/browser-sessions.title') }}
             </x-slot>
 
             <x-slot name="description">
-                {{ __('filament-jet::account.other_browser_sessions.description') }}
+                {{ __('filament-jet::account/browser-sessions.description') }}
             </x-slot>
 
             <x-slot name="content">
                 <div class="max-w-xl text-sm text-gray-600 dark:text-white">
-                    {{ __('filament-jet::account.other_browser_sessions.heading') }}
+                    {{ __('filament-jet::account/browser-sessions.heading') }}
                 </div>
 
                 @livewire(\ArtMin96\FilamentJet\Http\Livewire\LogoutOtherBrowserSessions::class)
@@ -187,16 +187,16 @@
 
         <x-filament-jet-action-section>
             <x-slot name="title">
-                {{ __('filament-jet::account.delete_account.title') }}
+                {{ __('filament-jet::account/delete-account.title') }}
             </x-slot>
 
             <x-slot name="description">
-                {{ __('filament-jet::account.delete_account.description') }}
+                {{ __('filament-jet::account/delete-account.description') }}
             </x-slot>
 
             <x-slot name="content">
                 <div class="max-w-xl text-sm text-gray-600 dark:text-white">
-                    {{ __('filament-jet::account.delete_account.warning') }}
+                    {{ __('filament-jet::account/delete-account.warning') }}
                 </div>
 
                 <x-slot name="actions">
@@ -213,16 +213,16 @@
 
         <x-filament-jet-action-section>
             <x-slot name="title">
-                {{ __('filament-jet::account.export_personal_data.title') }}
+                {{ __('filament-jet::account/export-personal-data.title') }}
             </x-slot>
 
             <x-slot name="description">
-                {{ __('filament-jet::account.export_personal_data.description') }}
+                {{ __('filament-jet::account/export-personal-data.description') }}
             </x-slot>
 
             <x-slot name="content">
                 <div class="max-w-xl text-sm text-gray-600 dark:text-white">
-                    {{ __('filament-jet::account.export_personal_data.warning') }}
+                    {{ __('filament-jet::account/export-personal-data.warning') }}
                 </div>
 
                 <x-slot name="actions">

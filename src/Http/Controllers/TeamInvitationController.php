@@ -27,7 +27,7 @@ class TeamInvitationController extends Controller
             $invitation->delete();
 
             Notification::make()
-                ->title(__('filament-jet::teams.team_settings.invitations.notifications.feature_disabled'))
+                ->title(__('filament-jet::teams/invitations.messages.feature_disabled'))
                 ->success()
                 ->send();
 
@@ -50,7 +50,7 @@ class TeamInvitationController extends Controller
         }
 
         Notification::make()
-            ->title(__('filament-jet::teams.team_settings.invitations.notifications.invited', ['team' => $invitation->team->name]))
+            ->title(__('filament-jet::teams/invitations.messages.invited', ['team' => $invitation->team->name]))
             ->success()
             ->send();
 

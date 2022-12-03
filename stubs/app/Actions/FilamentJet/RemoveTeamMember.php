@@ -44,7 +44,7 @@ class RemoveTeamMember implements RemovesTeamMembers
     {
         if ($teamMember->id === $team->owner->id) {
             throw ValidationException::withMessages([
-                'team' => [__('filament-jet::teams.validations.cannot_leave_own_team')],
+                'team' => [__('filament-jet::teams/members.messages.cannot_leave_own_team')],
             ])->errorBag('removeTeamMember');
         }
     }
