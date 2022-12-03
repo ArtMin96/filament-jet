@@ -64,7 +64,10 @@ class TeamSettings extends Page
         $this->team = $this->user->currentTeam;
 
         if (! $this->team) {
-            $this->notify('success', __('filament-jet::teams.team_settings.current_team_not_exists'), true);
+            Notification::make()
+                ->title(__('filament-jet::teams.team_settings.current_team_not_exists'))
+                ->warning()
+                ->send();
 
             return redirect(config('filament.path'));
         }

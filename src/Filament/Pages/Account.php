@@ -18,6 +18,7 @@ use Filament\Facades\Filament;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Redirector;
@@ -166,7 +167,10 @@ class Account extends Page
 
         $updater->update($this->user, $state);
 
-        $this->notify('success', __('filament-jet::account/update-password.messages.updated'));
+        Notification::make()
+            ->title(__('filament-jet::account/update-password.messages.updated'))
+            ->success()
+            ->send();
 
         session()->forget('password_hash_'.config('filament.auth.guard'));
 
