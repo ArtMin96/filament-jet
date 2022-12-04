@@ -49,7 +49,7 @@ class CreateTeam extends Page
         $creator->create($this->user, $this->createTeamState);
 
         Notification::make()
-            ->title(__('filament-jet::teams/create.created'))
+            ->title(__('filament-jet::teams/create.messages.created'))
             ->success()
             ->send();
 
