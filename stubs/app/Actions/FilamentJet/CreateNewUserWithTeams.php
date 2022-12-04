@@ -27,10 +27,13 @@ class CreateNewUser implements CreatesNewUsers
                 'email' => $input['email'],
                 'password' => Hash::make($input['password']),
             ]), function ($user) {
-                app()->bind(
-                    \Illuminate\Auth\Listeners\SendEmailVerificationNotification::class,
-                    \ArtMin96\FilamentJet\Listeners\Auth\SendEmailVerificationNotification::class,
-                );
+
+                if (Features::enabled(Features::emailVerification())) {
+                    app()->bind(
+                        \Illuminate\Auth\Listeners\SendEmailVerificationNotification::class,
+                        \ArtMin96\FilamentJet\Listeners\Auth\SendEmailVerificationNotification::class,
+                    );
+                }
 
                 event(new Registered($user));
 
