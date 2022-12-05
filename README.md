@@ -67,6 +67,7 @@ use ArtMin96\FilamentJet\Actions\Auth\RedirectIfTwoFactorAuthenticatable;
 use ArtMin96\FilamentJet\Actions\Auth\PrepareAuthenticatedSession;
 use ArtMin96\FilamentJet\Features;
 use ArtMin96\FilamentJet\FilamentJet;
+use Illuminate\Http\Request;
 
 FilamentJet::authenticateThrough(function (Request $request) {
     return array_filter([
