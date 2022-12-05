@@ -50,7 +50,7 @@ Update the `config/filament.php` to point to the Filament Jet's `Login::class`.
 'auth' => [
     'guard' => env('FILAMENT_AUTH_GUARD', 'web'),
     'pages' => [
-        'login' => \ArtMin96\FilamentJet\Http\Livewire\Auth\Login::class,
+        'login' => \ArtMin96\FilamentJet\Filament\Pages\Auth\Login::class,
     ],
 ],
 ```
