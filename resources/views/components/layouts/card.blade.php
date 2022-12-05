@@ -28,7 +28,7 @@
         ])>
             <div @class([
                 'filament-card-layout-card p-8 space-y-4 bg-white/50 backdrop-blur-xl border border-gray-200 shadow-2xl rounded-2xl relative',
-                'dark:bg-gray-900/50 dark:ring-gray-50/10' => config('filament.dark_mode'),
+                'dark:bg-gray-900/50 dark:border-gray-700' => config('filament.dark_mode'),
             ])>
                 @if ($hasBrand)
                     <div class="flex justify-center w-full">
