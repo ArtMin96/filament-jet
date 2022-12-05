@@ -55,29 +55,6 @@ Update the `config/filament.php` to point to the Filament Jet's `Login::class`.
 ],
 ```
 
-## Customizing The Authentication Pipeline
-
-Filament Jet authenticates login requests through a pipeline of invokable classes. If you would like, you may define a custom pipeline of classes that login requests should be piped through.
-To define your custom pipeline, you may use the `FilamentJet::authenticateThrough` method. This method accepts a closure which should return the array of classes to pipe the login request through. Typically, this method should be called from the `boot` method of your `App\Providers\FilamentJetServiceProvider` class.
-The example below contains the default pipeline definition that you may use as a starting point when making your own modifications:
-
-```php
-use ArtMin96\FilamentJet\Actions\Auth\AttemptToAuthenticate;
-use ArtMin96\FilamentJet\Actions\Auth\RedirectIfTwoFactorAuthenticatable;
-use ArtMin96\FilamentJet\Actions\Auth\PrepareAuthenticatedSession;
-use ArtMin96\FilamentJet\Features;
-use ArtMin96\FilamentJet\FilamentJet;
-use Illuminate\Http\Request;
-
-FilamentJet::authenticateThrough(function (Request $request) {
-    return array_filter([
-            Features::enabled(Features::twoFactorAuthentication()) ? RedirectIfTwoFactorAuthenticatable::class : null,
-            AttemptToAuthenticate::class,
-            PrepareAuthenticatedSession::class,
-    ]);
-});
-```
-
 You may want to change the size of the auth card.
 
 ```php
