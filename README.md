@@ -32,9 +32,13 @@ php artisan filament-jet:install
 
 In addition, you may use the `--teams` switch to enable team support.
 
-After installing Filament Jet, you should migrate your database:
+After installing Filament Jet, you should install and build your NPM dependencies and migrate your database:
 
 ```bash
+npm run dev
+
+npm run build
+
 php artisan migrate
 ```
 
