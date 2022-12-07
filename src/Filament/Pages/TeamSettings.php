@@ -65,7 +65,7 @@ class TeamSettings extends Page
 
         if (! $this->team) {
             Notification::make()
-                ->title(__('filament-jet::teams.team_settings.current_team_not_exists'))
+                ->title(__('filament-jet::teams/messages.current_team_not_exists'))
                 ->warning()
                 ->send();
 
@@ -280,7 +280,7 @@ class TeamSettings extends Page
         $deleter->delete($this->team);
 
         Notification::make()
-            ->title(__('filament-jet::teams.team_settings.delete_team.notify'))
+            ->title(__('filament-jet::teams/delete.messages.deleted'))
             ->success()
             ->send();
 
